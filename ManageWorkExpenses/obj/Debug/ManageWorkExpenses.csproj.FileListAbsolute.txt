@@ -1,0 +1,233 @@
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\obj\Debug\ManageWorkExpenses.csprojResolveAssemblyReference.cache
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\obj\Debug\ManageWorkExpenses.csproj.GenerateResource.Cache
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\bin\Debug\ManageWorkExpenses.exe.config
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\bin\Debug\ManageWorkExpenses.exe
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\bin\Debug\ManageWorkExpenses.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\obj\Debug\ManageWorkExpenses.Properties.Resources.resources
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\obj\Debug\ManageWorkExpenses.User.resources
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\obj\Debug\ManageWorkExpenses.exe
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\obj\Debug\ManageWorkExpenses.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\bin\Debug\log4net.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\bin\Debug\log4net.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\obj\Debug\ManageWorkExpenses.Main.resources
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\bin\Debug\Log.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\DemoSQLite\bin\Debug\Log.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe.config
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Log.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\log4net.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Log.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\log4net.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Main.resources
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Properties.Resources.resources
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.User.resources
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csproj.GenerateResource.Cache
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.exe
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csprojResolveAssemblyReference.cache
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DATABASE.db
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\BUS.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Dapper.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DTO.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DAO.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\BUS.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DTO.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Dapper.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DAO.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe.config
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.exe
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csprojResolveAssemblyReference.cache
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Main.resources
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Properties.Resources.resources
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.User.resources
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csproj.GenerateResource.Cache
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DATABASE.db
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\BUS.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Dapper.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DTO.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Log.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\log4net.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.EF6.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.Linq.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DAO.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\BUS.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DTO.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Log.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Dapper.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\log4net.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DAO.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe.config
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.exe
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DATABASE.db
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\BUS.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Dapper.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DTO.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Log.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\log4net.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DAO.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\BUS.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DTO.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Log.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\Dapper.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\log4net.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\System.Data.SQLite.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\bin\Debug\DAO.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csprojResolveAssemblyReference.cache
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Main.resources
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Properties.Resources.resources
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.User.resources
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csproj.GenerateResource.Cache
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe.config
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.exe
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.pdb
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\DATABASE.db
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.pdb
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\BUS.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\Dapper.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\DTO.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\Log.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\log4net.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\DAO.dll
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\BUS.pdb
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\DTO.pdb
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\Log.pdb
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\Dapper.xml
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.xml
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\log4net.xml
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.pdb
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.xml
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.xml
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\bin\Debug\DAO.pdb
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csprojResolveAssemblyReference.cache
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Main.resources
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Properties.Resources.resources
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.User.resources
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csproj.GenerateResource.Cache
+C:\Users\ADMIN\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Contract.resources
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe.config
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\DATABASE.db
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\BUS.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\Dapper.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\DTO.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\Log.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\log4net.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\DAO.dll
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\BUS.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\DTO.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\Log.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\Dapper.xml
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.xml
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\log4net.xml
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.xml
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.xml
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\bin\Debug\DAO.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csprojResolveAssemblyReference.cache
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Contract.resources
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Main.resources
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Properties.Resources.resources
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csproj.GenerateResource.Cache
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.exe
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Config.resources
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe.config
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.exe
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.pdb
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\DATABASE.db
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.exe
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\ManageWorkExpenses.pdb
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\BUS.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\Dapper.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\DTO.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\Log.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\log4net.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\SqlManager.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.EF6.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.Linq.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\DAO.dll
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\BUS.pdb
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\DTO.pdb
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\Log.pdb
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\Dapper.xml
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.xml
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\EntityFramework.SqlServer.xml
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\log4net.xml
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\SqlManager.pdb
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.pdb
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\SqlManager.SQLiteProvider.xml
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\System.Data.SQLite.xml
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\bin\Debug\DAO.pdb
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csprojResolveAssemblyReference.cache
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Config.resources
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Contract.resources
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Main.resources
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Properties.Resources.resources
+E:\NEW\CTP\NEW\NEW\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.csproj.GenerateResource.Cache

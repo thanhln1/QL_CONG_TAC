@@ -1,0 +1,11 @@
+E:\Working\BatchChecking\BatchChecking New\BatchChecking\BatchLib\Release\Log.dll
+E:\Working\BatchChecking\BatchChecking New\BatchChecking\BatchLib\Release\Log.pdb
+E:\Working\BatchChecking\BatchChecking New\BatchChecking\Log\obj\Release\ResolveAssemblyReference.cache
+E:\Working\BatchChecking\BatchChecking New\BatchChecking\Log\obj\Release\Log.dll
+E:\Working\BatchChecking\BatchChecking New\BatchChecking\Log\obj\Release\Log.pdb
+E:\Working\BatchChecking New\BatchChecking\BatchLib\Release\Log.dll
+E:\Working\BatchChecking New\BatchChecking\BatchLib\Release\Log.pdb
+E:\Working\BatchChecking New\BatchChecking\Log\bin\Log.dll
+E:\Working\BatchChecking New\BatchChecking\Log\bin\Log.pdb
+E:\Working\BatchChecking New\BatchChecking\Log\obj\Release\Log.dll
+E:\Working\BatchChecking New\BatchChecking\Log\obj\Release\Log.pdb

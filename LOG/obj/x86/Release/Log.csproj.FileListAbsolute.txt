@@ -1,0 +1,4 @@
+E:\Working\BatchChecking New\BatchChecking\Log\bin\x86\Release\Log.dll
+E:\Working\BatchChecking New\BatchChecking\Log\bin\x86\Release\Log.pdb
+E:\Working\BatchChecking New\BatchChecking\Log\obj\x86\Release\Log.dll
+E:\Working\BatchChecking New\BatchChecking\Log\obj\x86\Release\Log.pdb

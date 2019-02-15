@@ -1,0 +1,98 @@
+E:\Working\BatchChecking New\BatchChecking\Log\bin\Debug\Log.dll
+E:\Working\BatchChecking New\BatchChecking\Log\bin\Debug\Log.pdb
+E:\Working\BatchChecking New\BatchChecking\Log\obj\Debug\Log.dll
+E:\Working\BatchChecking New\BatchChecking\Log\obj\Debug\Log.pdb
+C:\Users\thend.VRBANK\Desktop\BatchChecking 64 bit\Log\bin\Debug\Log.dll
+C:\Users\thend.VRBANK\Desktop\BatchChecking 64 bit\Log\bin\Debug\Log.pdb
+C:\Users\thend.VRBANK\Desktop\BatchChecking 64 bit\Log\obj\Debug\Log.csprojResolveAssemblyReference.cache
+C:\Users\thend.VRBANK\Desktop\BatchChecking 64 bit\Log\obj\Debug\Log.dll
+C:\Users\thend.VRBANK\Desktop\BatchChecking 64 bit\Log\obj\Debug\Log.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\LOG\bin\Debug\Log.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\LOG\bin\Debug\Log.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\LOG\obj\Debug\LOG.csprojResolveAssemblyReference.cache
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\LOG\obj\Debug\Log.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\DemoSQLite\LOG\obj\Debug\Log.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\Log.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\Log.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\obj\Debug\LOG.csprojResolveAssemblyReference.cache
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\obj\Debug\Log.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\obj\Debug\Log.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\Log.dll.config
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\Dapper.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\EntityFramework.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\SqlManager.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\System.Data.SQLite.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\Dapper.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\EntityFramework.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\SqlManager.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\SqlManager.SQLiteProvider.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\LOG\bin\Debug\System.Data.SQLite.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\Log.dll.config
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\Log.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\Log.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\Dapper.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\EntityFramework.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\SqlManager.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\System.Data.SQLite.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\Dapper.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\EntityFramework.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\SqlManager.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\SqlManager.SQLiteProvider.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\bin\Debug\System.Data.SQLite.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\obj\Debug\LOG.csprojResolveAssemblyReference.cache
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\obj\Debug\Log.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\LOG\obj\Debug\Log.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\Log.dll.config
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\Log.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\Log.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\Dapper.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\EntityFramework.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\SqlManager.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\System.Data.SQLite.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\Dapper.xml
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\EntityFramework.xml
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\SqlManager.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\SqlManager.SQLiteProvider.xml
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\bin\Debug\System.Data.SQLite.xml
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\obj\Debug\Log.csprojResolveAssemblyReference.cache
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\obj\Debug\Log.dll
+C:\Users\thend.VRBANK\Desktop\NEW\LOG\obj\Debug\Log.pdb
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\Log.dll.config
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\Log.dll
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\Log.pdb
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\Dapper.dll
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\EntityFramework.dll
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\EntityFramework.SqlServer.dll
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\SqlManager.dll
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\SqlManager.SQLiteProvider.dll
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\System.Data.SQLite.dll
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\System.Data.SQLite.EF6.dll
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\System.Data.SQLite.Linq.dll
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\Dapper.xml
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\EntityFramework.xml
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\EntityFramework.SqlServer.xml
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\SqlManager.pdb
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\SqlManager.SQLiteProvider.pdb
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\SqlManager.SQLiteProvider.xml
+E:\NEW\CTP\NEW\NEW\LOG\bin\Debug\System.Data.SQLite.xml
+E:\NEW\CTP\NEW\NEW\LOG\obj\Debug\LOG.csprojResolveAssemblyReference.cache
+E:\NEW\CTP\NEW\NEW\LOG\obj\Debug\Log.dll
+E:\NEW\CTP\NEW\NEW\LOG\obj\Debug\Log.pdb

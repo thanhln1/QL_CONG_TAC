@@ -1,0 +1,92 @@
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\DAO.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\DAO.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\obj\Debug\DAO.csprojResolveAssemblyReference.cache
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\obj\Debug\DAO.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\obj\Debug\DAO.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\Dapper.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\DTO.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\DTO.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\Dapper.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\DAO.dll.config
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\SqlManager.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\SqlManager.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\thend.VRBANK\Documents\Visual Studio 2015\Projects\ManageWorkExpenses\DAO\bin\Debug\SqlManager.SQLiteProvider.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DAO.dll.config
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DAO.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DAO.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\Dapper.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DTO.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.SqlServer.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.SQLiteProvider.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.EF6.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.Linq.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DTO.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\Dapper.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.SqlServer.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.SQLiteProvider.pdb
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.SQLiteProvider.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.xml
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\obj\Debug\DAO.csprojResolveAssemblyReference.cache
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\obj\Debug\DAO.dll
+D:\OneDriver\OneDrive\Source\ManageWorkExpenses\DAO\obj\Debug\DAO.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DAO.dll.config
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DAO.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DAO.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\Dapper.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DTO.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\DTO.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\Dapper.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\SqlManager.SQLiteProvider.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\bin\Debug\System.Data.SQLite.xml
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\obj\Debug\DAO.csprojResolveAssemblyReference.cache
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\obj\Debug\DAO.dll
+C:\Users\ADMIN\OneDrive\Source\ManageWorkExpenses\DAO\obj\Debug\DAO.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\DAO.dll.config
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\DAO.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\DAO.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\Dapper.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\DTO.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\EntityFramework.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\SqlManager.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\SqlManager.SQLiteProvider.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\System.Data.SQLite.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\DTO.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\Dapper.xml
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\EntityFramework.xml
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\SqlManager.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\SqlManager.SQLiteProvider.pdb
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\SqlManager.SQLiteProvider.xml
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\bin\Debug\System.Data.SQLite.xml
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\obj\Debug\DAO.csprojResolveAssemblyReference.cache
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\obj\Debug\DAO.dll
+C:\Users\thend.VRBANK\Desktop\NEW\DAO\obj\Debug\DAO.pdb
