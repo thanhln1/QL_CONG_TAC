@@ -905,7 +905,6 @@ namespace ManageWorkExpenses
             catch (Exception ex)
             {
                 MessageBox.Show("Có lỗi khi Lưu Hợp Đồng tại : " + ex.Message);
-                // logger.log("Có lỗi khi Lưu Hợp Đồng tại : " + ex.Message);
             }
         }
     }
