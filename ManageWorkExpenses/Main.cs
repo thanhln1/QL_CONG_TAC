@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Drawing;
+using System.Data;
 
 namespace ManageWorkExpenses
 {
@@ -30,6 +31,7 @@ namespace ManageWorkExpenses
             loadAllUser();
             LoadContract();
             LoadListSchedual();
+            LoadListCustomer();
 
             string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
             if (logMode.Equals("ON"))
@@ -907,6 +909,234 @@ namespace ManageWorkExpenses
                 MessageBox.Show("Có lỗi khi Lưu Hợp Đồng tại : " + ex.Message);
                 // logger.log("Có lỗi khi Lưu Hợp Đồng tại : " + ex.Message);
             }
+        }
+
+        private void LoadListCustomer()
+        {
+            try
+            {
+                //dgvListCustomer.DataSource = busContract.GetListCustomer();
+                dgvListCustomer.DataSource = busContract.GetListContract();
+                this.dgvListCustomer.Columns["SO_HOP_DONG"].Visible = false;
+                this.dgvListCustomer.Columns["NGAY_HOP_DONG"].Visible = false;
+                this.dgvListCustomer.Columns["ID"].Visible = false;
+                this.dgvListCustomer.Columns["NGAY_THANH_LY"].Visible = false;
+                this.dgvListCustomer.Columns["DIA_CHI"].Visible = false;
+                this.dgvListCustomer.Columns["TINH"].Visible = false;
+                this.dgvListCustomer.Columns["GIA_TRI_HOP_DONG"].Visible = false;
+                this.dgvListCustomer.Columns["TONG_CHI_PHI_MUC_TOI_DA"].Visible = false;
+                this.dgvListCustomer.Columns["CHI_PHI_THUC_DA_CHI"].Visible = false;
+                this.dgvListCustomer.Columns["GHI_CHU"].Visible = false;
+                this.dgvListCustomer.Columns["NHOM_KHACH_HANG"].Visible = false;
+        //dgvListCustomer.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi khi lấy danh sách khách hàng : " + ex.Message);
+                //  logger.log("Có lỗi khi lấy danh sách cán bộ tại : " + ex.Message);    
+            }
+
+        }
+
+        private void dgvListCustomer_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int index = dgvListCustomer.CurrentRow.Index;
+                string strKhachHang = dgvListCustomer.Rows[index].Cells[4].Value.ToString();
+                string strMaKhachHang = dgvListCustomer.Rows[index].Cells[5].Value.ToString();
+                txtNameCustomer.Text = strKhachHang +" (Mã:" + strMaKhachHang + ")";
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void btnExportexcelKQ2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(txtNameCustomer.Text) )
+                {
+                    MessageBox.Show("Chưa chọn đơn vị khách hàng");
+                }
+                else
+                {
+                    Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+                    if (xlApp == null)
+                    {
+                        MessageBox.Show("Excel is not properly installed!!");
+                        return;
+                    }
+                    Microsoft.Office.Interop.Excel.Workbooks oBooks;
+                    Microsoft.Office.Interop.Excel.Sheets oSheets;
+                    Microsoft.Office.Interop.Excel.Workbook oBook;
+                    Microsoft.Office.Interop.Excel.Worksheet oSheet;
+                    //Tạo mới một Excel WorkBook 
+                    xlApp.Visible = true;
+                    xlApp.DisplayAlerts = false;
+                    xlApp.Application.SheetsInNewWorkbook = 1;
+                    oBooks = xlApp.Workbooks;
+                    oBook = (Microsoft.Office.Interop.Excel.Workbook)(xlApp.Workbooks.Add(Type.Missing));
+                    oSheets = oBook.Worksheets;
+                    oSheet = (Microsoft.Office.Interop.Excel.Worksheet)oSheets.get_Item(1);
+                    oSheet.Name = "QĐ";
+
+                    Microsoft.Office.Interop.Excel.Range head = oSheet.get_Range("A2", "M13");
+                    head.Font.Name = "Times New Roman";
+                    head.Font.Size = "12";
+                    head.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    // CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+                    Microsoft.Office.Interop.Excel.Range head1 = oSheet.get_Range("A1", "M1");
+                    head1.MergeCells = true;
+                    head1.Value2 = "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM";
+                    head1.Font.Bold = false;
+                    head1.Font.Name = "Times New Roman";
+                    head1.Font.Size = "12";
+                    head1.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    
+                    //Độc lập – Tự do – Hạnh phúc
+                    Microsoft.Office.Interop.Excel.Range head2 = oSheet.get_Range("A2", "M2");
+                    head2.MergeCells = true;
+                    head2.Value2 = "Độc lập – Tự do – Hạnh phúc";
+                    head2.Font.Bold = true;
+                    head2.Font.Italic = true;
+                    head2.Font.Underline = true;
+
+                    Microsoft.Office.Interop.Excel.Range head3 = oSheet.get_Range("A3", "M3");
+                    head3.MergeCells = true;
+                    head3.Value2 = "Hà Nội, ngày .... tháng .... năm ....";
+                    head3.Font.Italic = true;
+                    head3.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignRight;
+
+                    Microsoft.Office.Interop.Excel.Range head5 = oSheet.get_Range("A5", "M5");
+                    head5.MergeCells = true;
+                    head5.Value2 = "QUYẾT ĐỊNH";
+                    head5.Font.Bold = false;
+
+                    Microsoft.Office.Interop.Excel.Range head6 = oSheet.get_Range("A6", "M6");
+                    head6.MergeCells = true;
+                    head6.Value2 = "Về việc cử cán bộ đi công tác";
+                    head6.Font.Bold = false;
+
+                    Microsoft.Office.Interop.Excel.Range head07 = oSheet.get_Range("A7", "M7");
+                    head07.MergeCells = true;
+                    head07.Value2 = "GIÁM ĐỐC";
+                    head07.Font.Bold = false;
+
+                    Microsoft.Office.Interop.Excel.Range head08 = oSheet.get_Range("A8", "M8");
+                    head08.MergeCells = true;
+                    head08.Value2 = "Công ty THNN NVC";
+                    head08.Font.Bold = false;
+
+                    Microsoft.Office.Interop.Excel.Range head10 = oSheet.get_Range("A10", "M10");
+                    head10.MergeCells = true;
+                    head10.Value2 = "'- Căn cứ theo Điều lệ tổ chức và hoạt động của Công ty TNHH NVC";
+                    head10.Font.Italic = true;
+                    head10.Font.Name = "Times New Roman";
+                    head10.Font.Size = "12";
+                    head10.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+
+                    Microsoft.Office.Interop.Excel.Range head11 = oSheet.get_Range("A11", "M11");
+                    head11.MergeCells = true;
+                    head11.Value2 = "'- Căn cứ vào hợp đồng số .... ngày ......";
+                    head11.Font.Italic = true;
+                    head11.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+
+                    Microsoft.Office.Interop.Excel.Range head12 = oSheet.get_Range("A12", "M12");
+                    head12.MergeCells = true;
+                    head12.Value2 = "'- Chức năng quyền hạn của Giám đốc.";
+                    head12.Font.Italic = true;
+                    head12.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+
+                    Microsoft.Office.Interop.Excel.Range head13 = oSheet.get_Range("A13", "M13");
+                    head13.MergeCells = true;
+                    head13.Value2 = "'- Điều 1: Quyết định cử các nhân viên sau đi công tác:";
+                    head13.Font.Italic = true;
+                    head13.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void btnExportexcelBangKe_Click(object sender, EventArgs e)
+        {
+           
+                if (String.IsNullOrEmpty(txtNameCustomer.Text))
+                {
+                    MessageBox.Show("Chưa chọn đơn vị khách hàng");
+                }
+                else
+                {
+                    Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+                    if (xlApp == null)
+                    {
+                        MessageBox.Show("Excel is not properly installed!!");
+                        return;
+                    }
+                    Microsoft.Office.Interop.Excel.Workbooks oBooks;
+                    Microsoft.Office.Interop.Excel.Sheets oSheets;
+                    Microsoft.Office.Interop.Excel.Workbook oBook;
+                    Microsoft.Office.Interop.Excel.Worksheet oSheet;
+                    //Tạo mới một Excel WorkBook 
+                    xlApp.Visible = true;
+                    xlApp.DisplayAlerts = false;
+                    xlApp.Application.SheetsInNewWorkbook = 1;
+                    oBooks = xlApp.Workbooks;
+                    oBook = (Microsoft.Office.Interop.Excel.Workbook)(xlApp.Workbooks.Add(Type.Missing));
+                    oSheets = oBook.Worksheets;
+                    oSheet = (Microsoft.Office.Interop.Excel.Worksheet)oSheets.get_Item(1);
+                    oSheet.Name = "Bảng kê thanh toán";
+
+                    Microsoft.Office.Interop.Excel.Range head = oSheet.get_Range("A1", "H6");
+                    head.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    head.VerticalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    head.Font.Name= "Times New Roman";
+                    head.Font.Bold = true;
+
+                    Microsoft.Office.Interop.Excel.Range head1 = oSheet.get_Range("A2", "I2");
+                    head1.MergeCells = true;
+                    head1.Value2 = "BẢNG KÊ THANH TOÁN CÔNG TÁC PHÍ";
+                    head1.Font.Size = "15";
+                    Microsoft.Office.Interop.Excel.Range head2 = oSheet.get_Range("A5", "A6");
+                    head2.MergeCells = true;
+                    head2.Value2 = "STT";
+                    head2.Font.Size = "12";
+                  
+                    Microsoft.Office.Interop.Excel.Range head3 = oSheet.get_Range("B5", "D6");
+                    head3.MergeCells = true;
+                    head3.Value2 = "Nội dung";
+                    head3.Font.Size = "12";
+
+                    Microsoft.Office.Interop.Excel.Range head4 = oSheet.get_Range("E5", "E6");
+                    head4.MergeCells = true;
+                    head4.Value2 = "Số ngày làm việc tại KH";
+                    head4.WrapText = true;
+                    head4.Font.Size = "12";
+
+                    Microsoft.Office.Interop.Excel.Range head5 = oSheet.get_Range("F5", "F6");
+                    head5.MergeCells = true;
+                    head5.Value2 = "Đơn giá thanh toán";
+                    head5.WrapText = true;
+                    head5.Font.Size = "12";
+
+                    Microsoft.Office.Interop.Excel.Range head6 = oSheet.get_Range("G5", "G6");
+                    head6.MergeCells = true;
+                    head6.Value2 = "Thành tiền";
+                    head6.WrapText = true;
+                    head6.Font.Size = "12";
+
+                    Microsoft.Office.Interop.Excel.Range head7 = oSheet.get_Range("H5", "H6");
+                    head7.MergeCells = true;
+                    head7.Value2 = "Notes";
+                    head7.Font.Size = "12";
+                
+            }
+
         }
     }
     

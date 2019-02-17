@@ -170,6 +170,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Excel-icon.png" />
     <Content Include="Web.ico" />
   </ItemGroup>
   <ItemGroup>
