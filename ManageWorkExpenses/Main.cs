@@ -10,6 +10,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Drawing;
 using System.Data;
+using System.Reflection;
 
 namespace ManageWorkExpenses
 {
@@ -20,6 +21,8 @@ namespace ManageWorkExpenses
         MT_CONTRACT_BUS busContract = new MT_CONTRACT_BUS();
         MT_SCHEDUAL_BUS busSchedual = new MT_SCHEDUAL_BUS();
         MT_LICH_CT_BUS busCalenda = new MT_LICH_CT_BUS();
+
+        string strMaKhachHang="";
 
         public Main()
         {
@@ -943,7 +946,7 @@ namespace ManageWorkExpenses
             {
                 int index = dgvListCustomer.CurrentRow.Index;
                 string strKhachHang = dgvListCustomer.Rows[index].Cells[4].Value.ToString();
-                string strMaKhachHang = dgvListCustomer.Rows[index].Cells[5].Value.ToString();
+                strMaKhachHang = dgvListCustomer.Rows[index].Cells[5].Value.ToString();
                 txtNameCustomer.Text = strKhachHang +" (Mã:" + strMaKhachHang + ")";
             }
             catch
@@ -954,6 +957,7 @@ namespace ManageWorkExpenses
 
         private void btnExportexcelKQ2_Click(object sender, EventArgs e)
         {
+            
             try
             {
                 if (String.IsNullOrEmpty(txtNameCustomer.Text) )
@@ -1065,7 +1069,7 @@ namespace ManageWorkExpenses
         private void btnExportexcelBangKe_Click(object sender, EventArgs e)
         {
            
-                if (String.IsNullOrEmpty(txtNameCustomer.Text))
+            if (String.IsNullOrEmpty(txtNameCustomer.Text))
                 {
                     MessageBox.Show("Chưa chọn đơn vị khách hàng");
                 }
@@ -1091,51 +1095,179 @@ namespace ManageWorkExpenses
                     oSheet = (Microsoft.Office.Interop.Excel.Worksheet)oSheets.get_Item(1);
                     oSheet.Name = "Bảng kê thanh toán";
 
-                    Microsoft.Office.Interop.Excel.Range head = oSheet.get_Range("A1", "H6");
-                    head.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
-                    head.VerticalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
-                    head.Font.Name= "Times New Roman";
-                    head.Font.Bold = true;
+                    //Microsoft.Office.Interop.Excel.Range head = oSheet.get_Range("A1", "H6");
+                    //head.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    //head.VerticalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    //head.Font.Name= "Times New Roman";
+                    //head.Font.Bold = true;
 
-                    Microsoft.Office.Interop.Excel.Range head1 = oSheet.get_Range("A2", "I2");
-                    head1.MergeCells = true;
-                    head1.Value2 = "BẢNG KÊ THANH TOÁN CÔNG TÁC PHÍ";
-                    head1.Font.Size = "15";
-                    Microsoft.Office.Interop.Excel.Range head2 = oSheet.get_Range("A5", "A6");
-                    head2.MergeCells = true;
-                    head2.Value2 = "STT";
-                    head2.Font.Size = "12";
+                    //Microsoft.Office.Interop.Excel.Range head1 = oSheet.get_Range("A2", "I2");
+                    //head1.MergeCells = true;
+                    //head1.Value2 = "BẢNG KÊ THANH TOÁN CÔNG TÁC PHÍ";
+                    //head1.Font.Size = "15";
+                    //Microsoft.Office.Interop.Excel.Range head2 = oSheet.get_Range("A5", "A6");
+                    //head2.MergeCells = true;
+                    //head2.Value2 = "STT";
+                    //head2.Font.Size = "12";
                   
-                    Microsoft.Office.Interop.Excel.Range head3 = oSheet.get_Range("B5", "D6");
-                    head3.MergeCells = true;
-                    head3.Value2 = "Nội dung";
-                    head3.Font.Size = "12";
+                    //Microsoft.Office.Interop.Excel.Range head3 = oSheet.get_Range("B5", "D6");
+                    //head3.MergeCells = true;
+                    //head3.Value2 = "Nội dung";
+                    //head3.Font.Size = "12";
 
-                    Microsoft.Office.Interop.Excel.Range head4 = oSheet.get_Range("E5", "E6");
-                    head4.MergeCells = true;
-                    head4.Value2 = "Số ngày làm việc tại KH";
-                    head4.WrapText = true;
-                    head4.Font.Size = "12";
+                    //Microsoft.Office.Interop.Excel.Range head4 = oSheet.get_Range("E5", "E6");
+                    //head4.MergeCells = true;
+                    //head4.Value2 = "Số ngày làm việc tại KH";
+                    //head4.WrapText = true;
+                    //head4.Font.Size = "12";
 
-                    Microsoft.Office.Interop.Excel.Range head5 = oSheet.get_Range("F5", "F6");
-                    head5.MergeCells = true;
-                    head5.Value2 = "Đơn giá thanh toán";
-                    head5.WrapText = true;
-                    head5.Font.Size = "12";
+                    //Microsoft.Office.Interop.Excel.Range head5 = oSheet.get_Range("F5", "F6");
+                    //head5.MergeCells = true;
+                    //head5.Value2 = "Đơn giá thanh toán";
+                    //head5.WrapText = true;
+                    //head5.Font.Size = "12";
 
-                    Microsoft.Office.Interop.Excel.Range head6 = oSheet.get_Range("G5", "G6");
-                    head6.MergeCells = true;
-                    head6.Value2 = "Thành tiền";
-                    head6.WrapText = true;
-                    head6.Font.Size = "12";
+                    //Microsoft.Office.Interop.Excel.Range head6 = oSheet.get_Range("G5", "G6");
+                    //head6.MergeCells = true;
+                    //head6.Value2 = "Thành tiền";
+                    //head6.WrapText = true;
+                    //head6.Font.Size = "12";
 
-                    Microsoft.Office.Interop.Excel.Range head7 = oSheet.get_Range("H5", "H6");
-                    head7.MergeCells = true;
-                    head7.Value2 = "Notes";
-                    head7.Font.Size = "12";
-                
+                    //Microsoft.Office.Interop.Excel.Range head7 = oSheet.get_Range("H5", "H6");
+                    //head7.MergeCells = true;
+                    //head7.Value2 = "Notes";
+                    //head7.Font.Size = "12";
+
+                    //Microsoft.Office.Interop.Excel.Range head_liststaff = oSheet.get_Range("B10", "B10");
+
+                    // danh sách nhân viên đi công tác
+                    List<STAFF> listStaff = GetListStaff(strMaKhachHang);
+                    DataTable dt = ToDataTable<STAFF>(listStaff);
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        // to do: format datetime values before printing
+                        for (int j = 0; j < dt.Columns.Count; j++)
+                        {
+                        oSheet.Cells[(i + 10), (j + 10)] = dt.Rows[i][j];
+                        }
+                    }
+
+
+
+
             }
 
+        }
+
+        //List to dataTable
+        public DataTable ToDataTable<T>(List<T> items)
+        {
+            DataTable dataTable = new DataTable(typeof(T).Name);
+            //Get all the properties by using reflection   
+            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (PropertyInfo prop in Props)
+            {
+                //Setting column names as Property names  
+                dataTable.Columns.Add(prop.Name);
+            }
+            foreach (T item in items)
+            {
+                var values = new object[Props.Length];
+                for (int i = 0; i < Props.Length; i++)
+                {
+
+                    values[i] = Props[i].GetValue(item, null);
+                }
+                dataTable.Rows.Add(values);
+            }
+
+            return dataTable;
+        }
+
+
+        public List<STAFF> GetListStaff(string maKhachHang)
+        {
+            List<STAFF> listStaffSelect = new List<STAFF>();
+            STAFF staff_select = new STAFF();
+            List<VW_SCHEDUAL> listStaff = new List<VW_SCHEDUAL>();
+            listStaff = busSchedual.GetSchedual(5, 2019);
+
+            foreach ( VW_SCHEDUAL staff in listStaff )
+            {
+                int count_ngay = 0;
+
+                if (staff.TUAN1_CN   == maKhachHang) { count_ngay++; }
+                if (staff.TUAN1_THU2 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN1_THU3 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN1_THU4 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN1_THU5 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN1_THU6 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN1_THU7 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN1_CN   == maKhachHang) { count_ngay++; }
+                if (staff.TUAN2_THU2 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN2_THU3 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN2_THU4 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN2_THU5 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN2_THU6 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN2_THU7 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN2_CN   == maKhachHang) { count_ngay++; }
+                if (staff.TUAN3_THU2 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN3_THU3 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN3_THU4 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN3_THU5 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN3_THU6 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN3_THU7 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN3_CN   == maKhachHang) { count_ngay++; }
+                if (staff.TUAN4_THU2 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN4_THU3 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN4_THU4 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN4_THU5 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN4_THU6 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN4_THU7 == maKhachHang) { count_ngay++; }
+                if (staff.TUAN4_CN   == maKhachHang) { count_ngay++; }
+
+                if (count_ngay > 0)
+                {
+                    if (
+                         staff.TUAN1_CN == maKhachHang
+                       || staff.TUAN1_THU2 == maKhachHang
+                       || staff.TUAN1_THU3 == maKhachHang
+                       || staff.TUAN1_THU4 == maKhachHang
+                       || staff.TUAN1_THU5 == maKhachHang
+                       || staff.TUAN1_THU6 == maKhachHang
+                       || staff.TUAN1_THU7 == maKhachHang
+                       || staff.TUAN1_CN == maKhachHang
+                       || staff.TUAN2_THU2 == maKhachHang
+                       || staff.TUAN2_THU3 == maKhachHang
+                       || staff.TUAN2_THU4 == maKhachHang
+                       || staff.TUAN2_THU5 == maKhachHang
+                       || staff.TUAN2_THU6 == maKhachHang
+                       || staff.TUAN2_THU7 == maKhachHang
+                       || staff.TUAN2_CN == maKhachHang
+                       || staff.TUAN3_THU2 == maKhachHang
+                       || staff.TUAN3_THU3 == maKhachHang
+                       || staff.TUAN3_THU4 == maKhachHang
+                       || staff.TUAN3_THU5 == maKhachHang
+                       || staff.TUAN3_THU6 == maKhachHang
+                       || staff.TUAN3_THU7 == maKhachHang
+                       || staff.TUAN3_CN == maKhachHang
+                       || staff.TUAN4_THU2 == maKhachHang
+                       || staff.TUAN4_THU3 == maKhachHang
+                       || staff.TUAN4_THU4 == maKhachHang
+                       || staff.TUAN4_THU5 == maKhachHang
+                       || staff.TUAN4_THU6 == maKhachHang
+                       || staff.TUAN4_THU7 == maKhachHang
+                       || staff.TUAN4_CN == maKhachHang)
+                    {
+                        staff_select.HO_TEN = staff.HO_TEN;
+                        //staff_select.MA_NHAN_VIEN = staff.MA_NHAN_VIEN;
+                        staff_select.SO_NGAY_CONG_TAC = count_ngay;
+                        listStaffSelect.Add(staff_select);
+                    }
+                }
+            }
+            return listStaffSelect;
         }
     }
     
