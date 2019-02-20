@@ -30,5 +30,19 @@ namespace BUS
                 throw ex;
             } 
         }
+
+        public MT_LICH_CT getCalenda( int month, int year )
+        {
+            MT_LICH_CT lichCT = new MT_LICH_CT();
+            try
+            {
+                lichCT = dao.getLichCT(month, year);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return lichCT;
+        }
     }
 }

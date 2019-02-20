@@ -11,12 +11,12 @@ namespace BUS
     public class MT_SCHEDUAL_BUS
     {
         MT_SCHEDUAL_DAO dao = new MT_SCHEDUAL_DAO();
-        public List<VW_SCHEDUAL> loadSchedual()
+        public List<VW_SCHEDUAL> loadSchedual(int month, int year)
         {
             List<VW_SCHEDUAL> listSchedual = new List<VW_SCHEDUAL>();
             try
             {
-                listSchedual = dao.LoadSchedual();
+                listSchedual = dao.LoadSchedual(month, year);
             }
             catch (Exception ex)
             {

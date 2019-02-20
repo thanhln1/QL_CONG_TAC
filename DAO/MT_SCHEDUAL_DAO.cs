@@ -13,11 +13,11 @@ namespace DAO
     {
 
         COMMON dao = new COMMON();
-        public List<VW_SCHEDUAL> LoadSchedual()
+        public List<VW_SCHEDUAL> LoadSchedual(int month, int year )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM MT_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN;", new DynamicParameters());
+                var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM MT_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN and A.THANG =@MONTH and A.NAM = @YEAR;", new { MONTH = month, YEAR = year });
                 return output.ToList();
             }
         }
@@ -48,7 +48,7 @@ namespace DAO
                 sql.Append(" TUAN1_THU2, TUAN1_THU3, TUAN1_THU4, TUAN1_THU5, TUAN1_THU6, TUAN1_THU7, TUAN1_CN,");
                 sql.Append(" TUAN2_THU2, TUAN2_THU3, TUAN2_THU4, TUAN2_THU5, TUAN2_THU6, TUAN2_THU7, TUAN2_CN,");
                 sql.Append(" TUAN3_THU2, TUAN3_THU3, TUAN3_THU4, TUAN3_THU5, TUAN3_THU6, TUAN3_THU7, TUAN3_CN,");
-                sql.Append(" TUAN4_THU2, TUAN4_THU3, TUAN4_THU4, TUAN4_THU5, TUAN4_THU6, TUAN4_THU7, TUAN4_CN,) ");
+                sql.Append(" TUAN4_THU2, TUAN4_THU3, TUAN4_THU4, TUAN4_THU5, TUAN4_THU6, TUAN4_THU7, TUAN4_CN) ");
                 sql.Append(" values "); 
                 sql.Append("(@MA_NHAN_VIEN, @THANG, @NAM,");
                 sql.Append(" @TUAN1_THU2, @TUAN1_THU3, @TUAN1_THU4, @TUAN1_THU5, @TUAN1_THU6, @TUAN1_THU7, @TUAN1_CN,");
