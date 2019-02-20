@@ -61,34 +61,39 @@ namespace ManageWorkExpenses
             day.MA_NHAN_VIEN = null;
             day.THANG = 0;
             day.NAM = 0;
-            day.TUAN1_THU2 = "31/12/18";
-            day.TUAN1_THU3 = "1/1/19";
-            day.TUAN1_THU4 = "2/1/19";
-            day.TUAN1_THU5 = "3/1/19";
-            day.TUAN1_THU6 = "4/1/19";
-            day.TUAN1_THU7 = "5/1/19";
-            day.TUAN1_CN   = "6/1/19";
-            day.TUAN2_THU2 = "7/1/19";
-            day.TUAN2_THU3 = "8/1/19";
-            day.TUAN2_THU4 = "9/1/19";
-            day.TUAN2_THU5 = "10/1/19";
-            day.TUAN2_THU6 = "11/1/19";
-            day.TUAN2_THU7 = "12/1/19";
-            day.TUAN2_CN   = "13/1/19";
-            day.TUAN3_THU2 = "14/1/19";
-            day.TUAN3_THU3 = "15/1/19";
-            day.TUAN3_THU4 = "16/1/19";
-            day.TUAN3_THU5 = "17/1/19";
-            day.TUAN3_THU6 = "18/1/19";
-            day.TUAN3_THU7 = "19/1/19";
-            day.TUAN3_CN   = "20/1/19";
-            day.TUAN4_THU2 = "21/1/19";
-            day.TUAN4_THU3 = "22/1/19";
-            day.TUAN4_THU4 = "23/1/19";
-            day.TUAN4_THU5 = "24/1/19";
-            day.TUAN4_THU6 = "25/1/19";
-            day.TUAN4_THU7 = "26/1/19";
-            day.TUAN4_CN   = "27/1/19";
+            int month = cbMonth.Value.Month;
+            int year = cbYear.Value.Year;
+            MT_LICH_CT rowCalenda = busCalenda.getCalenda(month, year);
+            DateTime fromDate = rowCalenda.FROM_DATE;
+            string partem = "dd/MM/yyyy";
+            day.TUAN1_THU2 = fromDate.ToString(partem);
+            day.TUAN1_THU3 = ( fromDate.AddDays(1) ).ToString(partem);
+            day.TUAN1_THU4 = ( fromDate.AddDays(2) ).ToString(partem);
+            day.TUAN1_THU5 = ( fromDate.AddDays(3) ).ToString(partem);
+            day.TUAN1_THU6 = ( fromDate.AddDays(4) ).ToString(partem);
+            day.TUAN1_THU7 = ( fromDate.AddDays(5) ).ToString(partem);
+            day.TUAN1_CN   = ( fromDate.AddDays(6) ).ToString(partem);
+            day.TUAN2_THU2 = ( fromDate.AddDays(7) ).ToString(partem);
+            day.TUAN2_THU3 = ( fromDate.AddDays(8) ).ToString(partem);
+            day.TUAN2_THU4 = ( fromDate.AddDays(9) ).ToString(partem);
+            day.TUAN2_THU5 = ( fromDate.AddDays(10) ).ToString(partem);
+            day.TUAN2_THU6 = ( fromDate.AddDays(11) ).ToString(partem);
+            day.TUAN2_THU7 = ( fromDate.AddDays(12) ).ToString(partem);
+            day.TUAN2_CN   = ( fromDate.AddDays(13) ).ToString(partem);
+            day.TUAN3_THU2 = ( fromDate.AddDays(14) ).ToString(partem);
+            day.TUAN3_THU3 = ( fromDate.AddDays(15) ).ToString(partem);
+            day.TUAN3_THU4 = ( fromDate.AddDays(16) ).ToString(partem);
+            day.TUAN3_THU5 = ( fromDate.AddDays(17) ).ToString(partem);
+            day.TUAN3_THU6 = ( fromDate.AddDays(18) ).ToString(partem);
+            day.TUAN3_THU7 = ( fromDate.AddDays(19) ).ToString(partem);
+            day.TUAN3_CN   = ( fromDate.AddDays(20) ).ToString(partem);
+            day.TUAN4_THU2 = ( fromDate.AddDays(21) ).ToString(partem);
+            day.TUAN4_THU3 = ( fromDate.AddDays(22) ).ToString(partem);
+            day.TUAN4_THU4 = ( fromDate.AddDays(23) ).ToString(partem);
+            day.TUAN4_THU5 = ( fromDate.AddDays(24) ).ToString(partem);
+            day.TUAN4_THU6 = ( fromDate.AddDays(25) ).ToString(partem);
+            day.TUAN4_THU7 = ( fromDate.AddDays(26) ).ToString(partem);
+            day.TUAN4_CN   = rowCalenda.TO_DATE.ToString(partem);
             listSchedual.Add(day);
 
             VW_SCHEDUAL thu = new VW_SCHEDUAL();
@@ -129,7 +134,7 @@ namespace ManageWorkExpenses
             listSchedual.Add(thu);
 
             List<VW_SCHEDUAL> listNew = new List<VW_SCHEDUAL>();
-            listNew = busSchedual.loadSchedual();
+            listNew = busSchedual.loadSchedual(month, year);
             listSchedual.AddRange(listNew);  
 
             ListSchedual.DataSource = listSchedual;
@@ -623,7 +628,16 @@ namespace ManageWorkExpenses
                             calenda.TO_DATE = DateTime.FromOADate(Convert.ToDouble(( xlWorksheet.Cells[4, 32] as Excel.Range ).Value2));
 
                             bool isSuccess = busCalenda.SaveCalenda(calenda);
-                            messeger+= (isSuccess == true)? "Ghi Thành công Tháng : " + calenda.THANG + "Năm :" + calenda.NAM + "\n" : messeger += "Không lưu được tháng, Dữ liệu có thể đã tồn tại. \n";
+                            if ( isSuccess == true )
+                            {
+                                messeger += "Ghi Thành công Tháng : " + calenda.THANG + " Năm :" + calenda.NAM + "\n";
+                            }
+                            else
+                            {
+                               MessageBox.Show("Không lưu được tháng, Dữ liệu có thể đã tồn tại.");
+                               return;
+                            }
+                            
                             // Add to schedual
                             for (int i = 8 ; i <= rowCount ; i++)
                             {
@@ -1137,6 +1151,7 @@ namespace ManageWorkExpenses
             }
 
         }
+
     }
     
 }

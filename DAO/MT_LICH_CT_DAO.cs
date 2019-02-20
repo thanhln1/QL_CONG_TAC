@@ -34,5 +34,14 @@ namespace DAO
             }
             return isDuplicate;
         }
+
+        public MT_LICH_CT getLichCT( int month, int year )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_LICH_CT>("select * from MT_LICH_CT a where a.NAM = @YEAR and  a.THANG = @MONTH ", new { YEAR = year, MONTH = month }).ToList();
+                return output.First();
+            }
+        }
     }
 }
