@@ -268,3 +268,4 @@ C:\Users\thend.VRBANK\Desktop\QL_CT_PHI\QL_CONG_TAC\ManageWorkExpenses\bin\Debug
 C:\Users\thend.VRBANK\Desktop\QL_CT_PHI\QL_CONG_TAC\ManageWorkExpenses\bin\Debug\System.Data.SQLite.xml
 C:\Users\thend.VRBANK\Desktop\QL_CT_PHI\QL_CONG_TAC\ManageWorkExpenses\bin\Debug\DAO.pdb
 C:\Users\thend.VRBANK\Desktop\QL_CT_PHI\QL_CONG_TAC\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.Properties.Resources.resources
+C:\Users\thend.VRBANK\Desktop\QL_CT_PHI\QL_CONG_TAC\ManageWorkExpenses\obj\Debug\ManageWorkExpenses.ProgressForm.resources
