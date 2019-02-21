@@ -30,28 +30,28 @@ namespace ManageWorkExpenses
 
             loadAllUser();
             LoadContract();
-            LoadListSchedual();
+            ListSchedual.DataSource =  LoadListSchedual(cbMonth.Value.Month, cbYear.Value.Year);
             LoadListCustomer();
 
-            string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
-            if (logMode.Equals("ON"))
-            {
-                debugOn.Checked = true;
-                debugOff.Checked = false;
-            }
-            else if (logMode.Equals("OFF") || string.IsNullOrEmpty(logMode))
-            {
-                debugOn.Checked = false;
-                debugOff.Checked = true;
-                config.AppSettings.Settings["DEBUGMODE"].Value = "OFF";
-            }
+            //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
+            //if (logMode.Equals("ON"))
+            //{
+            //    debugOn.Checked = true;
+            //    debugOff.Checked = false;
+            //}
+            //else if (logMode.Equals("OFF") || string.IsNullOrEmpty(logMode))
+            //{
+            //    debugOn.Checked = false;
+            //    debugOff.Checked = true;
+            //    config.AppSettings.Settings["DEBUGMODE"].Value = "OFF";
+            //}
 
-            logger = new Logger(Utils.LogFilePath);
-            logger.log("Mo chuong trinh : Main");
+            //logger = new Logger(Utils.LogFilePath);
+            //logger.log("Mo chuong trinh : Main");
 
         }
 
-        private void LoadListSchedual()
+        private List<VW_SCHEDUAL> LoadListSchedual( int month, int year)
         {
             List<VW_SCHEDUAL> listSchedual = new List<VW_SCHEDUAL>();
 
@@ -60,10 +60,13 @@ namespace ManageWorkExpenses
             day.ID = 0;
             day.MA_NHAN_VIEN = null;
             day.THANG = 0;
-            day.NAM = 0;
-            int month = cbMonth.Value.Month;
-            int year = cbYear.Value.Year;
+            day.NAM = 0;      
             MT_LICH_CT rowCalenda = busCalenda.getCalenda(month, year);
+            if (rowCalenda ==null)
+            {
+                MessageBox.Show("Không có dữ liệu");
+                return null;
+            }
             DateTime fromDate = rowCalenda.FROM_DATE;
             string partem = "dd/MM/yyyy";
             day.TUAN1_THU2 = fromDate.ToString(partem);
@@ -135,11 +138,9 @@ namespace ManageWorkExpenses
 
             List<VW_SCHEDUAL> listNew = new List<VW_SCHEDUAL>();
             listNew = busSchedual.loadSchedual(month, year);
-            listSchedual.AddRange(listNew);  
+            listSchedual.AddRange(listNew);
 
-            ListSchedual.DataSource = listSchedual;
-            ListSchedual.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
+            return listSchedual;
         }
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -533,34 +534,37 @@ namespace ManageWorkExpenses
         }
         private void ListSchedual_CellPainting( object sender, DataGridViewCellPaintingEventArgs e )
         {
-
-            // Bôi màu 2 row đầu tiên làm tiêu đề
-            ListSchedual.Rows[0].DefaultCellStyle.BackColor = Color.Gray;
-            ListSchedual.Rows[1].DefaultCellStyle.BackColor = Color.Gray;  
-            
-            // Bỏ qua không áp dụng hiệu ứng cho 2 row đầu
-            if (e.RowIndex < 2 || e.ColumnIndex < 0)
-                return;
-
-            //// Bỏ border bên phải để merger.
-            //e.AdvancedBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None;
-
-            // Bôi màu cột ngày chủ nhật và cột đầu tiên.  (Chú ý thêm cột thì phải thay đổi số cho phù hợp)
-            if (e.ColumnIndex == 1 || e.ColumnIndex == 12 || e.ColumnIndex == 19 || e.ColumnIndex == 26 || e.ColumnIndex == 33)
+            if (ListSchedual.RowCount>2)
             {
-                e.CellStyle.BackColor = Color.Beige;
+                // Bôi màu 2 row đầu tiên làm tiêu đề
+                ListSchedual.Rows[0].DefaultCellStyle.BackColor = Color.Gray;
+                ListSchedual.Rows[1].DefaultCellStyle.BackColor = Color.Gray;
+
+                // Bỏ qua không áp dụng hiệu ứng cho 2 row đầu
+                if (e.RowIndex < 2 || e.ColumnIndex < 0)
+                    return;
+
+                //// Bỏ border bên phải để merger.
+                //e.AdvancedBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None;
+
+                // Bôi màu cột ngày chủ nhật và cột đầu tiên.  (Chú ý thêm cột thì phải thay đổi số cho phù hợp)
+                if (e.ColumnIndex == 1 || e.ColumnIndex == 12 || e.ColumnIndex == 19 || e.ColumnIndex == 26 || e.ColumnIndex == 33)
+                {
+                    e.CellStyle.BackColor = Color.Beige;
+                }
+
+
+                //// Nếu các ô có cùng giá trị thì merger với nhau
+                //if (IsTheSameCellValue(e.ColumnIndex, e.RowIndex))
+                //{
+                //    e.AdvancedBorderStyle.Left = DataGridViewAdvancedCellBorderStyle.None;               
+                //}
+                //else
+                //{
+                //    e.AdvancedBorderStyle.Left = ListSchedual.AdvancedCellBorderStyle.Left;
+                //}
             }
 
-
-            //// Nếu các ô có cùng giá trị thì merger với nhau
-            //if (IsTheSameCellValue(e.ColumnIndex, e.RowIndex))
-            //{
-            //    e.AdvancedBorderStyle.Left = DataGridViewAdvancedCellBorderStyle.None;               
-            //}
-            //else
-            //{
-            //    e.AdvancedBorderStyle.Left = ListSchedual.AdvancedCellBorderStyle.Left;
-            //}
         }
         /// <summary>
         /// Xóa giá trị 1 ô để merge
@@ -712,7 +716,12 @@ namespace ManageWorkExpenses
                             Marshal.ReleaseComObject(xlApp);
 
                             MessageBox.Show(messeger);
-                            LoadListSchedual();
+                            int month = cbMonth.Value.Month;
+                            int year = cbYear.Value.Year;
+                            List<VW_SCHEDUAL>  listRealSchedual = LoadListSchedual(month, year);
+
+                            ListSchedual.DataSource = listRealSchedual;
+                            ListSchedual.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                         }
                     }
                     catch (Exception ex)
@@ -1152,6 +1161,48 @@ namespace ManageWorkExpenses
 
         }
 
+        private void btnLoadSchedual_Click( object sender, EventArgs e )
+        {
+            int month = cbMonthCalc.Value.Month;
+            int year = cbYearCalc.Value.Year; 
+            List<VW_SCHEDUAL> listRealSchedual =  LoadListSchedual(month, year);
+            ListCaculated.DataSource = listRealSchedual;                                
+        }
+
+        private void ListCaculated_CellPainting( object sender, DataGridViewCellPaintingEventArgs e )
+        {
+            if (ListCaculated.RowCount >2)
+            {
+                // Bôi màu 2 row đầu tiên làm tiêu đề
+                ListCaculated.Rows[0].DefaultCellStyle.BackColor = Color.Gray;
+                ListCaculated.Rows[1].DefaultCellStyle.BackColor = Color.Gray;
+
+                // Bỏ qua không áp dụng hiệu ứng cho 2 row đầu
+                if (e.RowIndex < 2 || e.ColumnIndex < 0)
+                    return;
+
+                //// Bỏ border bên phải để merger.
+                //e.AdvancedBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None;
+
+                // Bôi màu cột ngày chủ nhật và cột đầu tiên.  (Chú ý thêm cột thì phải thay đổi số cho phù hợp)
+                if (e.ColumnIndex == 1 || e.ColumnIndex == 12 || e.ColumnIndex == 19 || e.ColumnIndex == 26 || e.ColumnIndex == 33)
+                {
+                    e.CellStyle.BackColor = Color.Beige;
+                }
+
+
+                //// Nếu các ô có cùng giá trị thì merger với nhau
+                //if (IsTheSameCellValue(e.ColumnIndex, e.RowIndex))
+                //{
+                //    e.AdvancedBorderStyle.Left = DataGridViewAdvancedCellBorderStyle.None;               
+                //}
+                //else
+                //{
+                //    e.AdvancedBorderStyle.Left = ListSchedual.AdvancedCellBorderStyle.Left;
+                //}
+            }
+
+        }
     }
     
 }

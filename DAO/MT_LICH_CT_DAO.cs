@@ -40,7 +40,15 @@ namespace DAO
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
                 var output = cnn.Query<MT_LICH_CT>("select * from MT_LICH_CT a where a.NAM = @YEAR and  a.THANG = @MONTH ", new { YEAR = year, MONTH = month }).ToList();
-                return output.First();
+                if (output.Count > 0)
+                {
+                    return output.First();
+                }
+                else
+                {
+                    return null;
+                }
+                // return output.First();
             }
         }
     }
