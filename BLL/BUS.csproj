@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CACULATION_BUS.cs" />
     <Compile Include="MT_CONTRACT_BUS.cs" />
     <Compile Include="MT_LICH_CT_BUS.cs" />
     <Compile Include="MT_SCHEDUAL_BUS.cs" />
