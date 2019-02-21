@@ -13,12 +13,25 @@ namespace DAO
     {
 
         COMMON dao = new COMMON();
-        public List<VW_SCHEDUAL> LoadSchedual(int month, int year )
+        public List<VW_SCHEDUAL> LoadSchedual(int month, int year, string realOrFake )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM MT_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN and A.THANG =@MONTH and A.NAM = @YEAR;", new { MONTH = month, YEAR = year });
-                return output.ToList();
+                if (realOrFake.Equals("REAL"))
+                {
+                    var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM MT_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN and A.THANG =@MONTH and A.NAM = @YEAR;", new { MONTH = month, YEAR = year });
+                    return output.ToList();
+                }
+                else if (realOrFake.Equals("FAKE"))
+                {
+                    var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM HIS_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN and A.THANG =@MONTH and A.NAM = @YEAR;", new { MONTH = month, YEAR = year });
+                    return output.ToList();
+                }
+                else
+                {
+                    return null;
+                }               
+               
             }
         }
 
@@ -36,6 +49,7 @@ namespace DAO
             }
             return isDuplicate;
         }
+
 
         public void SaveSchedual( MT_SCHEDUAL shedual, int month, int year )
         {
