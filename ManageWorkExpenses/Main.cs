@@ -10,6 +10,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Drawing;
 using System.Data;
+using System.Threading;
 
 namespace ManageWorkExpenses
 {
@@ -20,6 +21,10 @@ namespace ManageWorkExpenses
         MT_CONTRACT_BUS busContract = new MT_CONTRACT_BUS();
         MT_SCHEDUAL_BUS busSchedual = new MT_SCHEDUAL_BUS();
         MT_LICH_CT_BUS busCalenda = new MT_LICH_CT_BUS();
+        CACULATION_BUS busCaculation = new CACULATION_BUS();
+
+        // Flag that indcates if a process is running
+        private bool isProcessRunning = false;
 
         public Main()
         {
@@ -30,7 +35,7 @@ namespace ManageWorkExpenses
 
             loadAllUser();
             LoadContract();
-            ListSchedual.DataSource =  LoadListSchedual(cbMonth.Value.Month, cbYear.Value.Year);
+            // ListSchedual.DataSource =  LoadListSchedual(cbMonth.Value.Month, cbYear.Value.Year);
             LoadListCustomer();
 
             //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
@@ -51,97 +56,6 @@ namespace ManageWorkExpenses
 
         }
 
-        private List<VW_SCHEDUAL> LoadListSchedual( int month, int year)
-        {
-            List<VW_SCHEDUAL> listSchedual = new List<VW_SCHEDUAL>();
-
-            VW_SCHEDUAL day = new VW_SCHEDUAL();
-            day.HO_TEN = "Ngày / Tháng";
-            day.ID = 0;
-            day.MA_NHAN_VIEN = null;
-            day.THANG = 0;
-            day.NAM = 0;      
-            MT_LICH_CT rowCalenda = busCalenda.getCalenda(month, year);
-            if (rowCalenda ==null)
-            {
-                MessageBox.Show("Không có dữ liệu");
-                return null;
-            }
-            DateTime fromDate = rowCalenda.FROM_DATE;
-            string partem = "dd/MM/yyyy";
-            day.TUAN1_THU2 = fromDate.ToString(partem);
-            day.TUAN1_THU3 = ( fromDate.AddDays(1) ).ToString(partem);
-            day.TUAN1_THU4 = ( fromDate.AddDays(2) ).ToString(partem);
-            day.TUAN1_THU5 = ( fromDate.AddDays(3) ).ToString(partem);
-            day.TUAN1_THU6 = ( fromDate.AddDays(4) ).ToString(partem);
-            day.TUAN1_THU7 = ( fromDate.AddDays(5) ).ToString(partem);
-            day.TUAN1_CN   = ( fromDate.AddDays(6) ).ToString(partem);
-            day.TUAN2_THU2 = ( fromDate.AddDays(7) ).ToString(partem);
-            day.TUAN2_THU3 = ( fromDate.AddDays(8) ).ToString(partem);
-            day.TUAN2_THU4 = ( fromDate.AddDays(9) ).ToString(partem);
-            day.TUAN2_THU5 = ( fromDate.AddDays(10) ).ToString(partem);
-            day.TUAN2_THU6 = ( fromDate.AddDays(11) ).ToString(partem);
-            day.TUAN2_THU7 = ( fromDate.AddDays(12) ).ToString(partem);
-            day.TUAN2_CN   = ( fromDate.AddDays(13) ).ToString(partem);
-            day.TUAN3_THU2 = ( fromDate.AddDays(14) ).ToString(partem);
-            day.TUAN3_THU3 = ( fromDate.AddDays(15) ).ToString(partem);
-            day.TUAN3_THU4 = ( fromDate.AddDays(16) ).ToString(partem);
-            day.TUAN3_THU5 = ( fromDate.AddDays(17) ).ToString(partem);
-            day.TUAN3_THU6 = ( fromDate.AddDays(18) ).ToString(partem);
-            day.TUAN3_THU7 = ( fromDate.AddDays(19) ).ToString(partem);
-            day.TUAN3_CN   = ( fromDate.AddDays(20) ).ToString(partem);
-            day.TUAN4_THU2 = ( fromDate.AddDays(21) ).ToString(partem);
-            day.TUAN4_THU3 = ( fromDate.AddDays(22) ).ToString(partem);
-            day.TUAN4_THU4 = ( fromDate.AddDays(23) ).ToString(partem);
-            day.TUAN4_THU5 = ( fromDate.AddDays(24) ).ToString(partem);
-            day.TUAN4_THU6 = ( fromDate.AddDays(25) ).ToString(partem);
-            day.TUAN4_THU7 = ( fromDate.AddDays(26) ).ToString(partem);
-            day.TUAN4_CN   = rowCalenda.TO_DATE.ToString(partem);
-            listSchedual.Add(day);
-
-            VW_SCHEDUAL thu = new VW_SCHEDUAL();
-            thu.HO_TEN = "HỌ VÀ TÊN";
-            thu.ID = 0;
-            thu.MA_NHAN_VIEN = "HỌ VÀ TÊN";
-            thu.THANG = 0;
-            thu.NAM = 0;
-            thu.TUAN1_THU2 = "2";
-            thu.TUAN1_THU3 = "3";
-            thu.TUAN1_THU4 = "4";
-            thu.TUAN1_THU5 = "5";
-            thu.TUAN1_THU6 = "6";
-            thu.TUAN1_THU7 = "7";
-            thu.TUAN1_CN   = "CN";
-            thu.TUAN2_THU2 = "2";
-            thu.TUAN2_THU3 = "3";
-            thu.TUAN2_THU4 = "4";
-            thu.TUAN2_THU5 = "5";
-            thu.TUAN2_THU6 = "6";
-            thu.TUAN2_THU7 = "7";
-            thu.TUAN2_CN   = "CN";
-            thu.TUAN3_THU2 = "2";
-            thu.TUAN3_THU3 = "3";
-            thu.TUAN3_THU4 = "4";
-            thu.TUAN3_THU5 = "5";
-            thu.TUAN3_THU6 = "6";
-            thu.TUAN3_THU7 = "7";
-            thu.TUAN3_CN   = "CN";
-            thu.TUAN4_THU2 = "2";
-            thu.TUAN4_THU3 = "3";
-            thu.TUAN4_THU4 = "4";
-            thu.TUAN4_THU5 = "5";
-            thu.TUAN4_THU6 = "6";
-            thu.TUAN4_THU7 = "7";
-            thu.TUAN4_CN   = "CN";
-
-            listSchedual.Add(thu);
-
-            List<VW_SCHEDUAL> listNew = new List<VW_SCHEDUAL>();
-            listNew = busSchedual.loadSchedual(month, year);
-            listSchedual.AddRange(listNew);
-
-            return listSchedual;
-        }
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -718,8 +632,11 @@ namespace ManageWorkExpenses
                             MessageBox.Show(messeger);
                             int month = cbMonth.Value.Month;
                             int year = cbYear.Value.Year;
-                            List<VW_SCHEDUAL>  listRealSchedual = LoadListSchedual(month, year);
-
+                            List<VW_SCHEDUAL>  listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
+                            if (listRealSchedual == null)
+                            {
+                                MessageBox.Show("Không tải được dữ liệu!");
+                            }
                             ListSchedual.DataSource = listRealSchedual;
                             ListSchedual.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                         }
@@ -1163,45 +1080,92 @@ namespace ManageWorkExpenses
 
         private void btnLoadSchedual_Click( object sender, EventArgs e )
         {
-            int month = cbMonthCalc.Value.Month;
-            int year = cbYearCalc.Value.Year; 
-            List<VW_SCHEDUAL> listRealSchedual =  LoadListSchedual(month, year);
-            ListCaculated.DataSource = listRealSchedual;                                
+            int month = cbMonth.Value.Month;
+            int year = cbYear.Value.Year; 
+            List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
+            if (listRealSchedual == null)
+            {
+                MessageBox.Show("Không có dữ liệu!");
+            }
+            ListSchedual.DataSource = listRealSchedual;                                
         }
 
-        private void ListCaculated_CellPainting( object sender, DataGridViewCellPaintingEventArgs e )
+        private void btnSearchSchedualFake_Click( object sender, EventArgs e )
         {
-            if (ListCaculated.RowCount >2)
+            int month = cbMonth.Value.Month;
+            int year = cbYear.Value.Year;
+            List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "FAKE");
+            if (listRealSchedual == null)
             {
-                // Bôi màu 2 row đầu tiên làm tiêu đề
-                ListCaculated.Rows[0].DefaultCellStyle.BackColor = Color.Gray;
-                ListCaculated.Rows[1].DefaultCellStyle.BackColor = Color.Gray;
+                MessageBox.Show("Không có dữ liệu!");
+            }
+            ListSchedual.DataSource = listRealSchedual;
+        }
 
-                // Bỏ qua không áp dụng hiệu ứng cho 2 row đầu
-                if (e.RowIndex < 2 || e.ColumnIndex < 0)
-                    return;
+        private void btnCalc_Click( object sender, EventArgs e )
+        {
+            if (rdTuanTu.Checked == true)
+            {
+                RunCaculation(cbMonth.Value.Month, cbYear.Value.Year, "TUAN_TU");
+            }
+            else if (rdNgauNhien.Checked ==true)
+            {
+                RunCaculation(cbMonth.Value.Month, cbYear.Value.Year, "NGAU_NHIEN");
+            }
+            else if (rdToiUu.Checked == true)
+            {
+                RunCaculation(cbMonth.Value.Month, cbYear.Value.Year,"TOI_UU");                 
+            }
+            else
+            {
+                MessageBox.Show("Bạn chưa chọn phương pháp tính toán nào hoặc đã xảy ra lỗi chương trình!");
+            }
+        }
 
-                //// Bỏ border bên phải để merger.
-                //e.AdvancedBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None;
-
-                // Bôi màu cột ngày chủ nhật và cột đầu tiên.  (Chú ý thêm cột thì phải thay đổi số cho phù hợp)
-                if (e.ColumnIndex == 1 || e.ColumnIndex == 12 || e.ColumnIndex == 19 || e.ColumnIndex == 26 || e.ColumnIndex == 33)
-                {
-                    e.CellStyle.BackColor = Color.Beige;
-                }
-
-
-                //// Nếu các ô có cùng giá trị thì merger với nhau
-                //if (IsTheSameCellValue(e.ColumnIndex, e.RowIndex))
-                //{
-                //    e.AdvancedBorderStyle.Left = DataGridViewAdvancedCellBorderStyle.None;               
-                //}
-                //else
-                //{
-                //    e.AdvancedBorderStyle.Left = ListSchedual.AdvancedCellBorderStyle.Left;
-                //}
+        public void RunCaculation( int month, int year , string Algorithm )
+        {
+            // If a process is already running, warn the user and cancel the operation
+            if (isProcessRunning)
+            {
+                MessageBox.Show("A process is already running.");
+                return;
             }
 
+            // Initialize the dialog that will contain the progress bar
+            ProgressForm progressDialog = new ProgressForm();
+
+            // Initialize the thread that will handle the background process
+            Thread backgroundThread = new Thread(
+                new ThreadStart(() =>
+                {
+                    // Set the flag that indicates if a process is currently running
+                    isProcessRunning = true;
+
+                    // Iterate from 0 - 99
+                    // On each iteration, pause the thread for .05 seconds, then update the dialog's progress bar
+                    for (int n = 0 ; n < 100 ; n++)
+                    {
+                        Thread.Sleep(50);
+                        progressDialog.UpdateProgress(n);
+                    }
+
+                    // Show a dialog box that confirms the process has completed
+                    MessageBox.Show("Thread completed!");
+
+                    // Close the dialog if it hasn't been already
+                    if (progressDialog.InvokeRequired)
+                        progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+
+                    // Reset the flag that indicates if a process is currently running
+                    isProcessRunning = false;
+                }
+            ));
+
+            // Start the background process thread
+            backgroundThread.Start();
+
+            // Open the dialog
+            progressDialog.ShowDialog();
         }
     }
     
