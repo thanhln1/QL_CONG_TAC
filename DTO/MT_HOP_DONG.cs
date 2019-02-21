@@ -10,8 +10,8 @@ namespace DTO
     {
         public int ID { get; set; }
         public string SO_HOP_DONG { get; set; }
-        public string NGAY_HOP_DONG { get; set; }
-        public string NGAY_THANH_LY { get; set; }
+        public DateTime NGAY_HOP_DONG { get; set; }
+        public DateTime NGAY_THANH_LY { get; set; }
         public string KHACH_HANG { get; set; }
         public string MA_KHACH_HANG { get; set; }  
         public string NHOM_KHACH_HANG { get; set; }

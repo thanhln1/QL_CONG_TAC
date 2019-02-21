@@ -16,12 +16,13 @@ namespace ManageWorkExpenses
 {
     public partial class Main : Form
     {
-        private Logger logger;
+        //private Logger logger;
         MT_USER_BUS busUser = new MT_USER_BUS();
         MT_CONTRACT_BUS busContract = new MT_CONTRACT_BUS();
         MT_SCHEDUAL_BUS busSchedual = new MT_SCHEDUAL_BUS();
         MT_LICH_CT_BUS busCalenda = new MT_LICH_CT_BUS();
         CACULATION_BUS busCaculation = new CACULATION_BUS();
+        COMMON_BUS common = new COMMON_BUS();
 
         // Flag that indcates if a process is running
         private bool isProcessRunning = false;
@@ -68,7 +69,7 @@ namespace ManageWorkExpenses
             ConfigurationManager.RefreshSection("appSettings");
             debugOn.Checked = true;
             debugOff.Checked = false;
-            logger.log("Bắt đầu ghi log : Main");
+            // logger.log("Bắt đầu ghi log : Main");
         }
 
         private void debugOff_Click( object sender, EventArgs e )
@@ -80,7 +81,7 @@ namespace ManageWorkExpenses
             ConfigurationManager.RefreshSection("appSettings");
             debugOn.Checked = false;
             debugOff.Checked = true;
-            logger.log("Tắt log tại : Main");
+            //logger.log("Tắt log tại : Main");
         }
 
         private void btnAddUser_Click( object sender, EventArgs e )
@@ -100,6 +101,7 @@ namespace ManageWorkExpenses
                 busUser.SaveUser(user);
                 MessageBox.Show("Thành Công");
                 loadAllUser();
+                btnResetUser_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -130,6 +132,11 @@ namespace ManageWorkExpenses
 
         private void ListUser_CellDoubleClick( object sender, DataGridViewCellEventArgs e )
         {
+            lblIDUser.Visible = false;
+            tbUserCode.Enabled = false;
+            //tbName.Visible = false;
+            //tbRegency.Visible = false;
+            //tbRole.Visible = false;
             int numrow;
             numrow = e.RowIndex;
             lblIDUser.Text = ListUser.Rows[numrow].Cells[0].Value.ToString();
@@ -411,6 +418,10 @@ namespace ManageWorkExpenses
         {
             try
             {
+                idHopDong.Visible = false;
+                tbSoHopDong.Enabled = false;
+                tbMaKhachHang.Enabled = false;
+
                 int numrow;
                 numrow = e.RowIndex;
                 idHopDong.Text = ListContract.Rows[numrow].Cells[0].Value.ToString();
@@ -676,6 +687,7 @@ namespace ManageWorkExpenses
                 msg = ( isUpdate == true ) ? "Cập nhật Thành Công!" : "Không Cập nhật được! ";
                 MessageBox.Show(msg);
                 loadAllUser();
+                btnResetUser_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -708,6 +720,7 @@ namespace ManageWorkExpenses
                     msg = ( isUpdate == true ) ? "Xóa Thành Công!" : "Không xóa được! ";                    
                     MessageBox.Show(msg);   
                     loadAllUser();
+                    btnResetUser_Click(sender, e);
                 }   
                
             }
@@ -730,8 +743,8 @@ namespace ManageWorkExpenses
                 MT_HOP_DONG contract = new MT_HOP_DONG();
                 contract.ID                         = int.Parse(idHopDong.Text);
                 contract.SO_HOP_DONG                = tbSoHopDong.Text; 
-                contract.NGAY_HOP_DONG              = tbNgayHopDong.Text;
-                contract.NGAY_THANH_LY              = tbNgayThanhLy.Text;
+                contract.NGAY_HOP_DONG              = DateTime.ParseExact(tbNgayHopDong.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                contract.NGAY_THANH_LY              = DateTime.ParseExact(tbNgayThanhLy.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
                 contract.KHACH_HANG                 = tbKhachHang.Text;
                 contract.MA_KHACH_HANG              = tbMaKhachHang.Text;
                 contract.NHOM_KHACH_HANG            = tbNhomKhachHang.Text;
@@ -751,6 +764,7 @@ namespace ManageWorkExpenses
                     msg = ( isUpdate == true ) ? "Xóa Thành Công!" : "Không xóa được! ";
                     MessageBox.Show(msg);
                     LoadContract();
+                    btnResetHopDong_Click(sender, e);
                 }
 
             }
@@ -785,8 +799,8 @@ namespace ManageWorkExpenses
                 MT_HOP_DONG contract = new MT_HOP_DONG();
                 contract.ID = int.Parse(idHopDong.Text);
                 contract.SO_HOP_DONG = tbSoHopDong.Text;
-                contract.NGAY_HOP_DONG = tbNgayHopDong.Text;
-                contract.NGAY_THANH_LY = tbNgayThanhLy.Text;
+                contract.NGAY_HOP_DONG = common.ToDateTime(tbNgayHopDong.Text.ToString(), "dd/MM/yyyy",System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+                contract.NGAY_THANH_LY = common.ToDateTime(tbNgayThanhLy.Text.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
                 contract.KHACH_HANG = tbKhachHang.Text;
                 contract.MA_KHACH_HANG = tbMaKhachHang.Text;
                 contract.NHOM_KHACH_HANG = tbNhomKhachHang.Text;
@@ -802,6 +816,7 @@ namespace ManageWorkExpenses
                 msg = ( isUpdate == true ) ? "Cập nhật Thành Công!" : "Không Cập nhật được! ";
                 MessageBox.Show(msg);
                 LoadContract();
+                btnResetHopDong_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -828,8 +843,8 @@ namespace ManageWorkExpenses
                 MT_HOP_DONG contract = new MT_HOP_DONG();
                 //contract.ID = int.Parse(idHopDong.Text);
                 contract.SO_HOP_DONG = tbSoHopDong.Text;
-                contract.NGAY_HOP_DONG = tbNgayHopDong.Text;
-                contract.NGAY_THANH_LY = tbNgayThanhLy.Text;
+                contract.NGAY_HOP_DONG = DateTime.ParseExact(tbNgayHopDong.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                contract.NGAY_THANH_LY = DateTime.ParseExact(tbNgayThanhLy.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
                 contract.KHACH_HANG = tbKhachHang.Text;
                 contract.MA_KHACH_HANG = tbMaKhachHang.Text;
                 contract.NHOM_KHACH_HANG = tbNhomKhachHang.Text;
@@ -843,6 +858,7 @@ namespace ManageWorkExpenses
                 busContract.SaveContract(contract);
                 MessageBox.Show("Thành Công");
                 LoadContract();
+                btnResetHopDong_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -1104,26 +1120,7 @@ namespace ManageWorkExpenses
 
         private void btnCalc_Click( object sender, EventArgs e )
         {
-            if (rdTuanTu.Checked == true)
-            {
-                RunCaculation(cbMonth.Value.Month, cbYear.Value.Year, "TUAN_TU");
-            }
-            else if (rdNgauNhien.Checked ==true)
-            {
-                RunCaculation(cbMonth.Value.Month, cbYear.Value.Year, "NGAU_NHIEN");
-            }
-            else if (rdToiUu.Checked == true)
-            {
-                RunCaculation(cbMonth.Value.Month, cbYear.Value.Year,"TOI_UU");                 
-            }
-            else
-            {
-                MessageBox.Show("Bạn chưa chọn phương pháp tính toán nào hoặc đã xảy ra lỗi chương trình!");
-            }
-        }
-
-        public void RunCaculation( int month, int year , string Algorithm )
-        {
+            
             // If a process is already running, warn the user and cancel the operation
             if (isProcessRunning)
             {
@@ -1143,11 +1140,28 @@ namespace ManageWorkExpenses
 
                     // Iterate from 0 - 99
                     // On each iteration, pause the thread for .05 seconds, then update the dialog's progress bar
-                    for (int n = 0 ; n < 100 ; n++)
+
+                    if (rdTuanTu.Checked == true)
                     {
-                        Thread.Sleep(50);
-                        progressDialog.UpdateProgress(n);
+                        RunCalcTuanTu(cbMonth.Value.Month, cbYear.Value.Year);
                     }
+                    else if (rdNgauNhien.Checked == true)
+                    {
+                        RunCalcNgauNhien(cbMonth.Value.Month, cbYear.Value.Year);
+                    }
+                    else if (rdToiUu.Checked == true)
+                    {
+                        RunCalcToiUu(cbMonth.Value.Month, cbYear.Value.Year);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Bạn chưa chọn phương pháp tính toán nào hoặc đã xảy ra lỗi chương trình!");
+                    }
+                    //for (int n = 0 ; n < 100 ; n++)
+                    //{
+                    //    Thread.Sleep(50);
+                    //    progressDialog.UpdateProgress(n);
+                    //}
 
                     // Show a dialog box that confirms the process has completed
                     MessageBox.Show("Thread completed!");
@@ -1166,6 +1180,57 @@ namespace ManageWorkExpenses
 
             // Open the dialog
             progressDialog.ShowDialog();
+        }
+
+        private void RunCalcToiUu(int month, int year)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void RunCalcNgauNhien(int month, int year)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void RunCalcTuanTu(int month, int year)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void btnResetUser_Click(object sender, EventArgs e)
+        {
+            lblIDUser.Visible   = false;
+            tbUserCode.Enabled  = true;
+            tbName.Enabled      = true;
+            tbRegency.Enabled   = true;
+            tbRole.Enabled      = true;
+
+            lblIDUser.Text = "";
+            tbUserCode.Text = "";
+            tbName.Text = "";
+            tbRegency.Text = "";
+            tbRole.Text = "";
+        }
+
+        private void btnResetHopDong_Click(object sender, EventArgs e)
+        {
+            idHopDong.Visible = false;
+            tbSoHopDong.Enabled = true;
+            tbMaKhachHang.Enabled = true;
+
+            idHopDong.Text = "";
+            tbSoHopDong.Text = "";
+            tbNgayHopDong.Text = "";
+            tbNgayThanhLy.Text = "";
+            tbKhachHang.Text = "";
+            tbMaKhachHang.Text = "";
+            tbNhomKhachHang.Text = "";
+            tbDiaChi.Text = "";
+            tbTinh.Text = "";
+            tbGiaTriHopDong.Text = "";
+            tbTongChiPhiToiDa.Text = "";
+            tbChiPhiThucDaChi.Text = "";
+            tbNote.Text = "";
         }
     }
     
