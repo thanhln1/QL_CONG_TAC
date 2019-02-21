@@ -31,10 +31,10 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.hệThốngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -160,17 +160,14 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel7 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbbCustomer = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnExportexcelKQ2 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtNameCustomer = new System.Windows.Forms.TextBox();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.btnExportexcelBangKe = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dgvListCustomer = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -195,8 +192,6 @@
             this.panel7.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvListCustomer)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1382,42 +1377,40 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.groupBox4);
-            this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Location = new System.Drawing.Point(5, 143);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(290, 477);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             // 
+            // cbbCustomer
+            // 
+            this.cbbCustomer.FormattingEnabled = true;
+            this.cbbCustomer.Location = new System.Drawing.Point(17, 38);
+            this.cbbCustomer.Name = "cbbCustomer";
+            this.cbbCustomer.Size = new System.Drawing.Size(235, 21);
+            this.cbbCustomer.TabIndex = 23;
+            // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Controls.Add(this.cbbCustomer);
             this.groupBox4.Controls.Add(this.btnExportexcelKQ2);
             this.groupBox4.Controls.Add(this.label2);
-            this.groupBox4.Controls.Add(this.txtNameCustomer);
             this.groupBox4.Controls.Add(this.dateTimePicker2);
             this.groupBox4.Controls.Add(this.btnExportexcelBangKe);
             this.groupBox4.Controls.Add(this.dateTimePicker1);
-            this.groupBox4.Location = new System.Drawing.Point(10, 321);
+            this.groupBox4.Location = new System.Drawing.Point(9, 51);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(271, 142);
+            this.groupBox4.Size = new System.Drawing.Size(271, 183);
             this.groupBox4.TabIndex = 22;
             this.groupBox4.TabStop = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(141, 13);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Tên khách hàng được chọn";
+            this.groupBox4.Text = "Chọn thông tin khách hàng";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(159, 54);
+            this.label3.Location = new System.Drawing.Point(19, 71);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 21;
@@ -1428,7 +1421,7 @@
             this.btnExportexcelKQ2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExportexcelKQ2.Image = ((System.Drawing.Image)(resources.GetObject("btnExportexcelKQ2.Image")));
             this.btnExportexcelKQ2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportexcelKQ2.Location = new System.Drawing.Point(6, 89);
+            this.btnExportexcelKQ2.Location = new System.Drawing.Point(17, 123);
             this.btnExportexcelKQ2.Name = "btnExportexcelKQ2";
             this.btnExportexcelKQ2.Size = new System.Drawing.Size(91, 30);
             this.btnExportexcelKQ2.TabIndex = 9;
@@ -1440,25 +1433,17 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(161, 31);
+            this.label2.Location = new System.Drawing.Point(146, 71);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 13);
             this.label2.TabIndex = 20;
             this.label2.Text = "Năm";
             // 
-            // txtNameCustomer
-            // 
-            this.txtNameCustomer.Location = new System.Drawing.Point(6, 35);
-            this.txtNameCustomer.Multiline = true;
-            this.txtNameCustomer.Name = "txtNameCustomer";
-            this.txtNameCustomer.Size = new System.Drawing.Size(153, 36);
-            this.txtNameCustomer.TabIndex = 15;
-            // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.CustomFormat = "MM";
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker2.Location = new System.Drawing.Point(200, 51);
+            this.dateTimePicker2.Location = new System.Drawing.Point(66, 68);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.ShowUpDown = true;
             this.dateTimePicker2.Size = new System.Drawing.Size(53, 20);
@@ -1469,7 +1454,7 @@
             this.btnExportexcelBangKe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExportexcelBangKe.Image = ((System.Drawing.Image)(resources.GetObject("btnExportexcelBangKe.Image")));
             this.btnExportexcelBangKe.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportexcelBangKe.Location = new System.Drawing.Point(162, 89);
+            this.btnExportexcelBangKe.Location = new System.Drawing.Point(161, 123);
             this.btnExportexcelBangKe.Name = "btnExportexcelBangKe";
             this.btnExportexcelBangKe.Size = new System.Drawing.Size(91, 30);
             this.btnExportexcelBangKe.TabIndex = 17;
@@ -1482,31 +1467,11 @@
             // 
             this.dateTimePicker1.CustomFormat = "yyyy";
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(200, 27);
+            this.dateTimePicker1.Location = new System.Drawing.Point(186, 67);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.ShowUpDown = true;
             this.dateTimePicker1.Size = new System.Drawing.Size(53, 20);
             this.dateTimePicker1.TabIndex = 18;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.dgvListCustomer);
-            this.groupBox3.Location = new System.Drawing.Point(7, 11);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(277, 299);
-            this.groupBox3.TabIndex = 14;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Chọn khách hàng";
-            // 
-            // dgvListCustomer
-            // 
-            this.dgvListCustomer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvListCustomer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvListCustomer.Location = new System.Drawing.Point(3, 16);
-            this.dgvListCustomer.Name = "dgvListCustomer";
-            this.dgvListCustomer.Size = new System.Drawing.Size(271, 280);
-            this.dgvListCustomer.TabIndex = 0;
-            this.dgvListCustomer.Click += new System.EventHandler(this.dgvListCustomer_Click);
             // 
             // groupBox1
             // 
@@ -1589,8 +1554,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvListCustomer)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1727,18 +1690,15 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnExportexcelKQ2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox txtNameCustomer;
-        private System.Windows.Forms.DataGridView dgvListCustomer;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnExportexcelBangKe;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.ComboBox cbbCustomer;
     }
 }
 
