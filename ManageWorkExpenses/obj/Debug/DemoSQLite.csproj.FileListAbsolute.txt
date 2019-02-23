@@ -1,1 +1,0 @@
-c:\users\thend.vrbank\documents\visual studio 2015\Projects\DemoSQLite\DemoSQLite\bin\Debug\DemoSQLite.exe.config
