@@ -72,5 +72,20 @@ namespace BUS
             }
             return isUpdate;
         }
+
+        // xuất quyết định, bảng kê - danh sách nhân viên - Thanh
+        public List<MT_HOP_DONG> GetInforContract(string maKhachHang)
+        {
+            List<MT_HOP_DONG> listUser = new List<MT_HOP_DONG>();
+            try
+            {
+                listUser = dao.GetInforContract(maKhachHang);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return listUser;
+        }
     }
 }

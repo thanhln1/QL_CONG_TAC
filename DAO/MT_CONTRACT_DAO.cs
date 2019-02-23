@@ -109,5 +109,15 @@ namespace DAO
                 return output.First();
             }
         }
+
+        // xuất quyết định, bảng kê - danh sách nhân viên - Thanh
+        public List<MT_HOP_DONG> GetInforContract(string hopdong)
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_HOP_DONG>("select * from MT_HOP_DONG a where a.MA_KHACH_HANG = @MA_KHACH_HANG", new { @MA_KHACH_HANG = hopdong });
+                return output.ToList();
+            }
+        }
     }
 }

@@ -72,5 +72,15 @@ namespace DAO
                 cnn.Execute(sql.ToString(), shedual);
             }
         }
+
+        public List<VW_SCHEDUAL> GetSchedual(int month, int year)
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                // var output = cnn.Query<VW_SCHEDUAL>("SELECT * FROM HIS_SCHEDUAL A Where A.THANG = @THANG and A.NAM = @NAM ;", new {THANG = month, NAM = year});
+                var output = cnn.Query<VW_SCHEDUAL>("select NHANVIEN.HO_TEN, SCHEDUAL.* from HIS_SCHEDUAL SCHEDUAL INNER JOIN MT_NHAN_VIEN NHANVIEN ON SCHEDUAL.MA_NHAN_VIEN = NHANVIEN.MA_NHAN_VIEN where SCHEDUAL.THANG = @THANG and SCHEDUAL.NAM = @NAM", new { THANG = month, NAM = year });
+                return output.ToList();
+            }
+        }
     }
 }

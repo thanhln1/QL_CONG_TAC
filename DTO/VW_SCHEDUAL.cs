@@ -43,4 +43,11 @@ namespace DTO
         public string TUAN4_CN { get; set; }
 
     }
+
+    public class STAFF
+    {
+        //public string MA_NHAN_VIEN { get; set; }
+        public string HO_TEN { get; set; }
+        public int SO_NGAY_CONG_TAC { get; set; }
+    }
 }

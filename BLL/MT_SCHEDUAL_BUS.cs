@@ -148,5 +148,19 @@ namespace BUS
             thu.TUAN4_CN = "CN";
             return thu;
         }
+
+        public List<VW_SCHEDUAL> GetSchedual(int month, int year)
+        {
+            List<VW_SCHEDUAL> listSchedual = new List<VW_SCHEDUAL>();
+            try
+            {
+                listSchedual = dao.GetSchedual(month, year);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return listSchedual;
+        }
     }
 }
