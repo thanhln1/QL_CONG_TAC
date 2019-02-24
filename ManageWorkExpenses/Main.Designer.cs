@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.hệThốngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,20 +168,16 @@
             this.rdNgauNhien = new System.Windows.Forms.RadioButton();
             this.rdTuanTu = new System.Windows.Forms.RadioButton();
             this.tabExport = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btnExportexcelKQ2 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbbMonth_tinhtoan = new System.Windows.Forms.DateTimePicker();
-            this.btnExportexcelBangKe = new System.Windows.Forms.Button();
-            this.cbbYear_tinhtoan = new System.Windows.Forms.DateTimePicker();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.btnExport = new System.Windows.Forms.Button();
             this.cbbCustomer = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnExportexcelKQ2 = new System.Windows.Forms.Button();
+            this.cbbYear_tinhtoan = new System.Windows.Forms.DateTimePicker();
+            this.btnExportexcelBangKe = new System.Windows.Forms.Button();
+            this.cbbMonth_tinhtoan = new System.Windows.Forms.DateTimePicker();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.TabNhanVien.SuspendLayout();
@@ -200,10 +196,9 @@
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tabExport.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel7.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -275,7 +270,7 @@
             this.TabNhanVien.Controls.Add(this.panel1);
             this.TabNhanVien.Location = new System.Drawing.Point(4, 22);
             this.TabNhanVien.Name = "TabNhanVien";
-            this.TabNhanVien.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.TabNhanVien.Padding = new System.Windows.Forms.Padding(3);
             this.TabNhanVien.Size = new System.Drawing.Size(1027, 692);
             this.TabNhanVien.TabIndex = 0;
             this.TabNhanVien.Text = "Nhân Viên";
@@ -296,14 +291,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListUser.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ListUser.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ListUser.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.ListUser.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ListUser.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
@@ -312,25 +307,25 @@
             this.CHUC_VU,
             this.VAI_TRO,
             this.PHONG_BAN});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ListUser.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ListUser.DefaultCellStyle = dataGridViewCellStyle2;
             this.ListUser.GridColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ListUser.Location = new System.Drawing.Point(0, 0);
             this.ListUser.Name = "ListUser";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ListUser.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ListUser.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.ListUser.Size = new System.Drawing.Size(671, 686);
             this.ListUser.TabIndex = 6;
             this.ListUser.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListUser_CellDoubleClick);
@@ -548,7 +543,7 @@
             this.TabHopDong.Controls.Add(this.panel3);
             this.TabHopDong.Location = new System.Drawing.Point(4, 22);
             this.TabHopDong.Name = "TabHopDong";
-            this.TabHopDong.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.TabHopDong.Padding = new System.Windows.Forms.Padding(3);
             this.TabHopDong.Size = new System.Drawing.Size(1027, 692);
             this.TabHopDong.TabIndex = 1;
             this.TabHopDong.Text = "Hợp Đồng";
@@ -566,14 +561,14 @@
             // ListContract
             // 
             this.ListContract.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ListContract.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ListContract.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.ListContract.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ListContract.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
@@ -589,26 +584,26 @@
             this.dataGridViewTextBoxColumn11,
             this.dataGridViewTextBoxColumn12,
             this.dataGridViewTextBoxColumn13});
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ListContract.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ListContract.DefaultCellStyle = dataGridViewCellStyle5;
             this.ListContract.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ListContract.GridColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ListContract.Location = new System.Drawing.Point(0, 0);
             this.ListContract.Name = "ListContract";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ListContract.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ListContract.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.ListContract.Size = new System.Drawing.Size(671, 686);
             this.ListContract.TabIndex = 7;
             this.ListContract.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListContract_CellDoubleClick);
@@ -1012,7 +1007,7 @@
             this.tabKeHoachKiemToan.Controls.Add(this.panel5);
             this.tabKeHoachKiemToan.Location = new System.Drawing.Point(4, 22);
             this.tabKeHoachKiemToan.Name = "tabKeHoachKiemToan";
-            this.tabKeHoachKiemToan.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabKeHoachKiemToan.Padding = new System.Windows.Forms.Padding(3);
             this.tabKeHoachKiemToan.Size = new System.Drawing.Size(1027, 692);
             this.tabKeHoachKiemToan.TabIndex = 2;
             this.tabKeHoachKiemToan.Text = "Kế Hoạch Kiểm Toán";
@@ -1491,33 +1486,44 @@
             this.tabExport.Controls.Add(this.panel7);
             this.tabExport.Location = new System.Drawing.Point(4, 22);
             this.tabExport.Name = "tabExport";
-            this.tabExport.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabExport.Padding = new System.Windows.Forms.Padding(3);
             this.tabExport.Size = new System.Drawing.Size(1027, 692);
             this.tabExport.TabIndex = 3;
             this.tabExport.Text = "Xuất báo cáo";
             this.tabExport.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.ColumnHeadersVisible = false;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.dataGridView1.Location = new System.Drawing.Point(308, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(716, 686);
-            this.dataGridView1.TabIndex = 2;
-            // 
             // panel7
             // 
             this.panel7.Controls.Add(this.groupBox3);
-            this.panel7.Controls.Add(this.groupBox1);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel7.Location = new System.Drawing.Point(3, 3);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(305, 686);
             this.panel7.TabIndex = 1;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.cbbCustomer);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.btnExportexcelKQ2);
+            this.groupBox3.Controls.Add(this.cbbYear_tinhtoan);
+            this.groupBox3.Controls.Add(this.btnExportexcelBangKe);
+            this.groupBox3.Controls.Add(this.cbbMonth_tinhtoan);
+            this.groupBox3.Location = new System.Drawing.Point(14, 9);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(277, 181);
+            this.groupBox3.TabIndex = 14;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Chọn thông tin khách hàng";
+            // 
+            // cbbCustomer
+            // 
+            this.cbbCustomer.FormattingEnabled = true;
+            this.cbbCustomer.Location = new System.Drawing.Point(21, 28);
+            this.cbbCustomer.Name = "cbbCustomer";
+            this.cbbCustomer.Size = new System.Drawing.Size(235, 21);
+            this.cbbCustomer.TabIndex = 24;
             // 
             // label3
             // 
@@ -1527,6 +1533,15 @@
             this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 21;
             this.label3.Text = "Tháng";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(159, 63);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "Năm";
             // 
             // btnExportexcelKQ2
             // 
@@ -1542,24 +1557,15 @@
             this.btnExportexcelKQ2.UseVisualStyleBackColor = true;
             this.btnExportexcelKQ2.Click += new System.EventHandler(this.btnExportexcelKQ2_Click);
             // 
-            // label2
+            // cbbYear_tinhtoan
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(159, 63);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
-            this.label2.TabIndex = 20;
-            this.label2.Text = "Năm";
-            // 
-            // cbbMonth_tinhtoan
-            // 
-            this.cbbMonth_tinhtoan.CustomFormat = "MM";
-            this.cbbMonth_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbbMonth_tinhtoan.Location = new System.Drawing.Point(67, 60);
-            this.cbbMonth_tinhtoan.Name = "cbbMonth_tinhtoan";
-            this.cbbMonth_tinhtoan.ShowUpDown = true;
-            this.cbbMonth_tinhtoan.Size = new System.Drawing.Size(53, 20);
-            this.cbbMonth_tinhtoan.TabIndex = 19;
+            this.cbbYear_tinhtoan.CustomFormat = "yyyy";
+            this.cbbYear_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbbYear_tinhtoan.Location = new System.Drawing.Point(203, 60);
+            this.cbbYear_tinhtoan.Name = "cbbYear_tinhtoan";
+            this.cbbYear_tinhtoan.ShowUpDown = true;
+            this.cbbYear_tinhtoan.Size = new System.Drawing.Size(53, 20);
+            this.cbbYear_tinhtoan.TabIndex = 18;
             // 
             // btnExportexcelBangKe
             // 
@@ -1575,81 +1581,27 @@
             this.btnExportexcelBangKe.UseVisualStyleBackColor = true;
             this.btnExportexcelBangKe.Click += new System.EventHandler(this.btnExportexcelBangKe_Click);
             // 
-            // cbbYear_tinhtoan
+            // cbbMonth_tinhtoan
             // 
-            this.cbbYear_tinhtoan.CustomFormat = "yyyy";
-            this.cbbYear_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbbYear_tinhtoan.Location = new System.Drawing.Point(203, 60);
-            this.cbbYear_tinhtoan.Name = "cbbYear_tinhtoan";
-            this.cbbYear_tinhtoan.ShowUpDown = true;
-            this.cbbYear_tinhtoan.Size = new System.Drawing.Size(53, 20);
-            this.cbbYear_tinhtoan.TabIndex = 18;
+            this.cbbMonth_tinhtoan.CustomFormat = "MM";
+            this.cbbMonth_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbbMonth_tinhtoan.Location = new System.Drawing.Point(67, 60);
+            this.cbbMonth_tinhtoan.Name = "cbbMonth_tinhtoan";
+            this.cbbMonth_tinhtoan.ShowUpDown = true;
+            this.cbbMonth_tinhtoan.Size = new System.Drawing.Size(53, 20);
+            this.cbbMonth_tinhtoan.TabIndex = 19;
             // 
-            // groupBox3
+            // dataGridView1
             // 
-            this.groupBox3.Controls.Add(this.cbbCustomer);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.btnExportexcelKQ2);
-            this.groupBox3.Controls.Add(this.cbbYear_tinhtoan);
-            this.groupBox3.Controls.Add(this.btnExportexcelBangKe);
-            this.groupBox3.Controls.Add(this.cbbMonth_tinhtoan);
-            this.groupBox3.Location = new System.Drawing.Point(11, 191);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(277, 181);
-            this.groupBox3.TabIndex = 14;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Chọn thông tin khách hàng";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.btnExport);
-            this.groupBox1.Location = new System.Drawing.Point(5, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(290, 134);
-            this.groupBox1.TabIndex = 10;
-            this.groupBox1.TabStop = false;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(6, 48);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(112, 30);
-            this.button3.TabIndex = 11;
-            this.button3.Text = "Bảng tổng hợp CTP";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(6, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(112, 30);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Kế hoạch công tác";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // btnExport
-            // 
-            this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExport.Image = ((System.Drawing.Image)(resources.GetObject("btnExport.Image")));
-            this.btnExport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExport.Location = new System.Drawing.Point(35, 98);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(98, 30);
-            this.btnExport.TabIndex = 9;
-            this.btnExport.Text = "Export excel";
-            this.btnExport.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnExport.UseVisualStyleBackColor = true;
-            // 
-            // cbbCustomer
-            // 
-            this.cbbCustomer.FormattingEnabled = true;
-            this.cbbCustomer.Location = new System.Drawing.Point(21, 28);
-            this.cbbCustomer.Name = "cbbCustomer";
-            this.cbbCustomer.Size = new System.Drawing.Size(235, 21);
-            this.cbbCustomer.TabIndex = 24;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.ColumnHeadersVisible = false;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.dataGridView1.Location = new System.Drawing.Point(308, 3);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(716, 686);
+            this.dataGridView1.TabIndex = 2;
             // 
             // Main
             // 
@@ -1688,11 +1640,10 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.tabExport.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel7.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1818,13 +1769,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_CN;
         private System.Windows.Forms.TabPage tabExport;
         private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.Button btnExportexcelKQ2;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnExportexcelBangKe;
         private System.Windows.Forms.DateTimePicker cbbYear_tinhtoan;
         private System.Windows.Forms.Label label3;
@@ -1847,6 +1793,7 @@
         private System.Windows.Forms.Button btnResetUser;
         private System.Windows.Forms.Button btnResetHopDong;
         private System.Windows.Forms.ComboBox cbbCustomer;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 
