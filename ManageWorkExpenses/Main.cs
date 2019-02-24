@@ -994,8 +994,12 @@ namespace ManageWorkExpenses
                 Excel.Range hoTen = oSheet.Cells[i + 14, 2];
                 var item = listStaff[i];
                 hoTen.Value = item.HO_TEN;
-
             }
+
+            // tính from date , to date
+            MT_LICH_CT rowCalenda = busCalenda.getCalenda(cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+                DateTime ngaybatdau = rowCalenda.FROM_DATE;
+                DateTime ngayketthuc = rowCalenda.TO_DATE;
 
             oSheet.Columns[1].ColumnWidth = 02.00;
             oSheet.Columns[2].ColumnWidth = 02.00;
