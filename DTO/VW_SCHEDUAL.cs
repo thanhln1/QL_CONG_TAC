@@ -49,5 +49,6 @@ namespace DTO
         //public string MA_NHAN_VIEN { get; set; }
         public string HO_TEN { get; set; }
         public int SO_NGAY_CONG_TAC { get; set; }
+        public List<string> NGAY_CONG_TAC { get; set; }
     }
 }

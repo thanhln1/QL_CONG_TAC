@@ -1077,9 +1077,6 @@ namespace ManageWorkExpenses
         {
             try
             {
-
-          
-
             Excel.Application xlApp = new Excel.Application();
             if (xlApp == null)
             {
@@ -1450,49 +1447,49 @@ namespace ManageWorkExpenses
         public List<STAFF> GetListStaff(string maKhachHang)
         {
             List<STAFF> listStaffSelect = new List<STAFF>();
-
             List<VW_SCHEDUAL> listStaff = new List<VW_SCHEDUAL>();
             listStaff = busSchedual.GetSchedual(cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
 
             foreach (VW_SCHEDUAL staff in listStaff)
             {
+                List<string> list_ngay_cong_tac = new List<string>();
                 STAFF staff_select = new STAFF();
                 int count_ngay = 0;
 
-                if (staff.TUAN1_CN == maKhachHang) { count_ngay++; }
-                if (staff.TUAN1_THU2 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN1_THU3 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN1_THU4 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN1_THU5 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN1_THU6 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN1_THU7 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN1_CN == maKhachHang)   { count_ngay++; }
-                if (staff.TUAN2_THU2 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN2_THU3 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN2_THU4 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN2_THU5 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN2_THU6 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN2_THU7 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN2_CN == maKhachHang)   { count_ngay++; }
-                if (staff.TUAN3_THU2 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN3_THU3 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN3_THU4 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN3_THU5 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN3_THU6 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN3_THU7 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN3_CN == maKhachHang)   { count_ngay++; }
-                if (staff.TUAN4_THU2 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN4_THU3 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN4_THU4 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN4_THU5 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN4_THU6 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN4_THU7 == maKhachHang) { count_ngay++; }
-                if (staff.TUAN4_CN == maKhachHang)   { count_ngay++; }
+                if (staff.TUAN1_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_CN");}
+                if (staff.TUAN1_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU2");}
+                if (staff.TUAN1_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU3");}
+                if (staff.TUAN1_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU4");}
+                if (staff.TUAN1_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU5");}
+                if (staff.TUAN1_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU6");}
+                if (staff.TUAN1_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU7");}
+                if (staff.TUAN1_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_CN");}
+                if (staff.TUAN2_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU2");}
+                if (staff.TUAN2_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU3");}
+                if (staff.TUAN2_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU4");}
+                if (staff.TUAN2_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU5");}
+                if (staff.TUAN2_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU6");}
+                if (staff.TUAN2_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU7");}
+                if (staff.TUAN2_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_CN");}
+                if (staff.TUAN3_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU2");}
+                if (staff.TUAN3_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU3");}
+                if (staff.TUAN3_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU4");}
+                if (staff.TUAN3_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU5");}
+                if (staff.TUAN3_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU6");}
+                if (staff.TUAN3_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU7");}
+                if (staff.TUAN3_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_CN");}
+                if (staff.TUAN4_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU2");}
+                if (staff.TUAN4_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU3");}
+                if (staff.TUAN4_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU4");}
+                if (staff.TUAN4_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU5");}
+                if (staff.TUAN4_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU6");}
+                if (staff.TUAN4_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU7");}
+                if (staff.TUAN4_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_CN");}
 
                 if (count_ngay > 0)
                 {
                     if (
-                         staff.TUAN1_CN == maKhachHang
+                         staff.TUAN1_CN    == maKhachHang
                        || staff.TUAN1_THU2 == maKhachHang
                        || staff.TUAN1_THU3 == maKhachHang
                        || staff.TUAN1_THU4 == maKhachHang
@@ -1520,11 +1517,12 @@ namespace ManageWorkExpenses
                        || staff.TUAN4_THU5 == maKhachHang
                        || staff.TUAN4_THU6 == maKhachHang
                        || staff.TUAN4_THU7 == maKhachHang
-                       || staff.TUAN4_CN == maKhachHang)
+                       || staff.TUAN4_CN   == maKhachHang)
                     {
                         staff_select.HO_TEN = staff.HO_TEN;
                         //staff_select.MA_NHAN_VIEN = staff.MA_NHAN_VIEN;
                         staff_select.SO_NGAY_CONG_TAC = count_ngay;
+                        staff_select.NGAY_CONG_TAC = list_ngay_cong_tac;
                         listStaffSelect.Add(staff_select);
                     }
                 }
