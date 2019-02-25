@@ -35,6 +35,15 @@ namespace DAO
             }
         }
 
+        public List<MT_SCHEDUAL> LoadSchedual( int month, int year )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {   
+                var output = cnn.Query<MT_SCHEDUAL>("SELECT A.*   FROM MT_SCHEDUAL as A  Where A.THANG =@MONTH and A.NAM = @YEAR;", new { MONTH = month, YEAR = year });
+                return output.ToList();  
+            }
+        }
+
         public bool checkSchedualDuplicate( MT_SCHEDUAL shedual, int month, int year )
         {
             bool isDuplicate = false;

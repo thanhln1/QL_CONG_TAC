@@ -11,6 +11,7 @@ using System.IO;
 using System.Drawing;
 using System.Data;
 using System.Threading;
+using System.Globalization;
 
 namespace ManageWorkExpenses
 {
@@ -26,6 +27,9 @@ namespace ManageWorkExpenses
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
         const string FONT_SIZE_11 = "11";
+
+        // Initialize the dialog that will contain the progress bar
+        ProgressForm progressDialog = new ProgressForm();
 
         // Flag that indcates if a process is running
         private bool isProcessRunning = false;
@@ -95,14 +99,16 @@ namespace ManageWorkExpenses
                 return;
             }
             try
-            {                                            
+            {
+                string messeger;
                 MT_NHAN_VIEN user = new MT_NHAN_VIEN();
                 user.MA_NHAN_VIEN = tbUserCode.Text;
                 user.HO_TEN = tbName.Text;
                 user.CHUC_VU = tbRegency.Text;
                 user.VAI_TRO = tbRole.Text;
-                busUser.SaveUser(user);
-                MessageBox.Show("Thành Công");
+                bool isInsert = busUser.SaveUser(user);
+                messeger = ( isInsert == true ) ? "Thành công" : "Đã tồn tại nhân viên có mã: "+ user.MA_NHAN_VIEN;
+                MessageBox.Show(messeger);
                 loadAllUser();
                 btnResetUser_Click(sender, e);
             }
@@ -428,9 +434,9 @@ namespace ManageWorkExpenses
                 int numrow;
                 numrow = e.RowIndex;
                 idHopDong.Text = ListContract.Rows[numrow].Cells[0].Value.ToString();
-                tbSoHopDong.Text = ListContract.Rows[numrow].Cells[1].Value.ToString();
-                tbNgayHopDong.Text = ListContract.Rows[numrow].Cells[2].Value.ToString();
-                tbNgayThanhLy.Text = ListContract.Rows[numrow].Cells[3].Value.ToString();
+                tbSoHopDong.Text = ListContract.Rows[numrow].Cells[1].Value.ToString();      
+                cbNgayHopDong.Value = Convert.ToDateTime(ListContract.Rows[numrow].Cells[2].Value, CultureInfo.InvariantCulture);                
+                cbNgayThanhLy.Value = Convert.ToDateTime(ListContract.Rows[numrow].Cells[3].Value, CultureInfo.InvariantCulture);
                 tbKhachHang.Text = ListContract.Rows[numrow].Cells[4].Value.ToString();
                 tbMaKhachHang.Text = ListContract.Rows[numrow].Cells[5].Value.ToString();
                 tbNhomKhachHang.Text = ListContract.Rows[numrow].Cells[6].Value.ToString();
@@ -441,7 +447,9 @@ namespace ManageWorkExpenses
                 tbChiPhiThucDaChi.Text = ListContract.Rows[numrow].Cells[11].Value.ToString();
                 tbNote.Text = ListContract.Rows[numrow].Cells[12].Value.ToString();
             }
-            catch{}              
+            catch(Exception ex){
+
+            }              
         }
 
         /// <summary>
@@ -746,8 +754,8 @@ namespace ManageWorkExpenses
                 MT_HOP_DONG contract = new MT_HOP_DONG();
                 contract.ID                         = int.Parse(idHopDong.Text);
                 contract.SO_HOP_DONG                = tbSoHopDong.Text; 
-                contract.NGAY_HOP_DONG              = DateTime.ParseExact(tbNgayHopDong.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                contract.NGAY_THANH_LY              = DateTime.ParseExact(tbNgayThanhLy.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                contract.NGAY_HOP_DONG              = cbNgayHopDong.Value;
+                contract.NGAY_THANH_LY              = cbNgayThanhLy.Value;
                 contract.KHACH_HANG                 = tbKhachHang.Text;
                 contract.MA_KHACH_HANG              = tbMaKhachHang.Text;
                 contract.NHOM_KHACH_HANG            = tbNhomKhachHang.Text;
@@ -786,7 +794,7 @@ namespace ManageWorkExpenses
                 return;
             }
             if (string.IsNullOrEmpty(tbSoHopDong.Text.Trim())       || 
-                string.IsNullOrEmpty(tbNgayHopDong.Text.Trim())     ||
+                string.IsNullOrEmpty(cbNgayHopDong.Text.Trim())     ||
                 string.IsNullOrEmpty(tbKhachHang.Text.Trim())       ||
                 string.IsNullOrEmpty(tbMaKhachHang.Text.Trim())     ||
                 string.IsNullOrEmpty(tbNhomKhachHang.Text.Trim())   ||
@@ -802,8 +810,8 @@ namespace ManageWorkExpenses
                 MT_HOP_DONG contract = new MT_HOP_DONG();
                 contract.ID = int.Parse(idHopDong.Text);
                 contract.SO_HOP_DONG = tbSoHopDong.Text;
-                contract.NGAY_HOP_DONG = common.ToDateTime(tbNgayHopDong.Text.ToString(), "dd/MM/yyyy",System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
-                contract.NGAY_THANH_LY = common.ToDateTime(tbNgayThanhLy.Text.ToString(), "dd/MM/yyyy", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+                contract.NGAY_HOP_DONG = cbNgayHopDong.Value;
+                contract.NGAY_THANH_LY = cbNgayThanhLy.Value;
                 contract.KHACH_HANG = tbKhachHang.Text;
                 contract.MA_KHACH_HANG = tbMaKhachHang.Text;
                 contract.NHOM_KHACH_HANG = tbNhomKhachHang.Text;
@@ -830,7 +838,7 @@ namespace ManageWorkExpenses
         private void btnAddContract_Click( object sender, EventArgs e )
         {
             if (string.IsNullOrEmpty(tbSoHopDong.Text.Trim())       ||
-                string.IsNullOrEmpty(tbNgayHopDong.Text.Trim())     ||
+                string.IsNullOrEmpty(cbNgayHopDong.Text.Trim())     ||
                 string.IsNullOrEmpty(tbKhachHang.Text.Trim())       ||
                 string.IsNullOrEmpty(tbMaKhachHang.Text.Trim())     ||
                 string.IsNullOrEmpty(tbNhomKhachHang.Text.Trim())   ||
@@ -846,8 +854,8 @@ namespace ManageWorkExpenses
                 MT_HOP_DONG contract = new MT_HOP_DONG();
                 //contract.ID = int.Parse(idHopDong.Text);
                 contract.SO_HOP_DONG = tbSoHopDong.Text;
-                contract.NGAY_HOP_DONG = DateTime.ParseExact(tbNgayHopDong.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                contract.NGAY_THANH_LY = DateTime.ParseExact(tbNgayThanhLy.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                contract.NGAY_HOP_DONG = cbNgayHopDong.Value;
+                contract.NGAY_THANH_LY = cbNgayThanhLy.Value;
                 contract.KHACH_HANG = tbKhachHang.Text;
                 contract.MA_KHACH_HANG = tbMaKhachHang.Text;
                 contract.NHOM_KHACH_HANG = tbNhomKhachHang.Text;
@@ -1338,12 +1346,9 @@ namespace ManageWorkExpenses
             // If a process is already running, warn the user and cancel the operation
             if (isProcessRunning)
             {
-                MessageBox.Show("A process is already running.");
+                MessageBox.Show("Thuật toán đang chạy, xin vui lòng chờ");
                 return;
-            }
-
-            // Initialize the dialog that will contain the progress bar
-            ProgressForm progressDialog = new ProgressForm();
+            } 
 
             // Initialize the thread that will handle the background process
             Thread backgroundThread = new Thread(
@@ -1370,15 +1375,10 @@ namespace ManageWorkExpenses
                     else
                     {
                         MessageBox.Show("Bạn chưa chọn phương pháp tính toán nào hoặc đã xảy ra lỗi chương trình!");
-                    }
-                    //for (int n = 0 ; n < 100 ; n++)
-                    //{
-                    //    Thread.Sleep(50);
-                    //    progressDialog.UpdateProgress(n);
-                    //}
+                    }   
 
                     // Show a dialog box that confirms the process has completed
-                    MessageBox.Show("Thread completed!");
+                    // MessageBox.Show("Hoàn Thành");
 
                     // Close the dialog if it hasn't been already
                     if (progressDialog.InvokeRequired)
@@ -1398,17 +1398,28 @@ namespace ManageWorkExpenses
 
         private void RunCalcToiUu(int month, int year)
         {
-            throw new NotImplementedException();
+            MessageBox.Show("Thuật toán đang được phát triển, vui lòng thử lại sau");
         }
 
         private void RunCalcNgauNhien(int month, int year)
         {
-            throw new NotImplementedException();
+            MessageBox.Show("Thuật toán đang được phát triển, vui lòng thử lại sau");
         }
 
         private void RunCalcTuanTu(int month, int year)
         {
-            throw new NotImplementedException();
+            // Lấy danh sách MT_SCHEDUAL 
+            List<MT_SCHEDUAL> listSchedual = busCaculation.getListSchedual(month, year);
+
+            // Lấy danh sách các công ty chưa hết kinh phí
+            List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
+
+
+            for (int n = 0 ; n < 100 ; n++)
+            {
+                Thread.Sleep(50);
+                progressDialog.UpdateProgress(n);
+            }
         }
 
         private void btnResetUser_Click(object sender, EventArgs e)
@@ -1434,8 +1445,8 @@ namespace ManageWorkExpenses
 
             idHopDong.Text = "";
             tbSoHopDong.Text = "";
-            tbNgayHopDong.Text = "";
-            tbNgayThanhLy.Text = "";
+            cbNgayHopDong.Value = DateTime.Now;
+            cbNgayThanhLy.Value = DateTime.Now;
             tbKhachHang.Text = "";
             tbMaKhachHang.Text = "";
             tbNhomKhachHang.Text = "";
