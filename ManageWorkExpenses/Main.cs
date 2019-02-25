@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Data;
 using System.Threading;
 using System.Globalization;
+using System.Reflection;
 
 namespace ManageWorkExpenses
 {
@@ -201,7 +202,7 @@ namespace ManageWorkExpenses
                                 //SO_HOP_DONG
                                 if (string.IsNullOrEmpty(xlRange.Cells[i, 1].Text.ToString()))
                                 {
-                                    break;
+                                    continue;
                                 }
                                 // MA_NHAN_VIEN
                                 staff.MA_NHAN_VIEN = xlRange.Cells[i, 1].Text.ToString();
@@ -317,7 +318,7 @@ namespace ManageWorkExpenses
                                 //SO_HOP_DONG
                                 if (string.IsNullOrEmpty(xlRange.Cells[i, 1].Text.ToString()))
                                 {
-                                    break;
+                                    continue;
                                 }
                                 contract.SO_HOP_DONG = xlRange.Cells[i, 1].Text.ToString();
 
@@ -553,18 +554,15 @@ namespace ManageWorkExpenses
                             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-                            int rowCount = xlRange.Rows.Count;
-                            // int colCount = xlRange.Columns.Count;
+                            int rowCount = xlRange.Rows.Count;       
 
-                            //iterate over the rows and columns and print to the console as it appears in the file
-                            //excel is not zero based!!
 
+                            //iterate over the rows and columns and print to the console as it appears in the file excel is not zero based!!
                             // Add to MT_LICH_CT
                             MT_LICH_CT calenda = new MT_LICH_CT();
                             calenda.THANG = cbMonth.Value.Month;
                             calenda.NAM = cbYear.Value.Year;
-                            calenda.FROM_DATE = DateTime.FromOADate(Convert.ToDouble(( xlWorksheet.Cells[4, 5] as Excel.Range ).Value2));
-                            //DateTime.FromOADate(double.Parse(xlRange.Cells[4, 5].Value.ToString())).ToString("MMMM dd, yyyy");
+                            calenda.FROM_DATE = DateTime.FromOADate(Convert.ToDouble(( xlWorksheet.Cells[4, 5] as Excel.Range ).Value2)); 
                             calenda.TO_DATE = DateTime.FromOADate(Convert.ToDouble(( xlWorksheet.Cells[4, 32] as Excel.Range ).Value2));
 
                             bool isSuccess = busCalenda.SaveCalenda(calenda);
@@ -579,19 +577,23 @@ namespace ManageWorkExpenses
                             }
                             
                             // Add to schedual
-                            for (int i = 8 ; i <= rowCount ; i++)
+                            for (int i = 6 ; i <= rowCount ; i++)
                             {
                                 MT_SCHEDUAL shedual = new MT_SCHEDUAL();
 
                                 //write the value to the console 
                                 //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(xlRange.Cells[i, 1].Text.ToString()))
+                                if (string.IsNullOrEmpty(xlRange.Cells[i, 1].Text.ToString()) 
+                                    || xlRange.Cells[i, 1].Text.ToString() =="TT" 
+                                    || xlRange.Cells[i, 1].Text.ToString() == "A" 
+                                    || xlRange.Cells[i, 1].Text.ToString() == "B" 
+                                    || xlRange.Cells[i, 1].Text.ToString() == "STT")
                                 {
-                                    break;
+                                    continue;
                                 }  
                                 shedual.MA_NHAN_VIEN        = xlRange.Cells[i, 3].Text.ToString();
                                 shedual.THANG               = cbMonth.Value.Month;
-                                shedual.NAM                 = cbYear.Value.Month;
+                                shedual.NAM                 = cbYear.Value.Year;
                                 shedual.TUAN1_THU2          = xlRange.Cells[i, 5].Text.ToString();
                                 shedual.TUAN1_THU3          = xlRange.Cells[i, 6].Text.ToString();
                                 shedual.TUAN1_THU4          = xlRange.Cells[i, 7].Text.ToString();
@@ -623,11 +625,11 @@ namespace ManageWorkExpenses
                                 try
                                 {
                                     bool result = busSchedual.SaveSchedual(shedual, cbMonth.Value.Month, cbYear.Value.Year);
-                                    messeger += (result == true) ? "Ghi Thành công Nhân viên: " + shedual.MA_NHAN_VIEN : "Không ghi được Nhân viên: " + shedual.MA_NHAN_VIEN;
+                                    messeger += (result == true) ? "Ghi Thành công Nhân viên: " + shedual.MA_NHAN_VIEN + "\n" : "Không ghi được Nhân viên: " + shedual.MA_NHAN_VIEN + "\n";
                                 }
                                 catch (Exception ex)
                                 {
-                                    messeger += "Lỗi ghi Nhân viên: " + shedual.MA_NHAN_VIEN + " Lý do: " + ex.Message;
+                                    messeger += "Lỗi ghi Nhân viên: " + shedual.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
                                 }
                             }
 
@@ -1362,15 +1364,15 @@ namespace ManageWorkExpenses
 
                     if (rdTuanTu.Checked == true)
                     {
-                        RunCalcTuanTu(cbMonth.Value.Month, cbYear.Value.Year);
+                        RunCalcTuanTu(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
                     }
                     else if (rdNgauNhien.Checked == true)
                     {
-                        RunCalcNgauNhien(cbMonth.Value.Month, cbYear.Value.Year);
+                        RunCalcNgauNhien(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
                     }
                     else if (rdToiUu.Checked == true)
                     {
-                        RunCalcToiUu(cbMonth.Value.Month, cbYear.Value.Year);
+                        RunCalcToiUu(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
                     }
                     else
                     {
@@ -1378,8 +1380,7 @@ namespace ManageWorkExpenses
                     }   
 
                     // Show a dialog box that confirms the process has completed
-                    // MessageBox.Show("Hoàn Thành");
-
+                    // MessageBox.Show("Hoàn Thành");  
                     // Close the dialog if it hasn't been already
                     if (progressDialog.InvokeRequired)
                         progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
@@ -1406,19 +1407,28 @@ namespace ManageWorkExpenses
             MessageBox.Show("Thuật toán đang được phát triển, vui lòng thử lại sau");
         }
 
-        private void RunCalcTuanTu(int month, int year)
+        private void RunCalcTuanTu( int month, int year )
         {
             // Lấy danh sách MT_SCHEDUAL 
             List<MT_SCHEDUAL> listSchedual = busCaculation.getListSchedual(month, year);
-
+            if (listSchedual.Count <= 0)
+            {
+                MessageBox.Show("Tháng được chọn không có dữ liệu");
+                return;
+            }
             // Lấy danh sách các công ty chưa hết kinh phí
             List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
 
 
-            for (int n = 0 ; n < 100 ; n++)
+            foreach (var item in listSchedual)
             {
-                Thread.Sleep(50);
+                int n = 0;
+                foreach (PropertyInfo propertyInfo in listSchedual[n].GetType().GetProperties())
+                {
+                    Thread.Sleep(50);
+                }
                 progressDialog.UpdateProgress(n);
+                n++;
             }
         }
 
