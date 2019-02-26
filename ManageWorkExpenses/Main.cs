@@ -1041,7 +1041,6 @@ namespace ManageWorkExpenses
                             {
                                 START_DATE = date_start;
                             }
-                           
                         }
                     }
 
@@ -1060,7 +1059,6 @@ namespace ManageWorkExpenses
                             }
                         }
                     }
-
                 }
 
             oSheet.Columns[1].ColumnWidth = 02.00;
@@ -1220,6 +1218,12 @@ namespace ManageWorkExpenses
             oSheet.get_Range("B7", "D7").HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
 
             oSheet.get_Range("A7", "G7").Font.Bold = true;
+            //
+            List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
+            MT_HOP_DONG info = new MT_HOP_DONG();
+            inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
+            string diachi = inForContract[0].DIA_CHI;
+            string gia = GetDonGia(inForContract[0].TINH).ToString();
 
             // danh sách nhân viên đi công tác
             List<STAFF> listStaff = GetListStaff(cbbCustomer.SelectedValue.ToString());
@@ -1236,6 +1240,7 @@ namespace ManageWorkExpenses
                 stt.Value = i + 1;
                 hoTen.Value = item.HO_TEN;
                 soNgay.Value = item.SO_NGAY_CONG_TAC;
+                donGia.Value = gia;
                 thanhTien.Formula = "=" + soNgay.Address + "*" + donGia.Address;
             }
 
