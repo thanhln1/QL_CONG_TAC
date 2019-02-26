@@ -23,5 +23,17 @@ namespace ManageWorkExpenses
             else
                 progressBar.Value = progress;  
         }
+        public void setMaxValue(int maxValue)
+        {
+            if (progressBar.InvokeRequired)
+            {
+                progressBar.BeginInvoke(new Action(() =>
+                {
+                    progressBar.Maximum = maxValue;
+                }
+                ));
+            }
+
+        }
     }
 }
