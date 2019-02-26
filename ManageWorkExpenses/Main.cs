@@ -1393,11 +1393,7 @@ namespace ManageWorkExpenses
                 new ThreadStart(() =>
                 {
                     // Set the flag that indicates if a process is currently running
-                    isProcessRunning = true;
-
-                    // Iterate from 0 - 99
-                    // On each iteration, pause the thread for .05 seconds, then update the dialog's progress bar
-
+                    isProcessRunning = true;   
                     if (rdTuanTu.Checked == true)
                     {
                         RunCalcTuanTu(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
@@ -1451,19 +1447,29 @@ namespace ManageWorkExpenses
             {
                 MessageBox.Show("Tháng được chọn không có dữ liệu");
                 return;
-            }
+            }  
             // Lấy danh sách các công ty chưa hết kinh phí
             List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
 
-
+            int n = 0;
+            int totalPercent = listSchedual.Count;
             foreach (var item in listSchedual)
             {
-                int n = 0;
-                foreach (PropertyInfo propertyInfo in listSchedual[n].GetType().GetProperties())
+                //Getting Type of Generic Class Model
+                Type tModelType = item.GetType();
+
+                //We will be defining a PropertyInfo Object which contains details about the class property 
+                PropertyInfo[] arrayPropertyInfos = tModelType.GetProperties();
+
+                //Now we will loop in all properties one by one to get value
+                foreach (PropertyInfo property in arrayPropertyInfos)
                 {
-                    Thread.Sleep(50);
+                    if (string.IsNullOrEmpty(property.GetValue(item).ToString()))
+                    {
+
+                    }                               
                 }
-                progressDialog.UpdateProgress(n);
+                progressDialog.UpdateProgress(n*100/totalPercent);
                 n++;
             }
         }
