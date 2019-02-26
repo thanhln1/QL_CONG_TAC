@@ -13,6 +13,7 @@ using System.Data;
 using System.Threading;
 using System.Globalization;
 using System.Reflection;
+using System.Linq;
 
 namespace ManageWorkExpenses
 {
@@ -1003,15 +1004,14 @@ namespace ManageWorkExpenses
             dieu1_1.Font.Bold = true;
             dieu1_1.Font.Underline = true;
             Excel.Range dieu1_2 = oSheet.Cells[13, 4];
-            dieu1_2.Value = "'Thông tin nơi Công tác:";
+            dieu1_2.Value = "'Quyết định cử các nhân viên sau đi công tác:";
 
 
                 DateTime ngaybatdau = rowCalenda.FROM_DATE;
                 DateTime ngayketthuc = rowCalenda.TO_DATE;
-                DateTime date_start = new DateTime(0001, 01, 1); 
-                DateTime date_end = new DateTime(0001, 01, 1); 
-                DateTime START_DATE = ngaybatdau;
-                DateTime END_DATE = ngayketthuc;
+                List<DateTime> liststartdate = new List<DateTime>();
+                List<DateTime> listenddate = new List<DateTime>();
+
                 // danh sach cán bộ đi công tác
                 List<STAFF> listStaff = GetListStaff(cbbCustomer.SelectedValue.ToString());
             int countList = listStaff.Count;
@@ -1026,40 +1026,15 @@ namespace ManageWorkExpenses
                     int day_from = item.NGAY_CONG_TAC[0];
                     int day_to = item.NGAY_CONG_TAC[(count-1)];
 
-                    // 28 ngày từ ngày 0 đến ngày 27
-                    // get ngày bắt đầu
-                    if (day_from ==0)
-                    {
-                        START_DATE = ngaybatdau;
-                    }
-                    else
-                    {
-                        if (START_DATE != ngaybatdau)
-                        {
-                            date_start = ngaybatdau.AddDays(day_from);
-                            if (date_start<= START_DATE)
-                            {
-                                START_DATE = date_start;
-                            }
-                        }
-                    }
-
-                    if (day_to == 27)
-                    {
-                        END_DATE = ngayketthuc;
-                    }
-                    else
-                    {
-                        if (END_DATE != ngayketthuc)
-                        {
-                            date_end = ngayketthuc.AddDays(-day_to);
-                            if (date_end >= END_DATE)
-                            {
-                                END_DATE = date_end;
-                            }
-                        }
-                    }
+                    DateTime date_start = ngaybatdau.AddDays(day_from);
+                    liststartdate.Add(date_start);
+                    DateTime date_end = ngaybatdau.AddDays(day_to);
+                    listenddate.Add(date_end);
                 }
+
+                DateTime DATE_START = liststartdate.Min(p=>p);
+                DateTime DATE_END = listenddate.Max(p => p);
+
 
             oSheet.Columns[1].ColumnWidth = 02.00;
             oSheet.Columns[2].ColumnWidth = 02.00;
@@ -1084,10 +1059,12 @@ namespace ManageWorkExpenses
             diadiemCT_1.Value = inForContract[0].DIA_CHI;
 
             Excel.Range thoigianCT = oSheet.Cells[countList + 19, 2];
-            thoigianCT.Value = "- Thời gian công tác :";
+                thoigianCT.Value = "- Thời gian công tác:";
+            Excel.Range thoigianCT_1 = oSheet.Cells[countList + 19, 7];  // khoảng thời gian công tác.
+            thoigianCT_1.Value = (DATE_END-DATE_START).TotalDays.ToString() + " ngày (từ ngày " + DATE_START.ToString("dd/MM/yyyy") + " đến ngày "+ DATE_END.ToString("dd/MM/yyyy")+")";
 
             // điều 3
-            Excel.Range dieu3_1 = oSheet.Cells[countList + 21, 1];
+                Excel.Range dieu3_1 = oSheet.Cells[countList + 21, 1];
             dieu3_1.Value = "'- Điều 3: ";
             dieu3_1.Font.Bold = true;
             dieu3_1.Font.Underline = true;
