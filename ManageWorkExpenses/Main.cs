@@ -24,6 +24,7 @@ namespace ManageWorkExpenses
         MT_SCHEDUAL_BUS busSchedual = new MT_SCHEDUAL_BUS();
         MT_LICH_CT_BUS busCalenda = new MT_LICH_CT_BUS();
         CACULATION_BUS busCaculation = new CACULATION_BUS();
+        MT_DON_GIA_BUS busDongia = new MT_DON_GIA_BUS();
         COMMON_BUS common = new COMMON_BUS();
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
@@ -899,14 +900,22 @@ namespace ManageWorkExpenses
         {
             try
             {
+                MT_LICH_CT rowCalenda = busCalenda.getCalenda(cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+               
 
-            // get thông tin nơi công tác
-            List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
-            MT_HOP_DONG info = new MT_HOP_DONG();
-            inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
-            string soHopDong = inForContract[0].SO_HOP_DONG;
-            string ngayKyHopDong = inForContract[0].NGAY_HOP_DONG.ToShortDateString();
-
+                if (rowCalenda == null)
+                {
+                    MessageBox.Show("Chưa có lịch công tác");
+                    return;
+                }
+                // get thông tin nơi công tác
+                List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
+                MT_HOP_DONG info = new MT_HOP_DONG();
+                inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
+                string soHopDong = inForContract[0].SO_HOP_DONG;
+                string ngayKyHopDong = inForContract[0].NGAY_HOP_DONG.ToShortDateString();
+                string diachi = inForContract[0].DIA_CHI;
+               
                 Excel.Application xlApp = new Excel.Application();
             if (xlApp == null)
             {
@@ -996,20 +1005,63 @@ namespace ManageWorkExpenses
             Excel.Range dieu1_2 = oSheet.Cells[13, 4];
             dieu1_2.Value = "'Thông tin nơi Công tác:";
 
-            // danh sach cán bộ đi công tác
-            List<STAFF> listStaff = GetListStaff(cbbCustomer.SelectedValue.ToString());
+
+                DateTime ngaybatdau = rowCalenda.FROM_DATE;
+                DateTime ngayketthuc = rowCalenda.TO_DATE;
+                DateTime date_start = new DateTime(0001, 01, 1); 
+                DateTime date_end = new DateTime(0001, 01, 1); 
+                DateTime START_DATE = ngaybatdau;
+                DateTime END_DATE = ngayketthuc;
+                // danh sach cán bộ đi công tác
+                List<STAFF> listStaff = GetListStaff(cbbCustomer.SelectedValue.ToString());
             int countList = listStaff.Count;
             for (int i = 0; i < countList; i++)
             {
                 Excel.Range hoTen = oSheet.Cells[i + 14, 2];
                 var item = listStaff[i];
                 hoTen.Value = item.HO_TEN;
-            }
 
-            // tính from date , to date
-            MT_LICH_CT rowCalenda = busCalenda.getCalenda(cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
-                DateTime ngaybatdau = rowCalenda.FROM_DATE;
-                DateTime ngayketthuc = rowCalenda.TO_DATE;
+                    //lấy thời gian công tác: 
+                    int count = item.NGAY_CONG_TAC.Count;
+                    int day_from = item.NGAY_CONG_TAC[0];
+                    int day_to = item.NGAY_CONG_TAC[(count-1)];
+
+                    // 28 ngày từ ngày 0 đến ngày 27
+                    // get ngày bắt đầu
+                    if (day_from ==0)
+                    {
+                        START_DATE = ngaybatdau;
+                    }
+                    else
+                    {
+                        if (START_DATE != ngaybatdau)
+                        {
+                            date_start = ngaybatdau.AddDays(day_from);
+                            if (date_start<= START_DATE)
+                            {
+                                START_DATE = date_start;
+                            }
+                           
+                        }
+                    }
+
+                    if (day_to == 27)
+                    {
+                        END_DATE = ngayketthuc;
+                    }
+                    else
+                    {
+                        if (END_DATE != ngayketthuc)
+                        {
+                            date_end = ngayketthuc.AddDays(-day_to);
+                            if (date_end >= END_DATE)
+                            {
+                                END_DATE = date_end;
+                            }
+                        }
+                    }
+
+                }
 
             oSheet.Columns[1].ColumnWidth = 02.00;
             oSheet.Columns[2].ColumnWidth = 02.00;
@@ -1044,7 +1096,9 @@ namespace ManageWorkExpenses
             Excel.Range dieu3_2 = oSheet.Cells[countList + 21, 4];
             dieu3_2.Value = "'Các Ông, Bà có tên nêu tại Điều 1 được hưởng đầy đủ chính sách công tác phí theo quy chế tài chính của Công ty ";
             Excel.Range muccongtac = oSheet.Cells[countList + 22, 2];
-            muccongtac.Value = "'- Mức công tác phí khoán là 100.000 đồng/người/ngày";
+            string gia = GetDonGia(inForContract[0].TINH).ToString();
+            muccongtac.Value = "'- Mức công tác phí khoán là "+ gia +" đồng/người/ngày";
+            
 
             // điều 4
             Excel.Range dieu4 = oSheet.Cells[countList + 24, 1];
@@ -1477,39 +1531,38 @@ namespace ManageWorkExpenses
 
             foreach (VW_SCHEDUAL staff in listStaff)
             {
-                List<string> list_ngay_cong_tac = new List<string>();
+                List<int> list_ngay_cong_tac = new List<int>();
                 STAFF staff_select = new STAFF();
                 int count_ngay = 0;
 
-                if (staff.TUAN1_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_CN");}
-                if (staff.TUAN1_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU2");}
-                if (staff.TUAN1_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU3");}
-                if (staff.TUAN1_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU4");}
-                if (staff.TUAN1_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU5");}
-                if (staff.TUAN1_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU6");}
-                if (staff.TUAN1_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_THU7");}
-                if (staff.TUAN1_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN1_CN");}
-                if (staff.TUAN2_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU2");}
-                if (staff.TUAN2_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU3");}
-                if (staff.TUAN2_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU4");}
-                if (staff.TUAN2_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU5");}
-                if (staff.TUAN2_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU6");}
-                if (staff.TUAN2_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_THU7");}
-                if (staff.TUAN2_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN2_CN");}
-                if (staff.TUAN3_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU2");}
-                if (staff.TUAN3_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU3");}
-                if (staff.TUAN3_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU4");}
-                if (staff.TUAN3_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU5");}
-                if (staff.TUAN3_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU6");}
-                if (staff.TUAN3_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_THU7");}
-                if (staff.TUAN3_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN3_CN");}
-                if (staff.TUAN4_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU2");}
-                if (staff.TUAN4_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU3");}
-                if (staff.TUAN4_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU4");}
-                if (staff.TUAN4_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU5");}
-                if (staff.TUAN4_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU6");}
-                if (staff.TUAN4_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_THU7");}
-                if (staff.TUAN4_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add("TUAN4_CN");}
+                if (staff.TUAN1_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(0  );}
+                if (staff.TUAN1_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(1  );}
+                if (staff.TUAN1_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(2  );}
+                if (staff.TUAN1_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(3  );}
+                if (staff.TUAN1_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(4  );}
+                if (staff.TUAN1_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(5  );}
+                if (staff.TUAN1_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(6  );}
+                if (staff.TUAN2_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(7  );}
+                if (staff.TUAN2_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(8  );}
+                if (staff.TUAN2_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(9  );}
+                if (staff.TUAN2_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(10 );}
+                if (staff.TUAN2_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(11 );}
+                if (staff.TUAN2_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(12 );}
+                if (staff.TUAN2_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(13 );}
+                if (staff.TUAN3_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(14 );}
+                if (staff.TUAN3_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(15 );}
+                if (staff.TUAN3_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(16 );}
+                if (staff.TUAN3_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(17 );}
+                if (staff.TUAN3_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(18 );}
+                if (staff.TUAN3_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(19 );}
+                if (staff.TUAN3_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(20 );}
+                if (staff.TUAN4_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(21 );}
+                if (staff.TUAN4_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(22 );}
+                if (staff.TUAN4_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(23 );}
+                if (staff.TUAN4_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(24 );}
+                if (staff.TUAN4_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(25 );}
+                if (staff.TUAN4_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(26 );}
+                if (staff.TUAN4_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(27); }
 
                 if (count_ngay > 0)
                 {
@@ -1554,6 +1607,16 @@ namespace ManageWorkExpenses
             }
             return listStaffSelect;
         }
+
+        // lấy đơn giá thanh toán công tác phí theo địa điểm
+        public int GetDonGia(string diadiem)
+        {
+            List<MT_DON_GIA> listDonGia = new List<MT_DON_GIA>();
+            listDonGia = busDongia.getDongia(diadiem);
+            int gia = listDonGia[0].DON_GIA;
+            return gia;
+        }
+
     }
     
 }
