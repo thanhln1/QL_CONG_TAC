@@ -29,6 +29,7 @@ namespace ManageWorkExpenses
         MT_LICH_CT_BUS busCalenda = new MT_LICH_CT_BUS();
         CACULATION_BUS busCaculation = new CACULATION_BUS();
         MT_DON_GIA_BUS busDongia = new MT_DON_GIA_BUS();
+        TMP_SCHEDUAL_BUS busTMP = new TMP_SCHEDUAL_BUS();
         COMMON_BUS common = new COMMON_BUS();
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
@@ -769,9 +770,9 @@ namespace ManageWorkExpenses
                 contract.NHOM_KHACH_HANG            = tbNhomKhachHang.Text;
                 contract.DIA_CHI                    = tbDiaChi.Text;
                 contract.TINH                       = tbTinh.Text;
-                contract.GIA_TRI_HOP_DONG           = tbGiaTriHopDong.Text;
-                contract.TONG_CHI_PHI_MUC_TOI_DA    = tbTongChiPhiToiDa.Text;
-                contract.CHI_PHI_THUC_DA_CHI        = tbChiPhiThucDaChi.Text;
+                contract.GIA_TRI_HOP_DONG           = Convert.ToInt32(tbGiaTriHopDong.Text);
+                contract.TONG_CHI_PHI_MUC_TOI_DA    = Convert.ToInt32(tbTongChiPhiToiDa.Text);
+                contract.CHI_PHI_THUC_DA_CHI        = Convert.ToInt32(tbChiPhiThucDaChi.Text);
                 contract.GHI_CHU                    = tbNote.Text;
 
 
@@ -825,9 +826,9 @@ namespace ManageWorkExpenses
                 contract.NHOM_KHACH_HANG = tbNhomKhachHang.Text;
                 contract.DIA_CHI = tbDiaChi.Text;
                 contract.TINH = tbTinh.Text;
-                contract.GIA_TRI_HOP_DONG = tbGiaTriHopDong.Text;
-                contract.TONG_CHI_PHI_MUC_TOI_DA = tbTongChiPhiToiDa.Text;
-                contract.CHI_PHI_THUC_DA_CHI = tbChiPhiThucDaChi.Text;
+                contract.GIA_TRI_HOP_DONG = Convert.ToInt32(tbGiaTriHopDong.Text);
+                contract.TONG_CHI_PHI_MUC_TOI_DA = Convert.ToInt32(tbTongChiPhiToiDa.Text);
+                contract.CHI_PHI_THUC_DA_CHI = Convert.ToInt32(tbChiPhiThucDaChi.Text);
                 contract.GHI_CHU = tbNote.Text;
 
                 bool isUpdate = busContract.UpdateContract(contract);
@@ -869,9 +870,9 @@ namespace ManageWorkExpenses
                 contract.NHOM_KHACH_HANG = tbNhomKhachHang.Text;
                 contract.DIA_CHI = tbDiaChi.Text;
                 contract.TINH = tbTinh.Text;
-                contract.GIA_TRI_HOP_DONG = tbGiaTriHopDong.Text;
-                contract.TONG_CHI_PHI_MUC_TOI_DA = tbTongChiPhiToiDa.Text;
-                contract.CHI_PHI_THUC_DA_CHI = tbChiPhiThucDaChi.Text;
+                contract.GIA_TRI_HOP_DONG = Convert.ToInt32(tbGiaTriHopDong.Text);
+                contract.TONG_CHI_PHI_MUC_TOI_DA = Convert.ToInt32(tbTongChiPhiToiDa.Text);
+                contract.CHI_PHI_THUC_DA_CHI = Convert.ToInt32(tbChiPhiThucDaChi.Text);
                 contract.GHI_CHU = tbNote.Text;
 
                 busContract.SaveContract(contract);
@@ -1392,6 +1393,10 @@ namespace ManageWorkExpenses
 
         private void btnCalc_Click( object sender, EventArgs e )
         {
+            bool isCN = cbCheckCN.Checked;
+            int month = cbMonthCalc.Value.Month;
+            int year = cbYearCalc.Value.Year;
+
             int timelimit = WinRegForm();
             if (timelimit > TIMELIMIT)
             {
@@ -1411,18 +1416,22 @@ namespace ManageWorkExpenses
                 new ThreadStart(() =>
                 {
                     // Set the flag that indicates if a process is currently running
-                    isProcessRunning = true;   
+                    isProcessRunning = true;
+
+                    // Xóa bảng TMP trước khi thực hiện
+                     busTMP.DelAllTMP();
+
                     if (rdTuanTu.Checked == true)
                     {
-                        RunCalcTuanTu(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+                        RunCalcTuanTu(month, year, isCN);
                     }
                     else if (rdNgauNhien.Checked == true)
                     {
-                        RunCalcNgauNhien(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+                        RunCalcNgauNhien(month, year, isCN);
                     }
                     else if (rdToiUu.Checked == true)
                     {
-                        RunCalcToiUu(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+                        RunCalcToiUu(month, year, isCN);
                     }
                     else
                     {
@@ -1445,19 +1454,22 @@ namespace ManageWorkExpenses
 
             // Open the dialog
             progressDialog.ShowDialog();
+
+            List<VW_SCHEDUAL> listTMP = busTMP.LoadListSchedual(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+            ListSchedual.DataSource = listTMP;
         }
 
-        private void RunCalcToiUu(int month, int year)
+        private void RunCalcToiUu(int month, int year, bool isCN)
         {
             MessageBox.Show("Thuật toán đang được phát triển, vui lòng thử lại sau");
         }
 
-        private void RunCalcNgauNhien(int month, int year)
+        private void RunCalcNgauNhien(int month, int year, bool isCN)
         {
             MessageBox.Show("Thuật toán đang được phát triển, vui lòng thử lại sau");
         }
 
-        private void RunCalcTuanTu( int month, int year )
+        private void RunCalcTuanTu( int month, int year, bool isCN )
         {
             // Lấy danh sách MT_SCHEDUAL 
             List<MT_SCHEDUAL> listSchedual = busCaculation.getListSchedual(month, year);
@@ -1465,29 +1477,63 @@ namespace ManageWorkExpenses
             {
                 MessageBox.Show("Tháng được chọn không có dữ liệu");
                 return;
-            }  
+            }
             // Lấy danh sách các công ty chưa hết kinh phí
             List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
 
             int n = 0;
             int totalPercent = listSchedual.Count;
+            int i = 0;
             foreach (var item in listSchedual)
             {
                 //Getting Type of Generic Class Model
                 Type tModelType = item.GetType();
-
                 //We will be defining a PropertyInfo Object which contains details about the class property 
                 PropertyInfo[] arrayPropertyInfos = tModelType.GetProperties();
 
                 //Now we will loop in all properties one by one to get value
                 foreach (PropertyInfo property in arrayPropertyInfos)
                 {
+                    string nameProperty = property.ToString();
+                    // Nếu ô còn trống thì xử lý
                     if (string.IsNullOrEmpty(property.GetValue(item).ToString()))
                     {
+                        // Lấy đơn giá của Công ty theo địa chỉ
+                        int dongia = GetDonGia(listCompany[i].TINH);
+                        string nhomNV = busUser.getGroupUser(item.MA_NHAN_VIEN);
+                        string nhomCty = busContract.getGroupCompany(listCompany[i].MA_KHACH_HANG);
+                        if (string.IsNullOrEmpty(nhomNV) || string.IsNullOrEmpty(nhomCty))
+                        {
+                            MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên hoặc nhóm Khách hàng!");
+                            busTMP.DelAllTMP();
+                            return;
+                        }
+                        // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá tức là công ty đó không sử dụng được nữa 
+                        if (( listCompany[i].TONG_CHI_PHI_MUC_TOI_DA - listCompany[i].CHI_PHI_THUC_DA_CHI ) <= dongia || !nhomNV.Equals(nhomCty))
+                        {
+                            // Chuyển sang công ty tiếp theo 
+                            i++;
+                            if (i == listCompany.Count())
+                            {
+                                i = 0;
+                            }
+                        }
+                        //if (nameProperty.Substring(17, 20).Equals("CN") && isCN ==true)
+                        //{
+                        //    continue;
+                        //}
+                        // Tránh vượt quá kích thước mảng
+                        if (i < listCompany.Count())
+                        {
+                            // Set giá trị cho ô trống
+                            property.SetValue(item, listCompany[i].MA_KHACH_HANG);
+                        }
 
-                    }                               
+                    }
                 }
-                progressDialog.UpdateProgress(n*100/totalPercent);
+                progressDialog.UpdateProgress(n * 100 / totalPercent);  
+                // Lưu lại bảng TMP  
+                busTMP.SaveSchedual(item, cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
                 n++;
             }
         }
@@ -1652,7 +1698,10 @@ namespace ManageWorkExpenses
 
         }
 
+        private void btnSave_Click( object sender, EventArgs e )
+        {
 
+        }
     }
     
 }

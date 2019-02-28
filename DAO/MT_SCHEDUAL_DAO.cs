@@ -19,12 +19,12 @@ namespace DAO
             {
                 if (realOrFake.Equals("REAL"))
                 {
-                    var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM MT_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN and A.THANG =@MONTH and A.NAM = @YEAR;", new { MONTH = month, YEAR = year });
+                    var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM MT_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN and A.THANG =@MONTH and A.NAM = @YEAR order by A.MA_NHAN_VIEN;", new { MONTH = month, YEAR = year });
                     return output.ToList();
                 }
                 else if (realOrFake.Equals("FAKE"))
                 {
-                    var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM HIS_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN and A.THANG =@MONTH and A.NAM = @YEAR;", new { MONTH = month, YEAR = year });
+                    var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM HIS_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN and A.THANG =@MONTH and A.NAM = @YEAR order by A.MA_NHAN_VIEN;", new { MONTH = month, YEAR = year });
                     return output.ToList();
                 }
                 else

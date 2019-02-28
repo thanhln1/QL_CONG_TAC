@@ -18,7 +18,7 @@ namespace DAO
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
                 
-                var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM TMP_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN ;", new DynamicParameters());
+                var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM TMP_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN order by A.MA_NHAN_VIEN;", new DynamicParameters());
                 return output.ToList();
               
                
