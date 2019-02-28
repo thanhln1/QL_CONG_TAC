@@ -14,6 +14,9 @@ using System.Threading;
 using System.Globalization;
 using System.Reflection;
 using System.Linq;
+using Microsoft.Win32;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace ManageWorkExpenses
 {
@@ -30,6 +33,7 @@ namespace ManageWorkExpenses
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
         const string FONT_SIZE_11 = "11";
+        const int TIMELIMIT = 60;
 
         // Initialize the dialog that will contain the progress bar
         ProgressForm progressDialog = new ProgressForm();
@@ -40,13 +44,13 @@ namespace ManageWorkExpenses
         public Main()
         {
             InitializeComponent();
-
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             config.AppSettings.File = "App.config";
 
             loadAllUser();
             LoadContract();
             LoadListCustomer();
+            
 
 
             //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
@@ -980,7 +984,7 @@ namespace ManageWorkExpenses
 
             Excel.Range head08 = oSheet.get_Range("A8", "M8");
             head08.MergeCells = true;
-            head08.Value2 = "Công ty THNN NVC";
+            head08.Value2 = "Công ty ........";
             head08.Font.Bold = true;
 
             Excel.Range head10 = oSheet.get_Range("A10", "M10");
@@ -1011,9 +1015,11 @@ namespace ManageWorkExpenses
                 DateTime ngayketthuc = rowCalenda.TO_DATE;
                 List<DateTime> liststartdate = new List<DateTime>();
                 List<DateTime> listenddate = new List<DateTime>();
+                DateTime DATE_START;
+                DateTime DATE_END;
 
                 // danh sach cán bộ đi công tác
-                List<STAFF> listStaff = GetListStaff(cbbCustomer.SelectedValue.ToString());
+                List <STAFF> listStaff = GetListStaff(cbbCustomer.SelectedValue.ToString());
             int countList = listStaff.Count;
             for (int i = 0; i < countList; i++)
             {
@@ -1031,11 +1037,17 @@ namespace ManageWorkExpenses
                     DateTime date_end = ngaybatdau.AddDays(day_to);
                     listenddate.Add(date_end);
                 }
-
-                DateTime DATE_START = liststartdate.Min(p=>p);
-                DateTime DATE_END = listenddate.Max(p => p);
-
-
+            if (countList>0)
+                {
+                    DATE_START = liststartdate.Min(p => p);
+                    DATE_END = listenddate.Max(p => p);
+                } 
+            else
+                {
+                    DATE_START = DateTime.Now;
+                    DATE_END= DateTime.Now;
+                }
+              
             oSheet.Columns[1].ColumnWidth = 02.00;
             oSheet.Columns[2].ColumnWidth = 02.00;
             oSheet.Columns[3].ColumnWidth = 04.00;
@@ -1380,7 +1392,13 @@ namespace ManageWorkExpenses
 
         private void btnCalc_Click( object sender, EventArgs e )
         {
-            
+            int timelimit = WinRegForm();
+            if (timelimit > TIMELIMIT)
+            {
+                MessageBox.Show("Quá thời gian dùng thử 60 ngày");
+                return;
+            }
+
             // If a process is already running, warn the user and cancel the operation
             if (isProcessRunning)
             {
@@ -1601,9 +1619,39 @@ namespace ManageWorkExpenses
         {
             List<MT_DON_GIA> listDonGia = new List<MT_DON_GIA>();
             listDonGia = busDongia.getDongia(diadiem);
+            if (listDonGia == null)
+            {
+                return 0;            
+            }
             int gia = listDonGia[0].DON_GIA;
             return gia;
         }
+
+
+        public int WinRegForm()
+        {
+            string strTimeNow = DateTime.Now.ToString("dd/MM/yyyy");
+
+            RegistryKey keyOpen = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\System32");
+            if (keyOpen != null)
+            {
+                string currentversion = keyOpen.GetValue("CurrentVersion").ToString();
+                DateTime dtGet = Convert.ToDateTime(currentversion, new CultureInfo("en-GB"));
+                //strTimeNow = "10/06/2019";
+                DateTime dtNow = Convert.ToDateTime(strTimeNow, new CultureInfo("en-GB"));
+                string strEndtime = (dtNow - dtGet).TotalDays.ToString();
+                int duration = Convert.ToInt32(strEndtime);
+                return duration;
+            }
+            else
+            {
+                RegistryKey keyCreate = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\System32");
+                keyCreate.SetValue("CurrentVersion", strTimeNow);
+                return 0;
+            }
+
+        }
+
 
     }
     
