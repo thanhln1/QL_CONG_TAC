@@ -63,6 +63,15 @@ namespace DAO
             }
         }
 
+        public string getGroupCode( string maKhachHang )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_HOP_DONG>("select * from MT_HOP_DONG a where a.MA_KHACH_HANG = @MA_KHACH_HANG ", new { MA_KHACH_HANG = maKhachHang });
+                return output.First().NHOM_KHACH_HANG;
+            }
+        }
+
         public bool UpdateContract( MT_HOP_DONG contract )
         {
             try

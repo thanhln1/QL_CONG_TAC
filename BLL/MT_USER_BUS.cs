@@ -86,5 +86,19 @@ namespace BUS
             }
             return isDeleted;
         }
+
+        public string getGroupUser( string item )
+        {
+            string groupCode;
+            try
+            {
+                groupCode = dao.getGroupCode(item);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return groupCode;
+        }
     }
 }

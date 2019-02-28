@@ -80,6 +80,7 @@
     <Compile Include="MT_CONTRACT_BUS.cs" />
     <Compile Include="MT_DON_GIA_BUS.cs" />
     <Compile Include="MT_LICH_CT_BUS.cs" />
+    <Compile Include="TMP_SCHEDUAL_BUS.cs" />
     <Compile Include="MT_SCHEDUAL_BUS.cs" />
     <Compile Include="MT_USER_BUS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

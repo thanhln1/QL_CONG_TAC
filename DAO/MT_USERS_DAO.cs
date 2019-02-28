@@ -71,6 +71,24 @@ namespace DAO
             }
         }
 
+        public string getGroupCode( string maNhanVien )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_NHAN_VIEN>("select * from MT_NHAN_VIEN a where a.MA_NHAN_VIEN = @MA_NHAN_VIEN ", new { MA_NHAN_VIEN = maNhanVien });
+                if (output.Count() >0)
+                {
+                    return output.First().PHONG_BAN;
+                }
+                else
+                {
+                    return null;
+                }
+
+               
+            }
+        }
+
         public bool UpdateUser( MT_NHAN_VIEN user )
         {
             try
