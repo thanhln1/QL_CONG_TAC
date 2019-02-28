@@ -1555,8 +1555,7 @@ namespace ManageWorkExpenses
                 if (count_ngay > 0)
                 {
                     if (
-                         staff.TUAN1_CN    == maKhachHang
-                       || staff.TUAN1_THU2 == maKhachHang
+                          staff.TUAN1_THU2 == maKhachHang
                        || staff.TUAN1_THU3 == maKhachHang
                        || staff.TUAN1_THU4 == maKhachHang
                        || staff.TUAN1_THU5 == maKhachHang
