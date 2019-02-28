@@ -619,105 +619,6 @@
   <metadata name="TUAN4_CN.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="HO_VA_TEN.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="INDEX.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="MA_NHAN_VIEN1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="THANG.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="NAM.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN1_THU2.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN1_THU3.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN1_THU4.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN1_THU5.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN1_THU6.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN1_THU7.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN1_CN.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN2_THU2.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN2_THU3.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN2_THU4.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN2_THU5.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN2_THU6.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN2_THU7.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN2_CN.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN3_THU2.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN3_THU3.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN3_THU4.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN3_THU5.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN3_THU6.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN3_THU7.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN3_CN.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN4_THU2.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN4_THU3.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN4_THU4.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN4_THU5.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN4_THU6.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN4_THU7.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TUAN4_CN.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <data name="btnSearchSchedualFake.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAABuRJREFUWEe1
@@ -966,7 +867,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAAOwgAADsIBFShKgAAABLlJREFUWEftl3tQ1FUU
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAAOwAAADsABataJCQAABLlJREFUWEftl3tQ1FUU
         x+801IRUNqgoyKsMm2w0E1CQBUEWKBQfSMaiPOShQjx20VYcUtElRBSBCJ1gkUFQQjFHHlIxCmk+i2pM
         iZlK+8PojxrIF8tj12/nd0uGFdm15dfINP5mzuzj97u/+7nnnHvO9zJ7hR9Gk7HRBCOwPAYyFpH/r4fs
         RNocJnvITiGFnVzKd6gDmWOqvyi71WQgB4U/HAjCJskHFrGuYKFOeH6tO8H5c1AOPMSMlxijQMKkk1Pm
@@ -1037,7 +938,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAAOwgAADsIBFShKgAAABLlJREFUWEftl3tQ1FUU
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAAOwAAADsABataJCQAABLlJREFUWEftl3tQ1FUU
         x+801IRUNqgoyKsMm2w0E1CQBUEWKBQfSMaiPOShQjx20VYcUtElRBSBCJ1gkUFQQjFHHlIxCmk+i2pM
         iZlK+8PojxrIF8tj12/nd0uGFdm15dfINP5mzuzj97u/+7nnnHvO9zJ7hR9Gk7HRBCOwPAYyFpH/r4fs
         RNocJnvITiGFnVzKd6gDmWOqvyi71WQgB4U/HAjCJskHFrGuYKFOeH6tO8H5c1AOPMSMlxijQMKkk1Pm

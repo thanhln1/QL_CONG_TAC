@@ -87,5 +87,19 @@ namespace BUS
             }
             return listUser;
         }
+
+        public string getGroupCompany( string maKhachHang )
+        {
+            string groupCode;
+            try
+            {
+                groupCode = dao.getGroupCode(maKhachHang);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return groupCode;
+        }
     }
 }
