@@ -167,5 +167,36 @@ namespace BUS
         {
             dao.delAllTMP();
         }
+
+        public bool CheckRunedCalc( int month, int year )
+        {
+            return dao.checkExitCalc(month, year);
+        }
+
+        public bool OverwriteCalc( int month, int year )
+        {
+            try
+            {
+                dao.OverWiteCalc(month, year);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;      
+            }             
+        }
+
+        public bool saveCalc()
+        {
+            try
+            {
+                dao.saveCalc();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

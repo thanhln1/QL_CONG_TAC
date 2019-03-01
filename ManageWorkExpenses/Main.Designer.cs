@@ -31,10 +31,10 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.hệThốngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,6 +119,37 @@
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.ListSchedual = new System.Windows.Forms.DataGridView();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnSearchSchedualFake = new System.Windows.Forms.Button();
+            this.btnLoadSchedual = new System.Windows.Forms.Button();
+            this.btnImportSchedual = new System.Windows.Forms.Button();
+            this.cbMonth = new System.Windows.Forms.DateTimePicker();
+            this.cbYear = new System.Windows.Forms.DateTimePicker();
+            this.lblThang = new System.Windows.Forms.Label();
+            this.lblNamTaiChinh = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cbMonthCalc = new System.Windows.Forms.DateTimePicker();
+            this.cbYearCalc = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCalc = new System.Windows.Forms.Button();
+            this.rdToiUu = new System.Windows.Forms.RadioButton();
+            this.rdNgauNhien = new System.Windows.Forms.RadioButton();
+            this.rdTuanTu = new System.Windows.Forms.RadioButton();
+            this.tabExport = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbbCustomer = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnExportexcelKQ2 = new System.Windows.Forms.Button();
+            this.cbbYear_tinhtoan = new System.Windows.Forms.DateTimePicker();
+            this.btnExportexcelBangKe = new System.Windows.Forms.Button();
+            this.cbbMonth_tinhtoan = new System.Windows.Forms.DateTimePicker();
+            this.cbCheckCN = new System.Windows.Forms.CheckBox();
             this.HO_VA_TEN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.INDEX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MA_NHAN_VIEN1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -152,37 +183,6 @@
             this.TUAN4_THU6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TUAN4_THU7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TUAN4_CN = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btnSearchSchedualFake = new System.Windows.Forms.Button();
-            this.btnLoadSchedual = new System.Windows.Forms.Button();
-            this.btnImportSchedual = new System.Windows.Forms.Button();
-            this.cbMonth = new System.Windows.Forms.DateTimePicker();
-            this.cbYear = new System.Windows.Forms.DateTimePicker();
-            this.lblThang = new System.Windows.Forms.Label();
-            this.lblNamTaiChinh = new System.Windows.Forms.Label();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.cbMonthCalc = new System.Windows.Forms.DateTimePicker();
-            this.cbYearCalc = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnCalc = new System.Windows.Forms.Button();
-            this.rdToiUu = new System.Windows.Forms.RadioButton();
-            this.rdNgauNhien = new System.Windows.Forms.RadioButton();
-            this.rdTuanTu = new System.Windows.Forms.RadioButton();
-            this.tabExport = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cbbCustomer = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btnExportexcelKQ2 = new System.Windows.Forms.Button();
-            this.cbbYear_tinhtoan = new System.Windows.Forms.DateTimePicker();
-            this.btnExportexcelBangKe = new System.Windows.Forms.Button();
-            this.cbbMonth_tinhtoan = new System.Windows.Forms.DateTimePicker();
-            this.cbCheckCN = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.TabNhanVien.SuspendLayout();
@@ -1088,6 +1088,354 @@
             this.ListSchedual.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.ListSchedual_CellFormatting);
             this.ListSchedual.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.ListSchedual_CellPainting);
             // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.groupBox6);
+            this.panel5.Controls.Add(this.groupBox5);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel5.Location = new System.Drawing.Point(3, 3);
+            this.panel5.MinimumSize = new System.Drawing.Size(250, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(250, 686);
+            this.panel5.TabIndex = 0;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.btnSearchSchedualFake);
+            this.groupBox6.Controls.Add(this.btnLoadSchedual);
+            this.groupBox6.Controls.Add(this.btnImportSchedual);
+            this.groupBox6.Controls.Add(this.cbMonth);
+            this.groupBox6.Controls.Add(this.cbYear);
+            this.groupBox6.Controls.Add(this.lblThang);
+            this.groupBox6.Controls.Add(this.lblNamTaiChinh);
+            this.groupBox6.Location = new System.Drawing.Point(14, 16);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(223, 232);
+            this.groupBox6.TabIndex = 14;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Nhập dữ liệu và tìm kiếm";
+            // 
+            // btnSearchSchedualFake
+            // 
+            this.btnSearchSchedualFake.Image = ((System.Drawing.Image)(resources.GetObject("btnSearchSchedualFake.Image")));
+            this.btnSearchSchedualFake.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSearchSchedualFake.Location = new System.Drawing.Point(7, 180);
+            this.btnSearchSchedualFake.Name = "btnSearchSchedualFake";
+            this.btnSearchSchedualFake.Size = new System.Drawing.Size(185, 40);
+            this.btnSearchSchedualFake.TabIndex = 21;
+            this.btnSearchSchedualFake.Text = "Tìm Schedual Fake";
+            this.btnSearchSchedualFake.UseVisualStyleBackColor = true;
+            this.btnSearchSchedualFake.Click += new System.EventHandler(this.btnSearchSchedualFake_Click);
+            // 
+            // btnLoadSchedual
+            // 
+            this.btnLoadSchedual.Image = ((System.Drawing.Image)(resources.GetObject("btnLoadSchedual.Image")));
+            this.btnLoadSchedual.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnLoadSchedual.Location = new System.Drawing.Point(7, 134);
+            this.btnLoadSchedual.Name = "btnLoadSchedual";
+            this.btnLoadSchedual.Size = new System.Drawing.Size(185, 40);
+            this.btnLoadSchedual.TabIndex = 20;
+            this.btnLoadSchedual.Text = "Tìm Schedual Thật";
+            this.btnLoadSchedual.UseVisualStyleBackColor = true;
+            this.btnLoadSchedual.Click += new System.EventHandler(this.btnLoadSchedual_Click);
+            // 
+            // btnImportSchedual
+            // 
+            this.btnImportSchedual.Image = ((System.Drawing.Image)(resources.GetObject("btnImportSchedual.Image")));
+            this.btnImportSchedual.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnImportSchedual.Location = new System.Drawing.Point(7, 88);
+            this.btnImportSchedual.Name = "btnImportSchedual";
+            this.btnImportSchedual.Size = new System.Drawing.Size(185, 40);
+            this.btnImportSchedual.TabIndex = 19;
+            this.btnImportSchedual.Text = "Import Schedual";
+            this.btnImportSchedual.UseVisualStyleBackColor = true;
+            this.btnImportSchedual.Click += new System.EventHandler(this.btnImportSchedual_Click);
+            // 
+            // cbMonth
+            // 
+            this.cbMonth.CustomFormat = "MM";
+            this.cbMonth.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbMonth.Location = new System.Drawing.Point(103, 53);
+            this.cbMonth.Name = "cbMonth";
+            this.cbMonth.ShowUpDown = true;
+            this.cbMonth.Size = new System.Drawing.Size(53, 20);
+            this.cbMonth.TabIndex = 18;
+            // 
+            // cbYear
+            // 
+            this.cbYear.CustomFormat = "yyyy";
+            this.cbYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbYear.Location = new System.Drawing.Point(103, 29);
+            this.cbYear.Name = "cbYear";
+            this.cbYear.ShowUpDown = true;
+            this.cbYear.Size = new System.Drawing.Size(53, 20);
+            this.cbYear.TabIndex = 17;
+            // 
+            // lblThang
+            // 
+            this.lblThang.AutoSize = true;
+            this.lblThang.Location = new System.Drawing.Point(8, 61);
+            this.lblThang.Name = "lblThang";
+            this.lblThang.Size = new System.Drawing.Size(38, 13);
+            this.lblThang.TabIndex = 16;
+            this.lblThang.Text = "Tháng";
+            // 
+            // lblNamTaiChinh
+            // 
+            this.lblNamTaiChinh.AutoSize = true;
+            this.lblNamTaiChinh.Location = new System.Drawing.Point(8, 29);
+            this.lblNamTaiChinh.Name = "lblNamTaiChinh";
+            this.lblNamTaiChinh.Size = new System.Drawing.Size(79, 13);
+            this.lblNamTaiChinh.TabIndex = 15;
+            this.lblNamTaiChinh.Text = "Năm Tài Chính";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.cbCheckCN);
+            this.groupBox5.Controls.Add(this.cbMonthCalc);
+            this.groupBox5.Controls.Add(this.cbYearCalc);
+            this.groupBox5.Controls.Add(this.label1);
+            this.groupBox5.Controls.Add(this.label4);
+            this.groupBox5.Controls.Add(this.btnSave);
+            this.groupBox5.Controls.Add(this.btnCalc);
+            this.groupBox5.Controls.Add(this.rdToiUu);
+            this.groupBox5.Controls.Add(this.rdNgauNhien);
+            this.groupBox5.Controls.Add(this.rdTuanTu);
+            this.groupBox5.Location = new System.Drawing.Point(14, 263);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(223, 315);
+            this.groupBox5.TabIndex = 13;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Chọn thuật toán";
+            // 
+            // cbMonthCalc
+            // 
+            this.cbMonthCalc.CustomFormat = "MM";
+            this.cbMonthCalc.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbMonthCalc.Location = new System.Drawing.Point(103, 40);
+            this.cbMonthCalc.Name = "cbMonthCalc";
+            this.cbMonthCalc.ShowUpDown = true;
+            this.cbMonthCalc.Size = new System.Drawing.Size(53, 20);
+            this.cbMonthCalc.TabIndex = 22;
+            // 
+            // cbYearCalc
+            // 
+            this.cbYearCalc.CustomFormat = "yyyy";
+            this.cbYearCalc.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbYearCalc.Location = new System.Drawing.Point(103, 16);
+            this.cbYearCalc.Name = "cbYearCalc";
+            this.cbYearCalc.ShowUpDown = true;
+            this.cbYearCalc.Size = new System.Drawing.Size(53, 20);
+            this.cbYearCalc.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 48);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Tháng";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(79, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "Năm Tài Chính";
+            // 
+            // btnSave
+            // 
+            this.btnSave.Enabled = false;
+            this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
+            this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSave.Location = new System.Drawing.Point(6, 254);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(185, 40);
+            this.btnSave.TabIndex = 11;
+            this.btnSave.Text = "Lưu lại";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnCalc
+            // 
+            this.btnCalc.Image = ((System.Drawing.Image)(resources.GetObject("btnCalc.Image")));
+            this.btnCalc.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCalc.Location = new System.Drawing.Point(6, 208);
+            this.btnCalc.Name = "btnCalc";
+            this.btnCalc.Size = new System.Drawing.Size(185, 40);
+            this.btnCalc.TabIndex = 10;
+            this.btnCalc.Text = "Chạy Thuật Toán";
+            this.btnCalc.UseVisualStyleBackColor = true;
+            this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
+            // 
+            // rdToiUu
+            // 
+            this.rdToiUu.AutoSize = true;
+            this.rdToiUu.Location = new System.Drawing.Point(7, 127);
+            this.rdToiUu.Name = "rdToiUu";
+            this.rdToiUu.Size = new System.Drawing.Size(55, 17);
+            this.rdToiUu.TabIndex = 2;
+            this.rdToiUu.Text = "Tối ưu";
+            this.rdToiUu.UseVisualStyleBackColor = true;
+            // 
+            // rdNgauNhien
+            // 
+            this.rdNgauNhien.AutoSize = true;
+            this.rdNgauNhien.Location = new System.Drawing.Point(7, 103);
+            this.rdNgauNhien.Name = "rdNgauNhien";
+            this.rdNgauNhien.Size = new System.Drawing.Size(80, 17);
+            this.rdNgauNhien.TabIndex = 1;
+            this.rdNgauNhien.Text = "Ngẫu nhiên";
+            this.rdNgauNhien.UseVisualStyleBackColor = true;
+            // 
+            // rdTuanTu
+            // 
+            this.rdTuanTu.AutoSize = true;
+            this.rdTuanTu.Checked = true;
+            this.rdTuanTu.Location = new System.Drawing.Point(7, 79);
+            this.rdTuanTu.Name = "rdTuanTu";
+            this.rdTuanTu.Size = new System.Drawing.Size(62, 17);
+            this.rdTuanTu.TabIndex = 0;
+            this.rdTuanTu.TabStop = true;
+            this.rdTuanTu.Text = "Tuần tự";
+            this.rdTuanTu.UseVisualStyleBackColor = true;
+            // 
+            // tabExport
+            // 
+            this.tabExport.Controls.Add(this.dataGridView1);
+            this.tabExport.Controls.Add(this.panel7);
+            this.tabExport.Location = new System.Drawing.Point(4, 22);
+            this.tabExport.Name = "tabExport";
+            this.tabExport.Padding = new System.Windows.Forms.Padding(3);
+            this.tabExport.Size = new System.Drawing.Size(1027, 692);
+            this.tabExport.TabIndex = 3;
+            this.tabExport.Text = "Xuất báo cáo";
+            this.tabExport.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.ColumnHeadersVisible = false;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.dataGridView1.Location = new System.Drawing.Point(308, 3);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(716, 686);
+            this.dataGridView1.TabIndex = 2;
+            // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.groupBox3);
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel7.Location = new System.Drawing.Point(3, 3);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(305, 686);
+            this.panel7.TabIndex = 1;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.cbbCustomer);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.btnExportexcelKQ2);
+            this.groupBox3.Controls.Add(this.cbbYear_tinhtoan);
+            this.groupBox3.Controls.Add(this.btnExportexcelBangKe);
+            this.groupBox3.Controls.Add(this.cbbMonth_tinhtoan);
+            this.groupBox3.Location = new System.Drawing.Point(14, 9);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(277, 181);
+            this.groupBox3.TabIndex = 14;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Chọn thông tin khách hàng";
+            // 
+            // cbbCustomer
+            // 
+            this.cbbCustomer.FormattingEnabled = true;
+            this.cbbCustomer.Location = new System.Drawing.Point(12, 28);
+            this.cbbCustomer.Name = "cbbCustomer";
+            this.cbbCustomer.Size = new System.Drawing.Size(250, 21);
+            this.cbbCustomer.TabIndex = 24;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 63);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "Tháng";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(150, 63);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "Năm";
+            // 
+            // btnExportexcelKQ2
+            // 
+            this.btnExportexcelKQ2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportexcelKQ2.Image = ((System.Drawing.Image)(resources.GetObject("btnExportexcelKQ2.Image")));
+            this.btnExportexcelKQ2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExportexcelKQ2.Location = new System.Drawing.Point(12, 109);
+            this.btnExportexcelKQ2.Name = "btnExportexcelKQ2";
+            this.btnExportexcelKQ2.Size = new System.Drawing.Size(123, 44);
+            this.btnExportexcelKQ2.TabIndex = 9;
+            this.btnExportexcelKQ2.Text = "Quyêt định   ";
+            this.btnExportexcelKQ2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnExportexcelKQ2.UseVisualStyleBackColor = true;
+            this.btnExportexcelKQ2.Click += new System.EventHandler(this.btnExportexcelKQ2_Click);
+            // 
+            // cbbYear_tinhtoan
+            // 
+            this.cbbYear_tinhtoan.CustomFormat = "yyyy";
+            this.cbbYear_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbbYear_tinhtoan.Location = new System.Drawing.Point(194, 60);
+            this.cbbYear_tinhtoan.Name = "cbbYear_tinhtoan";
+            this.cbbYear_tinhtoan.ShowUpDown = true;
+            this.cbbYear_tinhtoan.Size = new System.Drawing.Size(68, 20);
+            this.cbbYear_tinhtoan.TabIndex = 18;
+            // 
+            // btnExportexcelBangKe
+            // 
+            this.btnExportexcelBangKe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportexcelBangKe.Image = ((System.Drawing.Image)(resources.GetObject("btnExportexcelBangKe.Image")));
+            this.btnExportexcelBangKe.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExportexcelBangKe.Location = new System.Drawing.Point(141, 109);
+            this.btnExportexcelBangKe.Name = "btnExportexcelBangKe";
+            this.btnExportexcelBangKe.Size = new System.Drawing.Size(121, 44);
+            this.btnExportexcelBangKe.TabIndex = 17;
+            this.btnExportexcelBangKe.Text = "Bảng kê     ";
+            this.btnExportexcelBangKe.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnExportexcelBangKe.UseVisualStyleBackColor = true;
+            this.btnExportexcelBangKe.Click += new System.EventHandler(this.btnExportexcelBangKe_Click);
+            // 
+            // cbbMonth_tinhtoan
+            // 
+            this.cbbMonth_tinhtoan.CustomFormat = "MM";
+            this.cbbMonth_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbbMonth_tinhtoan.Location = new System.Drawing.Point(58, 60);
+            this.cbbMonth_tinhtoan.Name = "cbbMonth_tinhtoan";
+            this.cbbMonth_tinhtoan.ShowUpDown = true;
+            this.cbbMonth_tinhtoan.Size = new System.Drawing.Size(53, 20);
+            this.cbbMonth_tinhtoan.TabIndex = 19;
+            // 
+            // cbCheckCN
+            // 
+            this.cbCheckCN.AutoSize = true;
+            this.cbCheckCN.Location = new System.Drawing.Point(7, 170);
+            this.cbCheckCN.Name = "cbCheckCN";
+            this.cbCheckCN.Size = new System.Drawing.Size(139, 17);
+            this.cbCheckCN.TabIndex = 23;
+            this.cbCheckCN.Text = "Chạy cả ngày Chủ Nhật";
+            this.cbCheckCN.UseVisualStyleBackColor = true;
+            // 
             // HO_VA_TEN
             // 
             this.HO_VA_TEN.DataPropertyName = "HO_TEN";
@@ -1099,9 +1447,12 @@
             // INDEX
             // 
             this.INDEX.DataPropertyName = "ID";
+            this.INDEX.FillWeight = 2F;
             this.INDEX.HeaderText = "ID";
+            this.INDEX.MinimumWidth = 2;
             this.INDEX.Name = "INDEX";
             this.INDEX.Visible = false;
+            this.INDEX.Width = 2;
             // 
             // MA_NHAN_VIEN1
             // 
@@ -1112,16 +1463,22 @@
             // THANG
             // 
             this.THANG.DataPropertyName = "THANG";
+            this.THANG.FillWeight = 2F;
             this.THANG.HeaderText = "Tháng";
+            this.THANG.MinimumWidth = 2;
             this.THANG.Name = "THANG";
             this.THANG.Visible = false;
+            this.THANG.Width = 2;
             // 
             // NAM
             // 
             this.NAM.DataPropertyName = "NAM";
+            this.NAM.FillWeight = 2F;
             this.NAM.HeaderText = "Năm";
+            this.NAM.MinimumWidth = 2;
             this.NAM.Name = "NAM";
             this.NAM.Visible = false;
+            this.NAM.Width = 2;
             // 
             // TUAN1_THU2
             // 
@@ -1319,353 +1676,6 @@
             this.TUAN4_CN.MinimumWidth = 60;
             this.TUAN4_CN.Name = "TUAN4_CN";
             // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.groupBox6);
-            this.panel5.Controls.Add(this.groupBox5);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel5.Location = new System.Drawing.Point(3, 3);
-            this.panel5.MinimumSize = new System.Drawing.Size(250, 0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(250, 686);
-            this.panel5.TabIndex = 0;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.btnSearchSchedualFake);
-            this.groupBox6.Controls.Add(this.btnLoadSchedual);
-            this.groupBox6.Controls.Add(this.btnImportSchedual);
-            this.groupBox6.Controls.Add(this.cbMonth);
-            this.groupBox6.Controls.Add(this.cbYear);
-            this.groupBox6.Controls.Add(this.lblThang);
-            this.groupBox6.Controls.Add(this.lblNamTaiChinh);
-            this.groupBox6.Location = new System.Drawing.Point(14, 16);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(223, 232);
-            this.groupBox6.TabIndex = 14;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Nhập dữ liệu và tìm kiếm";
-            // 
-            // btnSearchSchedualFake
-            // 
-            this.btnSearchSchedualFake.Image = ((System.Drawing.Image)(resources.GetObject("btnSearchSchedualFake.Image")));
-            this.btnSearchSchedualFake.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSearchSchedualFake.Location = new System.Drawing.Point(7, 180);
-            this.btnSearchSchedualFake.Name = "btnSearchSchedualFake";
-            this.btnSearchSchedualFake.Size = new System.Drawing.Size(185, 40);
-            this.btnSearchSchedualFake.TabIndex = 21;
-            this.btnSearchSchedualFake.Text = "Tìm Schedual Fake";
-            this.btnSearchSchedualFake.UseVisualStyleBackColor = true;
-            this.btnSearchSchedualFake.Click += new System.EventHandler(this.btnSearchSchedualFake_Click);
-            // 
-            // btnLoadSchedual
-            // 
-            this.btnLoadSchedual.Image = ((System.Drawing.Image)(resources.GetObject("btnLoadSchedual.Image")));
-            this.btnLoadSchedual.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnLoadSchedual.Location = new System.Drawing.Point(7, 134);
-            this.btnLoadSchedual.Name = "btnLoadSchedual";
-            this.btnLoadSchedual.Size = new System.Drawing.Size(185, 40);
-            this.btnLoadSchedual.TabIndex = 20;
-            this.btnLoadSchedual.Text = "Tìm Schedual Thật";
-            this.btnLoadSchedual.UseVisualStyleBackColor = true;
-            this.btnLoadSchedual.Click += new System.EventHandler(this.btnLoadSchedual_Click);
-            // 
-            // btnImportSchedual
-            // 
-            this.btnImportSchedual.Image = ((System.Drawing.Image)(resources.GetObject("btnImportSchedual.Image")));
-            this.btnImportSchedual.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnImportSchedual.Location = new System.Drawing.Point(7, 88);
-            this.btnImportSchedual.Name = "btnImportSchedual";
-            this.btnImportSchedual.Size = new System.Drawing.Size(185, 40);
-            this.btnImportSchedual.TabIndex = 19;
-            this.btnImportSchedual.Text = "Import Schedual";
-            this.btnImportSchedual.UseVisualStyleBackColor = true;
-            this.btnImportSchedual.Click += new System.EventHandler(this.btnImportSchedual_Click);
-            // 
-            // cbMonth
-            // 
-            this.cbMonth.CustomFormat = "MM";
-            this.cbMonth.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbMonth.Location = new System.Drawing.Point(103, 53);
-            this.cbMonth.Name = "cbMonth";
-            this.cbMonth.ShowUpDown = true;
-            this.cbMonth.Size = new System.Drawing.Size(53, 20);
-            this.cbMonth.TabIndex = 18;
-            // 
-            // cbYear
-            // 
-            this.cbYear.CustomFormat = "yyyy";
-            this.cbYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbYear.Location = new System.Drawing.Point(103, 29);
-            this.cbYear.Name = "cbYear";
-            this.cbYear.ShowUpDown = true;
-            this.cbYear.Size = new System.Drawing.Size(53, 20);
-            this.cbYear.TabIndex = 17;
-            // 
-            // lblThang
-            // 
-            this.lblThang.AutoSize = true;
-            this.lblThang.Location = new System.Drawing.Point(8, 61);
-            this.lblThang.Name = "lblThang";
-            this.lblThang.Size = new System.Drawing.Size(38, 13);
-            this.lblThang.TabIndex = 16;
-            this.lblThang.Text = "Tháng";
-            // 
-            // lblNamTaiChinh
-            // 
-            this.lblNamTaiChinh.AutoSize = true;
-            this.lblNamTaiChinh.Location = new System.Drawing.Point(8, 29);
-            this.lblNamTaiChinh.Name = "lblNamTaiChinh";
-            this.lblNamTaiChinh.Size = new System.Drawing.Size(79, 13);
-            this.lblNamTaiChinh.TabIndex = 15;
-            this.lblNamTaiChinh.Text = "Năm Tài Chính";
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.cbCheckCN);
-            this.groupBox5.Controls.Add(this.cbMonthCalc);
-            this.groupBox5.Controls.Add(this.cbYearCalc);
-            this.groupBox5.Controls.Add(this.label1);
-            this.groupBox5.Controls.Add(this.label4);
-            this.groupBox5.Controls.Add(this.btnSave);
-            this.groupBox5.Controls.Add(this.btnCalc);
-            this.groupBox5.Controls.Add(this.rdToiUu);
-            this.groupBox5.Controls.Add(this.rdNgauNhien);
-            this.groupBox5.Controls.Add(this.rdTuanTu);
-            this.groupBox5.Location = new System.Drawing.Point(14, 263);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(223, 315);
-            this.groupBox5.TabIndex = 13;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Chọn thuật toán";
-            // 
-            // cbMonthCalc
-            // 
-            this.cbMonthCalc.CustomFormat = "MM";
-            this.cbMonthCalc.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbMonthCalc.Location = new System.Drawing.Point(103, 40);
-            this.cbMonthCalc.Name = "cbMonthCalc";
-            this.cbMonthCalc.ShowUpDown = true;
-            this.cbMonthCalc.Size = new System.Drawing.Size(53, 20);
-            this.cbMonthCalc.TabIndex = 22;
-            // 
-            // cbYearCalc
-            // 
-            this.cbYearCalc.CustomFormat = "yyyy";
-            this.cbYearCalc.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbYearCalc.Location = new System.Drawing.Point(103, 16);
-            this.cbYearCalc.Name = "cbYearCalc";
-            this.cbYearCalc.ShowUpDown = true;
-            this.cbYearCalc.Size = new System.Drawing.Size(53, 20);
-            this.cbYearCalc.TabIndex = 21;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 48);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 20;
-            this.label1.Text = "Tháng";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 16);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(79, 13);
-            this.label4.TabIndex = 19;
-            this.label4.Text = "Năm Tài Chính";
-            // 
-            // btnSave
-            // 
-            this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
-            this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(6, 254);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(185, 40);
-            this.btnSave.TabIndex = 11;
-            this.btnSave.Text = "Lưu lại";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnCalc
-            // 
-            this.btnCalc.Image = ((System.Drawing.Image)(resources.GetObject("btnCalc.Image")));
-            this.btnCalc.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCalc.Location = new System.Drawing.Point(6, 208);
-            this.btnCalc.Name = "btnCalc";
-            this.btnCalc.Size = new System.Drawing.Size(185, 40);
-            this.btnCalc.TabIndex = 10;
-            this.btnCalc.Text = "Chạy Thuật Toán";
-            this.btnCalc.UseVisualStyleBackColor = true;
-            this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
-            // 
-            // rdToiUu
-            // 
-            this.rdToiUu.AutoSize = true;
-            this.rdToiUu.Location = new System.Drawing.Point(7, 127);
-            this.rdToiUu.Name = "rdToiUu";
-            this.rdToiUu.Size = new System.Drawing.Size(55, 17);
-            this.rdToiUu.TabIndex = 2;
-            this.rdToiUu.Text = "Tối ưu";
-            this.rdToiUu.UseVisualStyleBackColor = true;
-            // 
-            // rdNgauNhien
-            // 
-            this.rdNgauNhien.AutoSize = true;
-            this.rdNgauNhien.Location = new System.Drawing.Point(7, 103);
-            this.rdNgauNhien.Name = "rdNgauNhien";
-            this.rdNgauNhien.Size = new System.Drawing.Size(80, 17);
-            this.rdNgauNhien.TabIndex = 1;
-            this.rdNgauNhien.Text = "Ngẫu nhiên";
-            this.rdNgauNhien.UseVisualStyleBackColor = true;
-            // 
-            // rdTuanTu
-            // 
-            this.rdTuanTu.AutoSize = true;
-            this.rdTuanTu.Checked = true;
-            this.rdTuanTu.Location = new System.Drawing.Point(7, 79);
-            this.rdTuanTu.Name = "rdTuanTu";
-            this.rdTuanTu.Size = new System.Drawing.Size(62, 17);
-            this.rdTuanTu.TabIndex = 0;
-            this.rdTuanTu.TabStop = true;
-            this.rdTuanTu.Text = "Tuần tự";
-            this.rdTuanTu.UseVisualStyleBackColor = true;
-            // 
-            // tabExport
-            // 
-            this.tabExport.Controls.Add(this.dataGridView1);
-            this.tabExport.Controls.Add(this.panel7);
-            this.tabExport.Location = new System.Drawing.Point(4, 22);
-            this.tabExport.Name = "tabExport";
-            this.tabExport.Padding = new System.Windows.Forms.Padding(3);
-            this.tabExport.Size = new System.Drawing.Size(1027, 692);
-            this.tabExport.TabIndex = 3;
-            this.tabExport.Text = "Xuất báo cáo";
-            this.tabExport.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.ColumnHeadersVisible = false;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.dataGridView1.Location = new System.Drawing.Point(308, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(716, 686);
-            this.dataGridView1.TabIndex = 2;
-            // 
-            // panel7
-            // 
-            this.panel7.Controls.Add(this.groupBox3);
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel7.Location = new System.Drawing.Point(3, 3);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(305, 686);
-            this.panel7.TabIndex = 1;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.cbbCustomer);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.btnExportexcelKQ2);
-            this.groupBox3.Controls.Add(this.cbbYear_tinhtoan);
-            this.groupBox3.Controls.Add(this.btnExportexcelBangKe);
-            this.groupBox3.Controls.Add(this.cbbMonth_tinhtoan);
-            this.groupBox3.Location = new System.Drawing.Point(14, 9);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(277, 181);
-            this.groupBox3.TabIndex = 14;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Chọn thông tin khách hàng";
-            // 
-            // cbbCustomer
-            // 
-            this.cbbCustomer.FormattingEnabled = true;
-            this.cbbCustomer.Location = new System.Drawing.Point(12, 28);
-            this.cbbCustomer.Name = "cbbCustomer";
-            this.cbbCustomer.Size = new System.Drawing.Size(250, 21);
-            this.cbbCustomer.TabIndex = 24;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 63);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
-            this.label3.TabIndex = 21;
-            this.label3.Text = "Tháng";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(150, 63);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
-            this.label2.TabIndex = 20;
-            this.label2.Text = "Năm";
-            // 
-            // btnExportexcelKQ2
-            // 
-            this.btnExportexcelKQ2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportexcelKQ2.Image = ((System.Drawing.Image)(resources.GetObject("btnExportexcelKQ2.Image")));
-            this.btnExportexcelKQ2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportexcelKQ2.Location = new System.Drawing.Point(12, 109);
-            this.btnExportexcelKQ2.Name = "btnExportexcelKQ2";
-            this.btnExportexcelKQ2.Size = new System.Drawing.Size(123, 44);
-            this.btnExportexcelKQ2.TabIndex = 9;
-            this.btnExportexcelKQ2.Text = "Quyêt định   ";
-            this.btnExportexcelKQ2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnExportexcelKQ2.UseVisualStyleBackColor = true;
-            this.btnExportexcelKQ2.Click += new System.EventHandler(this.btnExportexcelKQ2_Click);
-            // 
-            // cbbYear_tinhtoan
-            // 
-            this.cbbYear_tinhtoan.CustomFormat = "yyyy";
-            this.cbbYear_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbbYear_tinhtoan.Location = new System.Drawing.Point(194, 60);
-            this.cbbYear_tinhtoan.Name = "cbbYear_tinhtoan";
-            this.cbbYear_tinhtoan.ShowUpDown = true;
-            this.cbbYear_tinhtoan.Size = new System.Drawing.Size(68, 20);
-            this.cbbYear_tinhtoan.TabIndex = 18;
-            // 
-            // btnExportexcelBangKe
-            // 
-            this.btnExportexcelBangKe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportexcelBangKe.Image = ((System.Drawing.Image)(resources.GetObject("btnExportexcelBangKe.Image")));
-            this.btnExportexcelBangKe.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportexcelBangKe.Location = new System.Drawing.Point(141, 109);
-            this.btnExportexcelBangKe.Name = "btnExportexcelBangKe";
-            this.btnExportexcelBangKe.Size = new System.Drawing.Size(121, 44);
-            this.btnExportexcelBangKe.TabIndex = 17;
-            this.btnExportexcelBangKe.Text = "Bảng kê     ";
-            this.btnExportexcelBangKe.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnExportexcelBangKe.UseVisualStyleBackColor = true;
-            this.btnExportexcelBangKe.Click += new System.EventHandler(this.btnExportexcelBangKe_Click);
-            // 
-            // cbbMonth_tinhtoan
-            // 
-            this.cbbMonth_tinhtoan.CustomFormat = "MM";
-            this.cbbMonth_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbbMonth_tinhtoan.Location = new System.Drawing.Point(58, 60);
-            this.cbbMonth_tinhtoan.Name = "cbbMonth_tinhtoan";
-            this.cbbMonth_tinhtoan.ShowUpDown = true;
-            this.cbbMonth_tinhtoan.Size = new System.Drawing.Size(53, 20);
-            this.cbbMonth_tinhtoan.TabIndex = 19;
-            // 
-            // cbCheckCN
-            // 
-            this.cbCheckCN.AutoSize = true;
-            this.cbCheckCN.Location = new System.Drawing.Point(7, 170);
-            this.cbCheckCN.Name = "cbCheckCN";
-            this.cbCheckCN.Size = new System.Drawing.Size(139, 17);
-            this.cbCheckCN.TabIndex = 23;
-            this.cbCheckCN.Text = "Chạy cả ngày Chủ Nhật";
-            this.cbCheckCN.UseVisualStyleBackColor = true;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1795,39 +1805,6 @@
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.DataGridView ListSchedual;
-        private System.Windows.Forms.DataGridViewTextBoxColumn HO_VA_TEN;
-        private System.Windows.Forms.DataGridViewTextBoxColumn INDEX;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MA_NHAN_VIEN1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn THANG;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NAM;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_CN;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_CN;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_CN;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_CN;
         private System.Windows.Forms.TabPage tabExport;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Button btnExportexcelKQ2;
@@ -1862,6 +1839,39 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbCheckCN;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HO_VA_TEN;
+        private System.Windows.Forms.DataGridViewTextBoxColumn INDEX;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MA_NHAN_VIEN1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn THANG;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NAM;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_THU7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN1_CN;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_THU7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN2_CN;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_THU7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN3_CN;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_CN;
     }
 }
 

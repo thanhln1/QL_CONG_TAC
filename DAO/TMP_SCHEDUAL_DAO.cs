@@ -16,12 +16,9 @@ namespace DAO
         public List<VW_SCHEDUAL> LoadSchedual()
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
-            {
-                
+            {                  
                 var output = cnn.Query<VW_SCHEDUAL>("SELECT B.HO_TEN,A.*   FROM TMP_SCHEDUAL as A, MT_NHAN_VIEN as B  Where A.MA_NHAN_VIEN = B.MA_NHAN_VIEN order by A.MA_NHAN_VIEN;", new DynamicParameters());
-                return output.ToList();
-              
-               
+                return output.ToList();   
             }
         }
 
@@ -87,6 +84,33 @@ namespace DAO
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {                  
                 cnn.Execute("DELETE FROM TMP_SCHEDUAL");
+            }
+        }
+
+        public bool checkExitCalc( int month, int year )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_SCHEDUAL>("SELECT *   FROM HIS_SCHEDUAL as s  Where s.THANG = @THANG and s.NAM = @NAM", new { THANG = month, NAM = year });
+                return ( output.Count() > 0) ? true : false;               
+            }
+        }
+
+        public void OverWiteCalc(int month, int year)
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+               cnn.Execute("DELETE HIS_SCHEDUAL as s  Where s.THANG = @THANG and s.NAM = @NAM", new { THANG = month, NAM = year });
+
+               cnn.Execute("INSERT INTO HIS_SCHEDUAL SELECT * FROM MT_SCHEDUAL;");
+            }
+        }
+
+        public void saveCalc()
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {     
+                cnn.Execute("INSERT INTO HIS_SCHEDUAL SELECT * FROM MT_SCHEDUAL;");
             }
         }
     }

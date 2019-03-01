@@ -1398,6 +1398,8 @@ namespace ManageWorkExpenses
             int year = cbYearCalc.Value.Year;
 
             int timelimit = WinRegForm();
+
+            bool isDoneCalc = false;
             if (timelimit > TIMELIMIT)
             {
                 MessageBox.Show("Quá thời gian dùng thử 60 ngày");
@@ -1423,15 +1425,15 @@ namespace ManageWorkExpenses
 
                     if (rdTuanTu.Checked == true)
                     {
-                        RunCalcTuanTu(month, year, isCN);
+                       isDoneCalc =  RunCalcTuanTu(month, year, isCN);
                     }
                     else if (rdNgauNhien.Checked == true)
                     {
-                        RunCalcNgauNhien(month, year, isCN);
+                       isDoneCalc = RunCalcNgauNhien(month, year, isCN);
                     }
                     else if (rdToiUu.Checked == true)
                     {
-                        RunCalcToiUu(month, year, isCN);
+                       isDoneCalc = RunCalcToiUu(month, year, isCN);
                     }
                     else
                     {
@@ -1454,29 +1456,35 @@ namespace ManageWorkExpenses
 
             // Open the dialog
             progressDialog.ShowDialog();
+            if (isDoneCalc)
+            {
+                List<VW_SCHEDUAL> listTMP = busTMP.LoadListSchedual(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+                ListSchedual.DataSource = listTMP;
 
-            List<VW_SCHEDUAL> listTMP = busTMP.LoadListSchedual(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
-            ListSchedual.DataSource = listTMP;
+                btnSave.Enabled = true;
+            }            
         }
 
-        private void RunCalcToiUu(int month, int year, bool isCN)
+        private bool RunCalcToiUu(int month, int year, bool isCN)
         {
             MessageBox.Show("Thuật toán đang được phát triển, vui lòng thử lại sau");
+            return false;
         }
 
-        private void RunCalcNgauNhien(int month, int year, bool isCN)
+        private bool RunCalcNgauNhien(int month, int year, bool isCN)
         {
             MessageBox.Show("Thuật toán đang được phát triển, vui lòng thử lại sau");
+            return false;
         }
 
-        private void RunCalcTuanTu( int month, int year, bool isCN )
+        private bool RunCalcTuanTu( int month, int year, bool isCN )
         {
             // Lấy danh sách MT_SCHEDUAL 
             List<MT_SCHEDUAL> listSchedual = busCaculation.getListSchedual(month, year);
             if (listSchedual.Count <= 0)
             {
                 MessageBox.Show("Tháng được chọn không có dữ liệu");
-                return;
+                return false;
             }
             // Lấy danh sách các công ty chưa hết kinh phí
             List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
@@ -1506,7 +1514,7 @@ namespace ManageWorkExpenses
                         {
                             MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên hoặc nhóm Khách hàng!");
                             busTMP.DelAllTMP();
-                            return;
+                            return false;
                         }
                         // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá tức là công ty đó không sử dụng được nữa 
                         if (( listCompany[i].TONG_CHI_PHI_MUC_TOI_DA - listCompany[i].CHI_PHI_THUC_DA_CHI ) <= dongia || !nhomNV.Equals(nhomCty))
@@ -1536,6 +1544,7 @@ namespace ManageWorkExpenses
                 busTMP.SaveSchedual(item, cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
                 n++;
             }
+            return true;
         }
 
         private void btnResetUser_Click(object sender, EventArgs e)
@@ -1698,10 +1707,59 @@ namespace ManageWorkExpenses
 
         }
 
+        #region Chỉ cho nhập số
+        private void tbGiaTriHopDong_TextChanged( object sender, EventArgs e )
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(tbGiaTriHopDong.Text, "[^0-9]"))
+            {
+                // MessageBox.Show("Please enter only numbers.");
+                tbGiaTriHopDong.Text = tbGiaTriHopDong.Text.Remove(tbGiaTriHopDong.Text.Length - 1);
+            }
+        }
+
+        private void tbTongChiPhiToiDa_TextChanged( object sender, EventArgs e )
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(tbTongChiPhiToiDa.Text, "[^0-9]"))
+            {
+                //MessageBox.Show("Please enter only numbers.");
+                tbTongChiPhiToiDa.Text = tbTongChiPhiToiDa.Text.Remove(tbTongChiPhiToiDa.Text.Length - 1);
+            }
+        }
+
+        private void tbChiPhiThucDaChi_TextChanged( object sender, EventArgs e )
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(tbChiPhiThucDaChi.Text, "[^0-9]"))
+            {
+                //MessageBox.Show("Please enter only numbers.");
+                tbChiPhiThucDaChi.Text = tbChiPhiThucDaChi.Text.Remove(tbChiPhiThucDaChi.Text.Length - 1);
+            }
+        }
+        #endregion
+
         private void btnSave_Click( object sender, EventArgs e )
         {
-
+            try
+            {
+                bool isExits = busTMP.CheckRunedCalc(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+                if (isExits)
+                {
+                    DialogResult dialogResult = MessageBox.Show("Tháng được chọn đã được tính toán. Bạn có muốn ghi đè lên dữ liệu đã có sẵn? \n Chú ý: Nếu chọn ghi đè thì dữ liệu về tổng số tiền đã chi sẽ không còn chính xác nữa!", "Đã tồn tại dữ liệu", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        bool IsOverWrite = busTMP.OverwriteCalc(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+                        MessageBox.Show(( IsOverWrite == true ) ? "Đã ghi đè lên dữ liệu cũ!" : "Không ghi đè được");
+                    }
+                }
+                else
+                {
+                    bool isSave = busTMP.saveCalc();
+                    MessageBox.Show(( isSave == true ) ? "Lưu thành công!" : "Có lỗi khi lưu!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: "+ ex.Message);
+            }            
         }
-    }
-    
+    }      
 }
