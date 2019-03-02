@@ -911,7 +911,8 @@ namespace ManageWorkExpenses
 
                 if (rowCalenda == null)
                 {
-                    MessageBox.Show("Chưa có lịch công tác");
+                    //MessageBox.Show("Chưa có lịch công tác");
+                    MessageBox.Show("Chưa có lịch công tác !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 // get thông tin nơi công tác
