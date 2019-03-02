@@ -38,12 +38,13 @@
             this.lblPass = new System.Windows.Forms.Label();
             this.tbDataBase = new System.Windows.Forms.TextBox();
             this.lblDataBase = new System.Windows.Forms.Label();
+            this.txtConnectionString = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblSource
             // 
             this.lblSource.AutoSize = true;
-            this.lblSource.Location = new System.Drawing.Point(13, 51);
+            this.lblSource.Location = new System.Drawing.Point(13, 45);
             this.lblSource.Name = "lblSource";
             this.lblSource.Size = new System.Drawing.Size(41, 13);
             this.lblSource.TabIndex = 0;
@@ -51,9 +52,9 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(93, 155);
+            this.btnSave.Location = new System.Drawing.Point(105, 156);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Size = new System.Drawing.Size(106, 32);
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -61,14 +62,14 @@
             // 
             // tbSource
             // 
-            this.tbSource.Location = new System.Drawing.Point(93, 51);
+            this.tbSource.Location = new System.Drawing.Point(105, 45);
             this.tbSource.Name = "tbSource";
             this.tbSource.Size = new System.Drawing.Size(233, 20);
             this.tbSource.TabIndex = 2;
             // 
             // tbUser
             // 
-            this.tbUser.Location = new System.Drawing.Point(93, 103);
+            this.tbUser.Location = new System.Drawing.Point(105, 97);
             this.tbUser.Name = "tbUser";
             this.tbUser.Size = new System.Drawing.Size(233, 20);
             this.tbUser.TabIndex = 4;
@@ -76,7 +77,7 @@
             // lblUser
             // 
             this.lblUser.AutoSize = true;
-            this.lblUser.Location = new System.Drawing.Point(13, 103);
+            this.lblUser.Location = new System.Drawing.Point(13, 97);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(29, 13);
             this.lblUser.TabIndex = 3;
@@ -84,7 +85,7 @@
             // 
             // tbPass
             // 
-            this.tbPass.Location = new System.Drawing.Point(93, 129);
+            this.tbPass.Location = new System.Drawing.Point(105, 123);
             this.tbPass.Name = "tbPass";
             this.tbPass.Size = new System.Drawing.Size(233, 20);
             this.tbPass.TabIndex = 6;
@@ -92,7 +93,7 @@
             // lblPass
             // 
             this.lblPass.AutoSize = true;
-            this.lblPass.Location = new System.Drawing.Point(13, 129);
+            this.lblPass.Location = new System.Drawing.Point(13, 123);
             this.lblPass.Name = "lblPass";
             this.lblPass.Size = new System.Drawing.Size(30, 13);
             this.lblPass.TabIndex = 5;
@@ -100,7 +101,7 @@
             // 
             // tbDataBase
             // 
-            this.tbDataBase.Location = new System.Drawing.Point(93, 77);
+            this.tbDataBase.Location = new System.Drawing.Point(105, 71);
             this.tbDataBase.Name = "tbDataBase";
             this.tbDataBase.Size = new System.Drawing.Size(233, 20);
             this.tbDataBase.TabIndex = 8;
@@ -108,17 +109,30 @@
             // lblDataBase
             // 
             this.lblDataBase.AutoSize = true;
-            this.lblDataBase.Location = new System.Drawing.Point(13, 77);
+            this.lblDataBase.Location = new System.Drawing.Point(13, 71);
             this.lblDataBase.Name = "lblDataBase";
             this.lblDataBase.Size = new System.Drawing.Size(54, 13);
             this.lblDataBase.TabIndex = 7;
             this.lblDataBase.Text = "DataBase";
             // 
+            // txtConnectionString
+            // 
+            this.txtConnectionString.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtConnectionString.Enabled = false;
+            this.txtConnectionString.ForeColor = System.Drawing.Color.Navy;
+            this.txtConnectionString.Location = new System.Drawing.Point(16, 7);
+            this.txtConnectionString.Multiline = true;
+            this.txtConnectionString.Name = "txtConnectionString";
+            this.txtConnectionString.ReadOnly = true;
+            this.txtConnectionString.Size = new System.Drawing.Size(322, 27);
+            this.txtConnectionString.TabIndex = 10;
+            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 195);
+            this.ClientSize = new System.Drawing.Size(353, 198);
+            this.Controls.Add(this.txtConnectionString);
             this.Controls.Add(this.tbDataBase);
             this.Controls.Add(this.lblDataBase);
             this.Controls.Add(this.tbPass);
@@ -148,5 +162,6 @@
         private System.Windows.Forms.Label lblPass;
         private System.Windows.Forms.TextBox tbDataBase;
         private System.Windows.Forms.Label lblDataBase;
+        private System.Windows.Forms.TextBox txtConnectionString;
     }
 }
