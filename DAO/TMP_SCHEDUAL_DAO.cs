@@ -101,9 +101,9 @@ namespace DAO
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
                 // xem lại lỗi chỗ này
-                cnn.Execute("DELETE HIS_SCHEDUAL as s  Where s.THANG = @THANG and s.NAM = @NAM", new { THANG = month, NAM = year });
+                cnn.Execute("DELETE HIS_SCHEDUAL Where THANG = @THANG and NAM = @NAM", new { THANG = month, NAM = year });
 
-               cnn.Execute("INSERT INTO HIS_SCHEDUAL SELECT * FROM MT_SCHEDUAL;");
+               cnn.Execute("INSERT INTO HIS_SCHEDUAL SELECT * FROM TMP_SCHEDUAL;");
             }
         }
 
@@ -111,7 +111,7 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {     
-                cnn.Execute("INSERT INTO HIS_SCHEDUAL SELECT * FROM MT_SCHEDUAL;");
+                cnn.Execute("INSERT INTO HIS_SCHEDUAL SELECT * FROM TMP_SCHEDUAL;");
             }
         }
 

@@ -24,7 +24,7 @@ namespace DAO
         public  void SaveUser(MT_NHAN_VIEN user) {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                cnn.Execute("insert into MT_NHAN_VIEN (MA_NHAN_VIEN, HO_TEN, CHUC_VU, VAI_TRO) values (@MA_NHAN_VIEN, @HO_TEN, @CHUC_VU, @VAI_TRO)", user);   
+                cnn.Execute("insert into MT_NHAN_VIEN (MA_NHAN_VIEN, HO_TEN, CHUC_VU, VAI_TRO, PHONG_BAN) values (@MA_NHAN_VIEN, @HO_TEN, @CHUC_VU, @VAI_TRO, @PHONG_BAN)", user);   
             }
         }
 
