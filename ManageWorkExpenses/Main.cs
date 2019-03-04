@@ -30,6 +30,7 @@ namespace ManageWorkExpenses
         CACULATION_BUS busCaculation = new CACULATION_BUS();
         MT_DON_GIA_BUS busDongia = new MT_DON_GIA_BUS();
         TMP_SCHEDUAL_BUS busTMP = new TMP_SCHEDUAL_BUS();
+        List<MT_HOP_DONG> listTmpHopDong = new List<MT_HOP_DONG>();
         COMMON_BUS common = new COMMON_BUS();
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
@@ -48,10 +49,10 @@ namespace ManageWorkExpenses
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             config.AppSettings.File = "App.config";
 
-            loadAllUser();
-            LoadContract();
-            LoadListCustomer();
-            
+            this.tabControl.SelectedIndex = 2;
+            // loadAllUser();
+            // LoadContract();
+            // LoadListCustomer();           
 
 
             //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
@@ -776,7 +777,7 @@ namespace ManageWorkExpenses
                 contract.GHI_CHU                    = tbNote.Text;
 
 
-                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa Hợp đồng " + contract.SO_HOP_DONG + " của Khách hàng: " + contract.KHACH_HANG, "Xóa Hợp Đồng", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa Hợp đồng " + contract.SO_HOP_DONG + " của Khách hàng: " + contract.KHACH_HANG +"\n Việc xóa Hợp đồng có thể làm sai kết quả tính toán", "Xóa Hợp Đồng", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     bool isUpdate = busContract.DelContract(contract);
@@ -797,50 +798,58 @@ namespace ManageWorkExpenses
 
         private void btnUpdateContract_Click( object sender, EventArgs e )
         {
-            if (string.IsNullOrEmpty(idHopDong.Text) || idHopDong.Text.Equals("ID_Hidden"))
-            {
-                MessageBox.Show("Bạn chưa chọn record nào!");
-                return;
-            }
-            if (string.IsNullOrEmpty(tbSoHopDong.Text.Trim())       || 
-                string.IsNullOrEmpty(cbNgayHopDong.Text.Trim())     ||
-                string.IsNullOrEmpty(tbKhachHang.Text.Trim())       ||
-                string.IsNullOrEmpty(tbMaKhachHang.Text.Trim())     ||
-                string.IsNullOrEmpty(tbNhomKhachHang.Text.Trim())   ||
-                string.IsNullOrEmpty(tbGiaTriHopDong.Text.Trim())   ||
-                string.IsNullOrEmpty(tbTongChiPhiToiDa.Text.Trim())
-                )
-            {
-                MessageBox.Show("Các trường không được trống");
-                return;
-            }
-            try
-            {
-                MT_HOP_DONG contract = new MT_HOP_DONG();
-                contract.ID = int.Parse(idHopDong.Text);
-                contract.SO_HOP_DONG = tbSoHopDong.Text;
-                contract.NGAY_HOP_DONG = cbNgayHopDong.Value;
-                contract.NGAY_THANH_LY = cbNgayThanhLy.Value;
-                contract.KHACH_HANG = tbKhachHang.Text;
-                contract.MA_KHACH_HANG = tbMaKhachHang.Text;
-                contract.NHOM_KHACH_HANG = tbNhomKhachHang.Text;
-                contract.DIA_CHI = tbDiaChi.Text;
-                contract.TINH = tbTinh.Text;
-                contract.GIA_TRI_HOP_DONG = Convert.ToInt32(tbGiaTriHopDong.Text);
-                contract.TONG_CHI_PHI_MUC_TOI_DA = Convert.ToInt32(tbTongChiPhiToiDa.Text);
-                contract.CHI_PHI_THUC_DA_CHI = Convert.ToInt32(tbChiPhiThucDaChi.Text);
-                contract.GHI_CHU = tbNote.Text;
+            DialogResult dialogResult = MessageBox.Show("Việc cập nhật Hợp đồng, đặc biệt những phần liên quan đến Chi phí có thể sẽ làm sai lệch kết quả tính toán, dẫn tới chương trình chạy sai. \n. Bạn có chắc chắn muốn tiếp tục", "Việc chỉnh sửa có thể làm sai lệch dữ liệu", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            { 
+                if (string.IsNullOrEmpty(idHopDong.Text) || idHopDong.Text.Equals("ID_Hidden"))
+                {
+                    MessageBox.Show("Bạn chưa chọn record nào!");
+                    return;
+                }
+                if (string.IsNullOrEmpty(tbSoHopDong.Text.Trim()) ||
+                    string.IsNullOrEmpty(cbNgayHopDong.Text.Trim()) ||
+                    string.IsNullOrEmpty(tbKhachHang.Text.Trim()) ||
+                    string.IsNullOrEmpty(tbMaKhachHang.Text.Trim()) ||
+                    string.IsNullOrEmpty(tbNhomKhachHang.Text.Trim()) ||
+                    string.IsNullOrEmpty(tbGiaTriHopDong.Text.Trim()) ||
+                    string.IsNullOrEmpty(tbTongChiPhiToiDa.Text.Trim())
+                    )
+                {
+                    MessageBox.Show("Các trường không được trống");
+                    return;
+                }
+                try
+                {
+                    MT_HOP_DONG contract = new MT_HOP_DONG();
+                    contract.ID = int.Parse(idHopDong.Text);
+                    contract.SO_HOP_DONG = tbSoHopDong.Text;
+                    contract.NGAY_HOP_DONG = cbNgayHopDong.Value;
+                    contract.NGAY_THANH_LY = cbNgayThanhLy.Value;
+                    contract.KHACH_HANG = tbKhachHang.Text;
+                    contract.MA_KHACH_HANG = tbMaKhachHang.Text;
+                    contract.NHOM_KHACH_HANG = tbNhomKhachHang.Text;
+                    contract.DIA_CHI = tbDiaChi.Text;
+                    contract.TINH = tbTinh.Text;
+                    contract.GIA_TRI_HOP_DONG = Convert.ToInt32(tbGiaTriHopDong.Text);
+                    contract.TONG_CHI_PHI_MUC_TOI_DA = Convert.ToInt32(tbTongChiPhiToiDa.Text);
+                    contract.CHI_PHI_THUC_DA_CHI = Convert.ToInt32(tbChiPhiThucDaChi.Text);
+                    contract.GHI_CHU = tbNote.Text;
 
-                bool isUpdate = busContract.UpdateContract(contract);
-                string msg = "";
-                msg = ( isUpdate == true ) ? "Cập nhật Thành Công!" : "Không Cập nhật được! ";
-                MessageBox.Show(msg);
-                LoadContract();
-                btnResetHopDong_Click(sender, e);
+                    bool isUpdate = busContract.UpdateContract(contract);
+                    string msg = "";
+                    msg = ( isUpdate == true ) ? "Cập nhật Thành Công!" : "Không Cập nhật được! ";
+                    MessageBox.Show(msg);
+                    LoadContract();
+                    btnResetHopDong_Click(sender, e);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Có lỗi khi Cập nhật Hợp đồng tại: " + ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Có lỗi khi Cập nhật Hợp đồng tại: " + ex.Message);  
+                return;
             }
         }
 
@@ -1394,6 +1403,9 @@ namespace ManageWorkExpenses
 
         private void btnCalc_Click( object sender, EventArgs e )
         {
+            // Set ListTmpHopDong = null;
+            listTmpHopDong = null;
+
             bool isCN = cbCheckCN.Checked;
             int month = cbMonthCalc.Value.Month;
             int year = cbYearCalc.Value.Year;
@@ -1403,7 +1415,7 @@ namespace ManageWorkExpenses
             bool isDoneCalc = false;
             if (timelimit > TIMELIMIT)
             {
-                MessageBox.Show("Quá thời gian dùng thử 60 ngày");
+                MessageBox.Show("Đã xảy ra lỗi, vui lòng thử lại sau");
                 return;
             }
 
@@ -1482,6 +1494,7 @@ namespace ManageWorkExpenses
         {
             // Lấy danh sách MT_SCHEDUAL 
             List<MT_SCHEDUAL> listSchedual = busCaculation.getListSchedual(month, year);
+            // Nếu không có dữ liệu thì thoát
             if (listSchedual.Count <= 0)
             {
                 MessageBox.Show("Tháng được chọn không có dữ liệu");
@@ -1489,18 +1502,23 @@ namespace ManageWorkExpenses
             }
             // Lấy danh sách các công ty chưa hết kinh phí
             List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
-
+            // Set danh sách tạm hợp đồng để chuẩn bị lưu lại
+            listTmpHopDong = listCompany;
+            
+            // cài đặt số chạy % của progress bar bắt đầu từ  0
             int n = 0;
+            // Tổng số phần trăm của progress bar
             int totalPercent = listSchedual.Count;
+            // 
             int i = 0;
             foreach (var item in listSchedual)
             {
-                //Getting Type of Generic Class Model
+                // Getting Type of Generic Class Model
                 Type tModelType = item.GetType();
-                //We will be defining a PropertyInfo Object which contains details about the class property 
+                // Tạo một đối tượng PropertyInfo chứa chi tiết về thuộc tính lớp
                 PropertyInfo[] arrayPropertyInfos = tModelType.GetProperties();
 
-                //Now we will loop in all properties one by one to get value
+                //Chạy từng giá trị của từng cột
                 foreach (PropertyInfo property in arrayPropertyInfos)
                 {
                     string nameProperty = property.ToString();
@@ -1517,29 +1535,35 @@ namespace ManageWorkExpenses
                             busTMP.DelAllTMP();
                             return false;
                         }
-                        // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá tức là công ty đó không sử dụng được nữa 
+                        // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá tức hoặc nhóm công ty khác với phân loại user là công ty đó không sử dụng được với user nữa 
                         if (( listCompany[i].TONG_CHI_PHI_MUC_TOI_DA - listCompany[i].CHI_PHI_THUC_DA_CHI ) <= dongia || !nhomNV.Equals(nhomCty))
                         {
                             // Chuyển sang công ty tiếp theo 
                             i++;
+                            // Nếu chạy hết vòng lặp của công ty rồi thì chạy lại công ty một lần nữa
                             if (i == listCompany.Count())
                             {
                                 i = 0;
                             }
                         }
+                        // Nếu ngày trùng với chủ nhật thì bỏ qua nếu set ngày chủ nhật
                         //if (nameProperty.Substring(17, 20).Equals("CN") && isCN ==true)
                         //{
                         //    continue;
                         //}
-                        // Tránh vượt quá kích thước mảng
+                        // Tránh vượt quá kích thước mảng khi chạy
                         if (i < listCompany.Count())
                         {
                             // Set giá trị cho ô trống
                             property.SetValue(item, listCompany[i].MA_KHACH_HANG);
+
+                            // Cộng thêm giá trị cho Chi phí thực đã chi
+                            listCompany[i].CHI_PHI_THUC_DA_CHI += dongia; 
                         }
 
                     }
                 }
+                // Cập nhật số % cho progress bar
                 progressDialog.UpdateProgress(n * 100 / totalPercent);  
                 // Lưu lại bảng TMP  
                 busTMP.SaveSchedual(item, cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
@@ -1741,19 +1765,27 @@ namespace ManageWorkExpenses
         {
             try
             {
+                if (listTmpHopDong ==null || listTmpHopDong.Count <=0)
+                {
+                    MessageBox.Show("Danh sách hợp đồng chưa được cập nhật sau khi tính toán. Liên lạc với người phát triển nếu là lỗi.");
+                    return;
+                }
+
                 bool isExits = busTMP.CheckRunedCalc(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
                 if (isExits)
                 {
-                    DialogResult dialogResult = MessageBox.Show("Tháng được chọn đã được tính toán. Bạn có muốn ghi đè lên dữ liệu đã có sẵn? \n Chú ý: Nếu chọn ghi đè thì dữ liệu về tổng số tiền đã chi sẽ không còn chính xác nữa!", "Đã tồn tại dữ liệu", MessageBoxButtons.YesNo);
+                    DialogResult dialogResult = MessageBox.Show("Tháng được chọn đã được tính toán. Bạn có muốn ghi đè lên dữ liệu đã có sẵn? \n Chú ý: Nếu chọn ghi đè thì dữ liệu sẽ không còn chính xác nữa!", "Đã tồn tại dữ liệu", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
                     {
                         bool IsOverWrite = busTMP.OverwriteCalc(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+                        bool isOverWriteHopDong = busTMP.OverWriteHD(listTmpHopDong);
                         MessageBox.Show(( IsOverWrite == true ) ? "Đã ghi đè lên dữ liệu cũ!" : "Không ghi đè được");
                     }
                 }
                 else
                 {
                     bool isSave = busTMP.saveCalc();
+                    bool isOverWriteHopDong = busTMP.OverWriteHD(listTmpHopDong);
                     MessageBox.Show(( isSave == true ) ? "Lưu thành công!" : "Có lỗi khi lưu!");
                 }
             }

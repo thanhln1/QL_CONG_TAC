@@ -113,5 +113,41 @@ namespace DAO
                 cnn.Execute("INSERT INTO HIS_SCHEDUAL SELECT * FROM MT_SCHEDUAL;");
             }
         }
+
+        public bool OverWiteContract( List<MT_HOP_DONG> listTmpHopDong )
+        {
+            try
+            {
+                using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+                {
+                    foreach (var contract in listTmpHopDong)
+                    {
+                        StringBuilder sql = new StringBuilder();
+                        sql.Append("UPDATE MT_HOP_DONG set ");
+                        //sql.Append("SO_HOP_DONG=@SO_HOP_DONG, ");
+                        //sql.Append("NGAY_HOP_DONG=@NGAY_HOP_DONG, ");
+                        //sql.Append("NGAY_THANH_LY=@NGAY_THANH_LY, ");
+                        //sql.Append("KHACH_HANG=@KHACH_HANG, ");
+                        //sql.Append("MA_KHACH_HANG=@MA_KHACH_HANG, ");
+                        //sql.Append("NHOM_KHACH_HANG=@NHOM_KHACH_HANG, ");
+                        //sql.Append("DIA_CHI=@DIA_CHI, ");
+                        //sql.Append("TINH=@TINH, ");
+                        //sql.Append("GIA_TRI_HOP_DONG=@GIA_TRI_HOP_DONG, ");
+                        //sql.Append("TONG_CHI_PHI_MUC_TOI_DA=@TONG_CHI_PHI_MUC_TOI_DA, ");
+                        sql.Append("CHI_PHI_THUC_DA_CHI=@CHI_PHI_THUC_DA_CHI ");
+                        // sql.Append("GHI_CHU=@GHI_CHU ");
+                        sql.Append(" WHERE ID = @ID AND SO_HOP_DONG=@SO_HOP_DONG; ");
+
+                        cnn.Execute(sql.ToString(), contract); 
+                    }
+                    
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

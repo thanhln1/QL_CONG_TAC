@@ -198,5 +198,18 @@ namespace BUS
                 throw ex;
             }
         }
+
+        public bool OverWriteHD( List<MT_HOP_DONG> listTmpHopDong )
+        {
+            try
+            {
+                dao.OverWiteContract(listTmpHopDong);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
