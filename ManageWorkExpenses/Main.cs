@@ -50,9 +50,9 @@ namespace ManageWorkExpenses
             config.AppSettings.File = "App.config";
 
             this.tabControl.SelectedIndex = 2;
-            // loadAllUser();
-            // LoadContract();
-            // LoadListCustomer();           
+             loadAllUser();
+             LoadContract();
+             LoadListCustomer();           
 
 
             //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
@@ -115,6 +115,15 @@ namespace ManageWorkExpenses
                 user.HO_TEN = tbName.Text;
                 user.CHUC_VU = tbRegency.Text;
                 user.VAI_TRO = tbRole.Text;
+                if (string.IsNullOrEmpty(cbPhongBan.SelectedItem.ToString()))
+                {
+                    MessageBox.Show("Bạn phải chọn phòng ban");
+                }
+                else
+                {
+                    user.PHONG_BAN = cbPhongBan.SelectedText;
+                }
+                
                 bool isInsert = busUser.SaveUser(user);
                 messeger = ( isInsert == true ) ? "Thành công" : "Đã tồn tại nhân viên có mã: "+ user.MA_NHAN_VIEN;
                 MessageBox.Show(messeger);
@@ -162,6 +171,17 @@ namespace ManageWorkExpenses
             tbName.Text = ListUser.Rows[numrow].Cells[2].Value.ToString();
             tbRegency.Text = ListUser.Rows[numrow].Cells[3].Value.ToString();
             tbRole.Text = ListUser.Rows[numrow].Cells[4].Value.ToString();
+            try
+            {
+                cbPhongBan.SelectedIndex = cbPhongBan.Items.IndexOf(ListUser.Rows[numrow].Cells[5].Value.ToString());
+                // scbPhongBan.SelectedText = ListUser.Rows[numrow].Cells[5].Value.ToString();
+            }
+            catch (Exception)
+            {
+                cbPhongBan.SelectedIndex = -1;
+            }
+            
+
         }
 
         private void btnImportNhanVien_Click( object sender, EventArgs e )
@@ -703,6 +723,15 @@ namespace ManageWorkExpenses
                 user.HO_TEN = tbName.Text;
                 user.CHUC_VU = tbRegency.Text;
                 user.VAI_TRO = tbRole.Text;
+                if (string.IsNullOrEmpty( cbPhongBan.SelectedItem.ToString()))
+                {
+                    MessageBox.Show("Bạn phải chọn phòng ban");
+                }
+                else
+                {
+                    user.PHONG_BAN = cbPhongBan.SelectedItem.ToString();
+                }
+               
                 bool isUpdate  = busUser.UpdateUser(user);
                 string msg = "";
                 msg = ( isUpdate == true ) ? "Cập nhật Thành Công!" : "Không Cập nhật được! ";
@@ -732,6 +761,7 @@ namespace ManageWorkExpenses
                 user.HO_TEN = tbName.Text;
                 user.CHUC_VU = tbRegency.Text;
                 user.VAI_TRO = tbRole.Text;
+                user.PHONG_BAN = cbPhongBan.SelectedItem.ToString();
 
                 DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa nhân viên "+ user.HO_TEN+" có Mã nhân viên là: " + user.MA_NHAN_VIEN, "Xóa Nhân Viên", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -1531,7 +1561,7 @@ namespace ManageWorkExpenses
                         string nhomCty = busContract.getGroupCompany(listCompany[i].MA_KHACH_HANG);
                         if (string.IsNullOrEmpty(nhomNV) || string.IsNullOrEmpty(nhomCty))
                         {
-                            MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên hoặc nhóm Khách hàng!");
+                            MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên: "+ item.MA_NHAN_VIEN+" hoặc Khách hàng: "+listCompany[i].MA_KHACH_HANG);
                             busTMP.DelAllTMP();
                             return false;
                         }
@@ -1547,10 +1577,11 @@ namespace ManageWorkExpenses
                             }
                         }
                         // Nếu ngày trùng với chủ nhật thì bỏ qua nếu set ngày chủ nhật
-                        //if (nameProperty.Substring(17, 20).Equals("CN") && isCN ==true)
-                        //{
-                        //    continue;
-                        //}
+                        
+                        if (nameProperty.Substring(nameProperty.IndexOf("_")+1, 2).Equals("CN") && isCN ==true)
+                        {
+                            continue;
+                        }
                         // Tránh vượt quá kích thước mảng khi chạy
                         if (i < listCompany.Count())
                         {
