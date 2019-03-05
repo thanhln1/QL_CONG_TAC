@@ -50,11 +50,13 @@ namespace ManageWorkExpenses
             config.AppSettings.File = "App.config";
 
             this.tabControl.SelectedIndex = 2;
-             loadAllUser();
-             LoadContract();
-             LoadListCustomer();           
-
-
+            if (loadConfig())
+            {
+                loadAllUser();
+                LoadContract();
+                LoadListCustomer();
+            }                       
+                                  
             //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
             //if (logMode.Equals("ON"))
             //{
@@ -444,13 +446,7 @@ namespace ManageWorkExpenses
                 MessageBox.Show("Có lỗi khi lấy danh sách HĐ tại : " + ex.Message);
                 //  logger.log("Có lỗi khi lấy danh sách cán bộ tại : " + ex.Message);    
             }
-        }
-
-        private void menuConfig_Click( object sender, EventArgs e )
-        {
-            Config setting = new Config();
-            setting.ShowDialog();
-        }
+        }                                                
 
         private void ListContract_CellDoubleClick( object sender, DataGridViewCellEventArgs e )
         {
@@ -1825,6 +1821,52 @@ namespace ManageWorkExpenses
             {
                 MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: "+ ex.Message);
             }            
+        }
+
+        private void btnSaveConfig_Click( object sender, EventArgs e )
+        {   
+            string source = tbSource.Text.Trim();
+            string database = tbDataBase.Text.Trim();
+            string user = tbUser.Text.Trim();
+            string pass = Utils.EncryptString(tbPass.Text, Utils.SECRETKEY);
+
+            if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+            {
+                MessageBox.Show("Thông số không hợp lệ", "Thông báo !", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }  
+            string sqlConnection = "Data Source=" + source + ";Initial Catalog=" + database + ";Persist Security Info=True;User ID=" + user + ";Password=" + pass;
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.File = "App.config";
+            config.AppSettings.Settings["CONNECTION"].Value = sqlConnection;
+            config.Save(ConfigurationSaveMode.Full);
+            ConfigurationManager.RefreshSection("appSettings");
+            MessageBox.Show("Lưu cấu hình thành công, Chương trình sẽ khởi động lại");
+            Application.Restart();
+        }
+        private bool loadConfig()
+        { 
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+            config.AppSettings.File = "App.config";
+            string connection = config.AppSettings.Settings["CONNECTION"].Value;
+
+            // string con = ReadConnectionString();
+            txtConnectionString.Text = connection;
+            if (string.IsNullOrEmpty(connection))
+            {
+                txtConnectionString.Text = "Chưa thiết lập kết nối với cơ sở dữ liệu";
+                return false;                 
+            }
+            else
+            {
+                int len = connection.Length;
+                tbSource.Text = connection.Substring(12, connection.IndexOf(@";Initial") - 12);
+                tbDataBase.Text = connection.Substring(connection.IndexOf(@"Initial Catalog=") + 16, connection.IndexOf(@";Persist") - 50);
+                //  tbUser.Text = connection.Substring(connection.IndexOf(@"User ID="), connection.IndexOf(@";Password")-11-); 
+                // tbPass.Text = Utils.DecryptString(connection.Substring(connection.IndexOf(@"Password=")), Utils.SECRETKEY);
+                return true;
+            }
         }
     }      
 }
