@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LOG", "LOG\LOG.csproj", "{9
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SETTUP-QLCTP", "SETTUP-QLCTP\SETTUP-QLCTP.vdproj", "{2D654652-B62D-4BFE-B290-6D035FD82CDE}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SETTUP-QLCTP-2019", "SETTUP-QLCTP-2019\SETTUP-QLCTP-2019.vdproj", "{ED3DD3C6-22EA-4D7B-AE00-0E08AEC61649}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,8 @@ Global
 		{95C1A1C8-D405-4DA8-8130-DF94C03CA458}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D654652-B62D-4BFE-B290-6D035FD82CDE}.Debug|Any CPU.ActiveCfg = Debug
 		{2D654652-B62D-4BFE-B290-6D035FD82CDE}.Release|Any CPU.ActiveCfg = Release
+		{ED3DD3C6-22EA-4D7B-AE00-0E08AEC61649}.Debug|Any CPU.ActiveCfg = Debug
+		{ED3DD3C6-22EA-4D7B-AE00-0E08AEC61649}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
