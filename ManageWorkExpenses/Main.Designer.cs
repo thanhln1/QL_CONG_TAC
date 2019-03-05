@@ -245,20 +245,20 @@
             this.debugOn,
             this.debugOff});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.debugToolStripMenuItem.Text = "Debug";
             // 
             // debugOn
             // 
             this.debugOn.Name = "debugOn";
-            this.debugOn.Size = new System.Drawing.Size(152, 22);
+            this.debugOn.Size = new System.Drawing.Size(91, 22);
             this.debugOn.Text = "On";
             this.debugOn.Click += new System.EventHandler(this.debugOn_Click);
             // 
             // debugOff
             // 
             this.debugOff.Name = "debugOff";
-            this.debugOff.Size = new System.Drawing.Size(152, 22);
+            this.debugOff.Size = new System.Drawing.Size(91, 22);
             this.debugOff.Text = "Off";
             this.debugOff.Click += new System.EventHandler(this.debugOff_Click);
             // 
@@ -273,7 +273,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 24);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(908, 458);
+            this.tabControl.Size = new System.Drawing.Size(908, 626);
             this.tabControl.TabIndex = 1;
             // 
             // TabNhanVien
@@ -283,7 +283,7 @@
             this.TabNhanVien.Location = new System.Drawing.Point(4, 22);
             this.TabNhanVien.Name = "TabNhanVien";
             this.TabNhanVien.Padding = new System.Windows.Forms.Padding(3);
-            this.TabNhanVien.Size = new System.Drawing.Size(900, 432);
+            this.TabNhanVien.Size = new System.Drawing.Size(900, 600);
             this.TabNhanVien.TabIndex = 0;
             this.TabNhanVien.Text = "Nhân Viên";
             this.TabNhanVien.UseVisualStyleBackColor = true;
@@ -294,7 +294,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(353, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(544, 426);
+            this.panel2.Size = new System.Drawing.Size(544, 594);
             this.panel2.TabIndex = 1;
             // 
             // ListUser
@@ -338,7 +338,7 @@
             dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ListUser.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
-            this.ListUser.Size = new System.Drawing.Size(544, 426);
+            this.ListUser.Size = new System.Drawing.Size(544, 594);
             this.ListUser.TabIndex = 6;
             this.ListUser.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListUser_CellDoubleClick);
             // 
@@ -402,7 +402,7 @@
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.MinimumSize = new System.Drawing.Size(350, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(350, 426);
+            this.panel1.Size = new System.Drawing.Size(350, 594);
             this.panel1.TabIndex = 0;
             // 
             // cbPhongBan
@@ -579,7 +579,7 @@
             this.TabHopDong.Location = new System.Drawing.Point(4, 22);
             this.TabHopDong.Name = "TabHopDong";
             this.TabHopDong.Padding = new System.Windows.Forms.Padding(3);
-            this.TabHopDong.Size = new System.Drawing.Size(900, 432);
+            this.TabHopDong.Size = new System.Drawing.Size(900, 600);
             this.TabHopDong.TabIndex = 1;
             this.TabHopDong.Text = "Hợp Đồng";
             this.TabHopDong.UseVisualStyleBackColor = true;
@@ -590,7 +590,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(353, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(544, 426);
+            this.panel4.Size = new System.Drawing.Size(544, 594);
             this.panel4.TabIndex = 3;
             // 
             // ListContract
@@ -639,7 +639,7 @@
             dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ListContract.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
-            this.ListContract.Size = new System.Drawing.Size(544, 426);
+            this.ListContract.Size = new System.Drawing.Size(544, 594);
             this.ListContract.TabIndex = 7;
             this.ListContract.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListContract_CellDoubleClick);
             // 
@@ -759,7 +759,7 @@
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.MinimumSize = new System.Drawing.Size(350, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(350, 426);
+            this.panel3.Size = new System.Drawing.Size(350, 594);
             this.panel3.TabIndex = 2;
             // 
             // cbNgayThanhLy
@@ -1047,7 +1047,7 @@
             this.tabKeHoachKiemToan.Location = new System.Drawing.Point(4, 22);
             this.tabKeHoachKiemToan.Name = "tabKeHoachKiemToan";
             this.tabKeHoachKiemToan.Padding = new System.Windows.Forms.Padding(3);
-            this.tabKeHoachKiemToan.Size = new System.Drawing.Size(900, 432);
+            this.tabKeHoachKiemToan.Size = new System.Drawing.Size(900, 600);
             this.tabKeHoachKiemToan.TabIndex = 2;
             this.tabKeHoachKiemToan.Text = "Kế Hoạch Kiểm Toán";
             this.tabKeHoachKiemToan.UseVisualStyleBackColor = true;
@@ -1058,7 +1058,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(253, 3);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(644, 426);
+            this.panel6.Size = new System.Drawing.Size(644, 594);
             this.panel6.TabIndex = 1;
             // 
             // panel8
@@ -1067,7 +1067,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(0, 0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(644, 426);
+            this.panel8.Size = new System.Drawing.Size(644, 594);
             this.panel8.TabIndex = 3;
             // 
             // ListSchedual
@@ -1113,7 +1113,7 @@
             this.ListSchedual.Location = new System.Drawing.Point(0, 0);
             this.ListSchedual.Name = "ListSchedual";
             this.ListSchedual.RowHeadersVisible = false;
-            this.ListSchedual.Size = new System.Drawing.Size(644, 426);
+            this.ListSchedual.Size = new System.Drawing.Size(644, 594);
             this.ListSchedual.TabIndex = 0;
             this.ListSchedual.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.ListSchedual_CellFormatting);
             this.ListSchedual.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.ListSchedual_CellPainting);
@@ -1366,7 +1366,7 @@
             this.panel5.Location = new System.Drawing.Point(3, 3);
             this.panel5.MinimumSize = new System.Drawing.Size(250, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(250, 426);
+            this.panel5.Size = new System.Drawing.Size(250, 594);
             this.panel5.TabIndex = 0;
             // 
             // groupBox6
@@ -1592,7 +1592,7 @@
             this.tabExport.Location = new System.Drawing.Point(4, 22);
             this.tabExport.Name = "tabExport";
             this.tabExport.Padding = new System.Windows.Forms.Padding(3);
-            this.tabExport.Size = new System.Drawing.Size(900, 432);
+            this.tabExport.Size = new System.Drawing.Size(900, 600);
             this.tabExport.TabIndex = 3;
             this.tabExport.Text = "Xuất báo cáo";
             this.tabExport.UseVisualStyleBackColor = true;
@@ -1606,7 +1606,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(308, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(589, 426);
+            this.dataGridView1.Size = new System.Drawing.Size(589, 594);
             this.dataGridView1.TabIndex = 2;
             // 
             // panel7
@@ -1615,7 +1615,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel7.Location = new System.Drawing.Point(3, 3);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(305, 426);
+            this.panel7.Size = new System.Drawing.Size(305, 594);
             this.panel7.TabIndex = 1;
             // 
             // groupBox3
@@ -1819,12 +1819,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(908, 482);
+            this.ClientSize = new System.Drawing.Size(908, 650);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(798, 485);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Quản lý công tác phí";

@@ -1161,7 +1161,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("Có lỗi xử lý tại: "+ex.Message+ "\n Vui lòng kiểm tra lại dữ liệu");
             }
         }
 
@@ -1400,109 +1400,133 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
             }
         }
 
         private void btnLoadSchedual_Click( object sender, EventArgs e )
         {
-            int month = cbMonth.Value.Month;
-            int year = cbYear.Value.Year; 
-            List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
-            if (listRealSchedual == null)
+            try
             {
-                MessageBox.Show("Không có dữ liệu!");
+                int month = cbMonth.Value.Month;
+                int year = cbYear.Value.Year;
+                List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
+                if (listRealSchedual == null)
+                {
+                    MessageBox.Show("Không có dữ liệu!");
+                }
+                ListSchedual.DataSource = listRealSchedual;
             }
-            ListSchedual.DataSource = listRealSchedual;                                
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi tại: "+ ex.Message+ " \n Vui lòng kiểm tra lại dữ liệu");
+            }
+                                         
         }
 
         private void btnSearchSchedualFake_Click( object sender, EventArgs e )
         {
-            int month = cbMonth.Value.Month;
-            int year = cbYear.Value.Year;
-            List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "FAKE");
-            if (listRealSchedual == null)
+            try
             {
-                MessageBox.Show("Không có dữ liệu!");
+                int month = cbMonth.Value.Month;
+                int year = cbYear.Value.Year;
+                List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "FAKE");
+                if (listRealSchedual == null)
+                {
+                    MessageBox.Show("Không có dữ liệu!");
+                }
+                ListSchedual.DataSource = listRealSchedual;
             }
-            ListSchedual.DataSource = listRealSchedual;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
+            }
+            
         }
 
         private void btnCalc_Click( object sender, EventArgs e )
         {
-            // Set ListTmpHopDong = null;
-            listTmpHopDong = null;
-
-            bool isCN = cbCheckCN.Checked;
-            int month = cbMonthCalc.Value.Month;
-            int year = cbYearCalc.Value.Year;
-
-            int timelimit = WinRegForm();
-
-            bool isDoneCalc = false;
-            if (timelimit > TIMELIMIT)
+            try
             {
-                MessageBox.Show("Đã xảy ra lỗi, vui lòng thử lại sau");
-                return;
-            }
+                // Set ListTmpHopDong = null;
+                listTmpHopDong = null;
 
-            // If a process is already running, warn the user and cancel the operation
-            if (isProcessRunning)
-            {
-                MessageBox.Show("Thuật toán đang chạy, xin vui lòng chờ");
-                return;
-            } 
+                bool isCN = cbCheckCN.Checked;
+                int month = cbMonthCalc.Value.Month;
+                int year = cbYearCalc.Value.Year;
 
-            // Initialize the thread that will handle the background process
-            Thread backgroundThread = new Thread(
-                new ThreadStart(() =>
+                int timelimit = WinRegForm();
+
+                bool isDoneCalc = false;
+                if (timelimit > TIMELIMIT)
                 {
+                    MessageBox.Show("Đã xảy ra lỗi, vui lòng thử lại sau");
+                    return;
+                }
+
+                // If a process is already running, warn the user and cancel the operation
+                if (isProcessRunning)
+                {
+                    MessageBox.Show("Thuật toán đang chạy, xin vui lòng chờ");
+                    return;
+                }
+
+                // Initialize the thread that will handle the background process
+                Thread backgroundThread = new Thread(
+                    new ThreadStart(() =>
+                    {
                     // Set the flag that indicates if a process is currently running
                     isProcessRunning = true;
 
                     // Xóa bảng TMP trước khi thực hiện
-                     busTMP.DelAllTMP();
+                    busTMP.DelAllTMP();
 
-                    if (rdTuanTu.Checked == true)
-                    {
-                       isDoneCalc =  RunCalcTuanTu(month, year, isCN);
-                    }
-                    else if (rdNgauNhien.Checked == true)
-                    {
-                       isDoneCalc = RunCalcNgauNhien(month, year, isCN);
-                    }
-                    else if (rdToiUu.Checked == true)
-                    {
-                       isDoneCalc = RunCalcToiUu(month, year, isCN);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Bạn chưa chọn phương pháp tính toán nào hoặc đã xảy ra lỗi chương trình!");
-                    }   
+                        if (rdTuanTu.Checked == true)
+                        {
+                            isDoneCalc = RunCalcTuanTu(month, year, isCN);
+                        }
+                        else if (rdNgauNhien.Checked == true)
+                        {
+                            isDoneCalc = RunCalcNgauNhien(month, year, isCN);
+                        }
+                        else if (rdToiUu.Checked == true)
+                        {
+                            isDoneCalc = RunCalcToiUu(month, year, isCN);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Bạn chưa chọn phương pháp tính toán nào hoặc đã xảy ra lỗi chương trình!");
+                        }
 
                     // Show a dialog box that confirms the process has completed
                     // MessageBox.Show("Hoàn Thành");  
                     // Close the dialog if it hasn't been already
                     if (progressDialog.InvokeRequired)
-                        progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+                            progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
 
                     // Reset the flag that indicates if a process is currently running
                     isProcessRunning = false;
+                    }
+                ));
+
+                // Start the background process thread
+                backgroundThread.Start();
+
+                // Open the dialog
+                progressDialog.ShowDialog();
+                if (isDoneCalc)
+                {
+                    List<VW_SCHEDUAL> listTMP = busTMP.LoadListSchedual(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+                    ListSchedual.DataSource = listTMP;
+
+                    btnSave.Enabled = true;
                 }
-            ));
-
-            // Start the background process thread
-            backgroundThread.Start();
-
-            // Open the dialog
-            progressDialog.ShowDialog();
-            if (isDoneCalc)
+            }
+            catch (Exception ex)
             {
-                List<VW_SCHEDUAL> listTMP = busTMP.LoadListSchedual(cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
-                ListSchedual.DataSource = listTMP;
-
-                btnSave.Enabled = true;
-            }            
+                MessageBox.Show("Đã xảy ra lỗi tại: "+ex.Message +" /n Hãy kiểm tra lại thông tin nhập vào hoặc chuẩn hóa dữ liệu");
+            }
+                      
         }
 
         private bool RunCalcToiUu(int month, int year, bool isCN)
@@ -1824,49 +1848,64 @@ namespace ManageWorkExpenses
         }
 
         private void btnSaveConfig_Click( object sender, EventArgs e )
-        {   
-            string source = tbSource.Text.Trim();
-            string database = tbDataBase.Text.Trim();
-            string user = tbUser.Text.Trim();
-            string pass = Utils.EncryptString(tbPass.Text, Utils.SECRETKEY);
-
-            if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+        {
+            try
             {
-                MessageBox.Show("Thông số không hợp lệ", "Thông báo !", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }  
-            string sqlConnection = "Data Source=" + source + ";Initial Catalog=" + database + ";Persist Security Info=True;User ID=" + user + ";Password=" + pass;
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.File = "App.config";
-            config.AppSettings.Settings["CONNECTION"].Value = sqlConnection;
-            config.Save(ConfigurationSaveMode.Full);
-            ConfigurationManager.RefreshSection("appSettings");
-            MessageBox.Show("Lưu cấu hình thành công, Chương trình sẽ khởi động lại");
-            Application.Restart();
+                string source = tbSource.Text.Trim();
+                string database = tbDataBase.Text.Trim();
+                string user = tbUser.Text.Trim();
+                string pass = Utils.EncryptString(tbPass.Text, Utils.SECRETKEY);
+
+                if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+                {
+                    MessageBox.Show("Thông số không hợp lệ", "Thông báo !", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                string sqlConnection = "Data Source=" + source + ";Initial Catalog=" + database + ";Persist Security Info=True;User ID=" + user + ";Password=" + pass;
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.AppSettings.File = "App.config";
+                config.AppSettings.Settings["CONNECTION"].Value = sqlConnection;
+                config.Save(ConfigurationSaveMode.Full);
+                ConfigurationManager.RefreshSection("appSettings");
+                MessageBox.Show("Lưu cấu hình thành công, Chương trình sẽ khởi động lại");
+                Application.Restart();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
+            }             
         }
         private bool loadConfig()
-        { 
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-            config.AppSettings.File = "App.config";
-            string connection = config.AppSettings.Settings["CONNECTION"].Value;
+        {
+            try
+            {
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+                config.AppSettings.File = "App.config";
+                string connection = config.AppSettings.Settings["CONNECTION"].Value;
 
-            // string con = ReadConnectionString();
-            txtConnectionString.Text = connection;
-            if (string.IsNullOrEmpty(connection))
-            {
-                txtConnectionString.Text = "Chưa thiết lập kết nối với cơ sở dữ liệu";
-                return false;                 
+                // string con = ReadConnectionString();
+                txtConnectionString.Text = connection;
+                if (string.IsNullOrEmpty(connection))
+                {
+                    txtConnectionString.Text = "Chưa thiết lập kết nối với cơ sở dữ liệu";
+                    return false;
+                }
+                else
+                {
+                    int len = connection.Length;
+                    tbSource.Text = connection.Substring(12, connection.IndexOf(@";Initial") - 12);
+                    tbDataBase.Text = connection.Substring(connection.IndexOf(@"Initial Catalog=") + 16, connection.IndexOf(@";Persist") - 50);
+                    //  tbUser.Text = connection.Substring(connection.IndexOf(@"User ID="), connection.IndexOf(@";Password")-11-); 
+                    // tbPass.Text = Utils.DecryptString(connection.Substring(connection.IndexOf(@"Password=")), Utils.SECRETKEY);
+                    return true;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                int len = connection.Length;
-                tbSource.Text = connection.Substring(12, connection.IndexOf(@";Initial") - 12);
-                tbDataBase.Text = connection.Substring(connection.IndexOf(@"Initial Catalog=") + 16, connection.IndexOf(@";Persist") - 50);
-                //  tbUser.Text = connection.Substring(connection.IndexOf(@"User ID="), connection.IndexOf(@";Password")-11-); 
-                // tbPass.Text = Utils.DecryptString(connection.Substring(connection.IndexOf(@"Password=")), Utils.SECRETKEY);
-                return true;
-            }
+                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
+                return false;
+            }             
         }
     }      
 }
