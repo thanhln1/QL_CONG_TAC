@@ -476,8 +476,9 @@ namespace ManageWorkExpenses
                 tbChiPhiThucDaChi.Text = ListContract.Rows[numrow].Cells[11].Value.ToString();
                 tbNote.Text = ListContract.Rows[numrow].Cells[12].Value.ToString();
             }
-            catch(Exception ex){
-
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Thông báo !", MessageBoxButtons.OK, MessageBoxIcon.Warning);              
             }              
         }
 
