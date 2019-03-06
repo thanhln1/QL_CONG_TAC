@@ -17,6 +17,7 @@ using System.Linq;
 using Microsoft.Win32;
 using System.Text;
 using System.Security.Cryptography;
+using System.Data.SqlClient;
 
 namespace ManageWorkExpenses
 {
@@ -1856,7 +1857,7 @@ namespace ManageWorkExpenses
                 string user = tbUser.Text.Trim();
                 string pass = Utils.EncryptString(tbPass.Text, Utils.SECRETKEY);
 
-                if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+                if (string .IsNullOrEmpty(source) || string.IsNullOrEmpty(database) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
                 {
                     MessageBox.Show("Thông số không hợp lệ", "Thông báo !", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -1864,7 +1865,12 @@ namespace ManageWorkExpenses
                 string sqlConnection = "Data Source=" + source + ";Initial Catalog=" + database + ";Persist Security Info=True;User ID=" + user + ";Password=" + pass;
                 Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 config.AppSettings.File = "App.config";
-                config.AppSettings.Settings["CONNECTION"].Value = sqlConnection;
+                config.AppSettings.Settings["DATASOURCE"].Value = source;
+                config.AppSettings.Settings["DB"].Value = database;
+                config.AppSettings.Settings["USERID"].Value = user;
+                config.AppSettings.Settings["PASSWORD"].Value = pass;
+
+                // config.AppSettings.Settings["CONNECTION"].Value = sqlConnection;
                 config.Save(ConfigurationSaveMode.Full);
                 ConfigurationManager.RefreshSection("appSettings");
                 MessageBox.Show("Lưu cấu hình thành công, Chương trình sẽ khởi động lại");
@@ -1882,22 +1888,40 @@ namespace ManageWorkExpenses
                 Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
                 config.AppSettings.File = "App.config";
-                string connection = config.AppSettings.Settings["CONNECTION"].Value;
+                string source = config.AppSettings.Settings["DATASOURCE"].Value;
+                string database = config.AppSettings.Settings["DB"].Value;
+                string user = config.AppSettings.Settings["USERID"].Value;
+                string pass = config.AppSettings.Settings["PASSWORD"].Value;
+
+                string connection = "Data Source=" + source + ";Initial Catalog=" + database + ";Persist Security Info=True;User ID=" + user + ";Password=" + Utils.DecryptString(pass, Utils.SECRETKEY);
 
                 // string con = ReadConnectionString();
-                txtConnectionString.Text = connection;
+                // txtConnectionString.Text = connection;
                 if (string.IsNullOrEmpty(connection))
                 {
                     txtConnectionString.Text = "Chưa thiết lập kết nối với cơ sở dữ liệu";
                     return false;
-                }
+                } 
                 else
                 {
                     int len = connection.Length;
-                    tbSource.Text = connection.Substring(12, connection.IndexOf(@";Initial") - 12);
-                    tbDataBase.Text = connection.Substring(connection.IndexOf(@"Initial Catalog=") + 16, connection.IndexOf(@";Persist") - 50);
-                    //  tbUser.Text = connection.Substring(connection.IndexOf(@"User ID="), connection.IndexOf(@";Password")-11-); 
-                    // tbPass.Text = Utils.DecryptString(connection.Substring(connection.IndexOf(@"Password=")), Utils.SECRETKEY);
+                    tbSource.Text = source;
+                    tbDataBase.Text = database;
+                    tbUser.Text = user;
+                    tbPass.Text = Utils.DecryptString(pass, Utils.SECRETKEY);
+
+                    using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(connection))
+                    {
+                        try
+                        {
+                            cnn.Open();      
+                        }
+                        catch (SqlException exSQL)
+                        {
+                            MessageBox.Show("Không thể kết nối cơ sở dữ liệu, lỗi tại: "+ exSQL.Message);
+                            return false;
+                        }
+                    }
                     return true;
                 }
             }

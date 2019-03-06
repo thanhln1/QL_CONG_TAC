@@ -13,7 +13,7 @@ namespace ManageWorkExpenses
         public static string LogDirectory = ".\\";
         //public static string LogFilePath = LogDirectory + "Log_" + DateTime.Now.ToString("dd_MM_yyyy__HHmmss") + ".log";
 
-        private static byte[] _salt = Encoding.ASCII.GetBytes("QLCTP");
+        private static byte[] _salt = Encoding.ASCII.GetBytes("QLCTP_NguyenDangThe");
         public static string EncryptString( string plainText, string sharedSecret )
         {
             if (string.IsNullOrEmpty(plainText))
@@ -53,7 +53,7 @@ namespace ManageWorkExpenses
                     outStr = Convert.ToBase64String(msEncrypt.ToArray());
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 outStr = plainText;
             }
@@ -109,7 +109,7 @@ namespace ManageWorkExpenses
                     }
                 }
             }
-            catch
+            catch  (Exception ex)
             {
                 plaintext = "";
             }
