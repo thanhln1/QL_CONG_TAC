@@ -38,6 +38,9 @@ namespace ManageWorkExpenses
         const string FONT_SIZE_11 = "11";
         const int TIMELIMIT = 60;
 
+        // Khởi tạo đối tượng lấy số ngẫu nhiên
+        Random random = new Random(); 
+
         // Initialize the dialog that will contain the progress bar
         ProgressForm progressDialog = new ProgressForm();
 
@@ -48,14 +51,13 @@ namespace ManageWorkExpenses
         {
             InitializeComponent();
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.File = "App.config";
-
-            this.tabControl.SelectedIndex = 2;
+            config.AppSettings.File = "App.config";             
             if (loadConfig())
             {
+                this.tabControl.SelectedIndex = 2;
                 loadAllUser();
                 LoadContract();
-                LoadListCustomer();
+                LoadListCustomer();                 
             }                       
                                   
             //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
@@ -1445,6 +1447,7 @@ namespace ManageWorkExpenses
             
         }
 
+       
         private void btnCalc_Click( object sender, EventArgs e )
         {
             try
@@ -1538,8 +1541,97 @@ namespace ManageWorkExpenses
 
         private bool RunCalcNgauNhien(int month, int year, bool isCN)
         {
-            MessageBox.Show("Thuật toán đang được phát triển, vui lòng thử lại sau");
-            return false;
+
+            // Lấy danh sách MT_SCHEDUAL 
+            List<MT_SCHEDUAL> listSchedual = busCaculation.getListSchedual(month, year);
+            // Nếu không có dữ liệu thì thoát
+            if (listSchedual.Count <= 0)
+            {
+                MessageBox.Show("Tháng được chọn không có dữ liệu");
+                return false;
+            }
+            // Lấy danh sách các công ty chưa hết kinh phí
+            List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
+            // Set danh sách tạm hợp đồng để chuẩn bị lưu lại
+            listTmpHopDong = listCompany;
+
+            // cài đặt số chạy % của progress bar bắt đầu từ  0
+            int n = 0;
+            // Tổng số phần trăm của progress bar
+            int totalPercent = listSchedual.Count;
+            // 
+            
+            List<MT_HOP_DONG> listCompanyUsed = new List<MT_HOP_DONG>();
+            foreach (var item in listSchedual)
+            {
+                int i = random.Next(0, listCompany.Count);
+                // Getting Type of Generic Class Model
+                Type tModelType = item.GetType();
+                // Tạo một đối tượng PropertyInfo chứa chi tiết về thuộc tính lớp
+                PropertyInfo[] arrayPropertyInfos = tModelType.GetProperties();
+               
+                //Chạy từng giá trị của từng cột
+                foreach (PropertyInfo property in arrayPropertyInfos)
+                {
+                    string nameProperty = property.ToString();
+                    // Nếu ô còn trống thì xử lý
+                    if (string.IsNullOrEmpty(property.GetValue(item).ToString()))
+                    {
+                        // Lấy đơn giá của Công ty theo địa chỉ
+                        int dongia = GetDonGia(listCompany[i].TINH);
+                        string nhomNV = busUser.getGroupUser(item.MA_NHAN_VIEN);
+                        string nhomCty = busContract.getGroupCompany(listCompany[i].MA_KHACH_HANG);
+                        if (string.IsNullOrEmpty(nhomNV) || string.IsNullOrEmpty(nhomCty))
+                        {
+                            MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên: " + item.MA_NHAN_VIEN + " hoặc Khách hàng: " + listCompany[i].MA_KHACH_HANG);
+                            busTMP.DelAllTMP();
+                            return false;
+                        }
+                        // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá tức hoặc nhóm công ty khác với phân loại user là công ty đó không sử dụng được với user nữa 
+                        while (listCompany[i].TONG_CHI_PHI_MUC_TOI_DA - listCompany[i].CHI_PHI_THUC_DA_CHI >= dongia || nhomNV.Equals(nhomCty))
+                        {                               
+                            for (int j = 0 ; j < listCompany.Count ; j++)
+                            {
+                                for (int k = 0 ; k < listCompanyUsed.Count ; k++)
+                                {
+                                    if (listCompanyUsed[k] != listCompany[j])
+                                    {
+                                        listCompanyUsed.Add(listCompany[i]);
+                                    }
+                                }
+                                
+                                if (listCompanyUsed.Count >= listCompany.Count)
+                                {
+                                    break;
+                                }
+                            }
+                            i = random.Next(0, listCompany.Count);
+                        }
+                        // Nếu ngày trùng với chủ nhật thì bỏ qua nếu set ngày chủ nhật
+
+                        if (nameProperty.Substring(nameProperty.IndexOf("_") + 1, 2).Equals("CN") && isCN == true)
+                        {
+                            continue;
+                        }
+                        // Tránh vượt quá kích thước mảng khi chạy
+                        if (i < listCompany.Count())
+                        {
+                            // Set giá trị cho ô trống
+                            property.SetValue(item, listCompany[i].MA_KHACH_HANG);
+
+                            // Cộng thêm giá trị cho Chi phí thực đã chi
+                            listCompany[i].CHI_PHI_THUC_DA_CHI += dongia;
+                        }
+
+                    }
+                }
+                // Cập nhật số % cho progress bar
+                progressDialog.UpdateProgress(n * 100 / totalPercent);
+                // Lưu lại bảng TMP  
+                busTMP.SaveSchedual(item, cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
+                n++;
+            }
+            return true;
         }
 
         private bool RunCalcTuanTu( int month, int year, bool isCN )
@@ -1899,7 +1991,8 @@ namespace ManageWorkExpenses
                 // txtConnectionString.Text = connection;
                 if (string.IsNullOrEmpty(connection))
                 {
-                    txtConnectionString.Text = "Chưa thiết lập kết nối với cơ sở dữ liệu";
+                    txtConnectionString.Text = "Chưa thiết lập kết nối với cơ sở dữ liệu, Hãy thiết lập kết nối trước khi sử dụng.";
+                    this.tabControl.SelectedIndex = 4;
                     return false;
                 } 
                 else
