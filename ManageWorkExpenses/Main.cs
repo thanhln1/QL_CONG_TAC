@@ -27,7 +27,6 @@ namespace ManageWorkExpenses
         MT_USER_BUS busUser = new MT_USER_BUS();
         MT_CONTRACT_BUS busContract = new MT_CONTRACT_BUS();
         MT_SCHEDUAL_BUS busSchedual = new MT_SCHEDUAL_BUS();
-        HIS_SCHEDUAL_BUS busHisSchedual = new HIS_SCHEDUAL_BUS();
         MT_LICH_CT_BUS busCalenda = new MT_LICH_CT_BUS();
         CACULATION_BUS busCaculation = new CACULATION_BUS();
         MT_DON_GIA_BUS busDongia = new MT_DON_GIA_BUS();
@@ -1911,49 +1910,6 @@ namespace ManageWorkExpenses
         {
             try
             {
-
-                HIS_SCHEDUAL shedual = new HIS_SCHEDUAL();               
-                for (int i = 6; i <= ListSchedual.RowCount; i++)
-                {
-                    shedual.THANG = cbMonth.Value.Month;
-                    shedual.NAM = cbYear.Value.Year;
-                    shedual.MA_NHAN_VIEN    = ListSchedual.Rows[i].Cells[3].ToString();
-                    shedual.TUAN1_THU2      = ListSchedual.Rows[i].Cells[5] .ToString();
-                    shedual.TUAN1_THU3      = ListSchedual.Rows[i].Cells[6] .ToString();
-                    shedual.TUAN1_THU4      = ListSchedual.Rows[i].Cells[7] .ToString();
-                    shedual.TUAN1_THU5      = ListSchedual.Rows[i].Cells[8] .ToString();
-                    shedual.TUAN1_THU6      = ListSchedual.Rows[i].Cells[9] .ToString();
-                    shedual.TUAN1_THU7      = ListSchedual.Rows[i].Cells[10].ToString();
-                    shedual.TUAN1_CN        = ListSchedual.Rows[i].Cells[11].ToString();
-                    shedual.TUAN2_THU2      = ListSchedual.Rows[i].Cells[12].ToString();
-                    shedual.TUAN2_THU3      = ListSchedual.Rows[i].Cells[13].ToString();
-                    shedual.TUAN2_THU4      = ListSchedual.Rows[i].Cells[14].ToString();
-                    shedual.TUAN2_THU5      = ListSchedual.Rows[i].Cells[15].ToString();
-                    shedual.TUAN2_THU6      = ListSchedual.Rows[i].Cells[16].ToString();
-                    shedual.TUAN2_THU7      = ListSchedual.Rows[i].Cells[17].ToString();
-                    shedual.TUAN2_CN        = ListSchedual.Rows[i].Cells[18].ToString();
-                    shedual.TUAN3_THU2      = ListSchedual.Rows[i].Cells[19].ToString();
-                    shedual.TUAN3_THU3      = ListSchedual.Rows[i].Cells[20].ToString();
-                    shedual.TUAN3_THU4      = ListSchedual.Rows[i].Cells[21].ToString();
-                    shedual.TUAN3_THU5      = ListSchedual.Rows[i].Cells[22].ToString();
-                    shedual.TUAN3_THU6      = ListSchedual.Rows[i].Cells[23].ToString();
-                    shedual.TUAN3_THU7      = ListSchedual.Rows[i].Cells[24].ToString();
-                    shedual.TUAN3_CN        = ListSchedual.Rows[i].Cells[25].ToString();
-                    shedual.TUAN4_THU2      = ListSchedual.Rows[i].Cells[26].ToString();
-                    shedual.TUAN4_THU3      = ListSchedual.Rows[i].Cells[27].ToString();
-                    shedual.TUAN4_THU4      = ListSchedual.Rows[i].Cells[28].ToString();
-                    shedual.TUAN4_THU5      = ListSchedual.Rows[i].Cells[29].ToString();
-                    shedual.TUAN4_THU6      = ListSchedual.Rows[i].Cells[30].ToString();
-                    shedual.TUAN4_THU7      = ListSchedual.Rows[i].Cells[31].ToString();
-                    shedual.TUAN4_CN        = ListSchedual.Rows[i].Cells[32].ToString();
-                }
-
-                bool result = busHisSchedual.SaveHisSchedual(shedual, cbMonth.Value.Month, cbYear.Value.Year);
-                if (result)
-                {
-                    MessageBox.Show("lưu thành công");
-                }
-
                 if (listTmpHopDong ==null || listTmpHopDong.Count <=0)
                 {
                     MessageBox.Show("Danh sách hợp đồng chưa được cập nhật sau khi tính toán. Liên lạc với người phát triển nếu là lỗi.");
