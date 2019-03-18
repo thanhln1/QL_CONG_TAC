@@ -1528,7 +1528,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi tại: "+ex.Message +" /n Hãy kiểm tra lại thông tin nhập vào hoặc chuẩn hóa dữ liệu");
+                MessageBox.Show("Đã xảy ra lỗi tại: "+ex.Message +" /n Hãy kiểm tra lại thông tin nhập vào hoặc chuẩn hóa dữ liệu đầu vào");
             }
                       
         }
