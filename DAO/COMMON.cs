@@ -8,6 +8,7 @@ using System.IO;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
+using Dapper;
 
 namespace DAO
 {
@@ -35,6 +36,22 @@ namespace DAO
         }
 
         public static string SECRETKEY = "NguyenDangThe";
+
+        public bool ResetDB()
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(ConnectionString("Default")))
+            {
+                cnn.Execute("TRUNCATE TABLE HIS_SCHEDUAL;");  
+                cnn.Execute("TRUNCATE TABLE MT_CONG_TY;"); 
+                cnn.Execute("TRUNCATE TABLE MT_DINH_MUC_CT;"); 
+                cnn.Execute("TRUNCATE TABLE MT_HOP_DONG;"); 
+                cnn.Execute("TRUNCATE TABLE MT_LICH_CT;"); 
+                cnn.Execute("TRUNCATE TABLE MT_NHAN_VIEN;"); 
+                cnn.Execute("TRUNCATE TABLE MT_SCHEDUAL;"); 
+                cnn.Execute("TRUNCATE TABLE TMP_SCHEDUAL;"); 
+                return true;
+            }
+        }
 
         private static byte[] _salt = Encoding.ASCII.GetBytes("QLCTP_NguyenDangThe");
         public static string EncryptString( string plainText, string sharedSecret )
