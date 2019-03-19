@@ -18,6 +18,7 @@ using Microsoft.Win32;
 using System.Text;
 using System.Security.Cryptography;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace ManageWorkExpenses
 {
@@ -238,19 +239,19 @@ namespace ManageWorkExpenses
                                     continue;
                                 }
                                 // MA_NHAN_VIEN
-                                staff.MA_NHAN_VIEN = xlRange.Cells[i, 1].Text.ToString();
+                                staff.MA_NHAN_VIEN = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n","");
 
                                 // HO_TEN
-                                staff.HO_TEN = xlRange.Cells[i, 2].Value2.ToString();
+                                staff.HO_TEN = Regex.Replace(xlRange.Cells[i, 2].Value2.ToString(), @"\r\n?|\n", "");
 
                                 // CHUC_VU
-                                staff.CHUC_VU = xlRange.Cells[i, 3].Value2.ToString();
+                                staff.CHUC_VU = Regex.Replace(xlRange.Cells[i, 3].Value2.ToString(), @"\r\n?|\n", "");
 
                                 // VAI_TRO
-                                staff.VAI_TRO = xlRange.Cells[i, 4].Value2.ToString();
+                                staff.VAI_TRO = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
 
                                 // PHONG_BAN
-                                staff.PHONG_BAN = xlRange.Cells[i, 5].Value2.ToString();
+                                staff.PHONG_BAN = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
 
                                 try
                                 {
@@ -349,44 +350,44 @@ namespace ManageWorkExpenses
 
                                 //write the value to the console 
                                 //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(xlRange.Cells[i, 1].Text.ToString()))
+                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", ""))) 
                                 {
                                     continue;
                                 }
-                                contract.SO_HOP_DONG = xlRange.Cells[i, 1].Text.ToString();
+                                contract.SO_HOP_DONG = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
 
                                 //NGAY_HOP_DONG
-                                contract.NGAY_HOP_DONG = DateTime.FromOADate(double.Parse(xlRange.Cells[i, 2].Value2.ToString())).ToString("MMMM dd, yyyy");
+                                contract.NGAY_HOP_DONG = Regex.Replace(DateTime.FromOADate(double.Parse(xlRange.Cells[i, 2].Value2.ToString())).ToString("MMMM dd, yyyy"), @"\r\n?|\n", "");
 
                                 //NGAY_THANH_LY
-                                contract.NGAY_THANH_LY = DateTime.FromOADate(double.Parse(xlRange.Cells[i, 3].Value2.ToString())).ToString("MMMM dd, yyyy");
+                                contract.NGAY_THANH_LY = Regex.Replace(DateTime.FromOADate(double.Parse(xlRange.Cells[i, 3].Value2.ToString())).ToString("MMMM dd, yyyy"), @"\r\n?|\n", "");
 
                                 //KHACH_HANG
-                                contract.KHACH_HANG = xlRange.Cells[i, 4].Value2.ToString();
+                                contract.KHACH_HANG = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
 
                                 //MA_KHACH_HANG
-                                contract.MA_KHACH_HANG = xlRange.Cells[i, 5].Value2.ToString();
+                                contract.MA_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
 
                                 //NHOM_KHACH_HANG
-                                contract.NHOM_KHACH_HANG = xlRange.Cells[i, 6].Value2.ToString();
+                                contract.NHOM_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 6].Value2.ToString(), @"\r\n?|\n", "");
 
                                 //DIA_CHI
-                                contract.DIA_CHI = xlRange.Cells[i, 7].Value2.ToString();
+                                contract.DIA_CHI = Regex.Replace(xlRange.Cells[i, 7].Value2.ToString(), @"\r\n?|\n", "");
 
                                 //TINH
-                                contract.TINH = xlRange.Cells[i, 8].Value2.ToString();
+                                contract.TINH = Regex.Replace(xlRange.Cells[i, 8].Value2.ToString(), @"\r\n?|\n", "");
 
                                 //GIA_TRI_HOP_DONG
-                                contract.GIA_TRI_HOP_DONG = xlRange.Cells[i, 9].Value2.ToString();
+                                contract.GIA_TRI_HOP_DONG = Regex.Replace(xlRange.Cells[i, 9].Value2.ToString(), @"\r\n?|\n", "");
 
                                 //TONG_CHI_PHI_MUC_TOI_DA
-                                contract.TONG_CHI_PHI_MUC_TOI_DA = xlRange.Cells[i, 10].Value2.ToString();
+                                contract.TONG_CHI_PHI_MUC_TOI_DA = Regex.Replace(xlRange.Cells[i, 10].Value2.ToString(), @"\r\n?|\n", "");
 
                                 //CHI_PHI_THUC_DA_CHI
-                                contract.CHI_PHI_THUC_DA_CHI = xlRange.Cells[i, 11].Value2.ToString();
+                                contract.CHI_PHI_THUC_DA_CHI = Regex.Replace(xlRange.Cells[i, 11].Value2.ToString(), @"\r\n?|\n", "");
 
                                 //GHI_CHU
-                                contract.GHI_CHU = xlRange.Cells[i, 12].Text.ToString();
+                                contract.GHI_CHU = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
 
                                 try
                                 {
@@ -611,45 +612,45 @@ namespace ManageWorkExpenses
 
                                 //write the value to the console 
                                 //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(xlRange.Cells[i, 1].Text.ToString()) 
-                                    || xlRange.Cells[i, 1].Text.ToString() =="TT" 
-                                    || xlRange.Cells[i, 1].Text.ToString() == "A" 
-                                    || xlRange.Cells[i, 1].Text.ToString() == "B" 
-                                    || xlRange.Cells[i, 1].Text.ToString() == "STT")
+                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "")) 
+                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "TT" 
+                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "A" 
+                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "B" 
+                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "STT")
                                 {
                                     continue;
                                 }  
-                                shedual.MA_NHAN_VIEN        = xlRange.Cells[i, 3].Text.ToString();
-                                shedual.THANG               = cbMonth.Value.Month;
-                                shedual.NAM                 = cbYear.Value.Year;
-                                shedual.TUAN1_THU2          = xlRange.Cells[i, 5].Text.ToString();
-                                shedual.TUAN1_THU3          = xlRange.Cells[i, 6].Text.ToString();
-                                shedual.TUAN1_THU4          = xlRange.Cells[i, 7].Text.ToString();
-                                shedual.TUAN1_THU5          = xlRange.Cells[i, 8].Text.ToString();
-                                shedual.TUAN1_THU6          = xlRange.Cells[i, 9].Text.ToString();
-                                shedual.TUAN1_THU7          = xlRange.Cells[i, 10].Text.ToString();
-                                shedual.TUAN1_CN            = xlRange.Cells[i, 11].Text.ToString();
-                                shedual.TUAN2_THU2          = xlRange.Cells[i, 12].Text.ToString();
-                                shedual.TUAN2_THU3          = xlRange.Cells[i, 13].Text.ToString();
-                                shedual.TUAN2_THU4          = xlRange.Cells[i, 14].Text.ToString();
-                                shedual.TUAN2_THU5          = xlRange.Cells[i, 15].Text.ToString();
-                                shedual.TUAN2_THU6          = xlRange.Cells[i, 16].Text.ToString();
-                                shedual.TUAN2_THU7          = xlRange.Cells[i, 17].Text.ToString();
-                                shedual.TUAN2_CN            = xlRange.Cells[i, 18].Text.ToString();
-                                shedual.TUAN3_THU2          = xlRange.Cells[i, 19].Text.ToString();
-                                shedual.TUAN3_THU3          = xlRange.Cells[i, 20].Text.ToString();
-                                shedual.TUAN3_THU4          = xlRange.Cells[i, 21].Text.ToString();
-                                shedual.TUAN3_THU5          = xlRange.Cells[i, 22].Text.ToString();
-                                shedual.TUAN3_THU6          = xlRange.Cells[i, 23].Text.ToString();
-                                shedual.TUAN3_THU7          = xlRange.Cells[i, 24].Text.ToString();
-                                shedual.TUAN3_CN            = xlRange.Cells[i, 25].Text.ToString();
-                                shedual.TUAN4_THU2          = xlRange.Cells[i, 26].Text.ToString();
-                                shedual.TUAN4_THU3          = xlRange.Cells[i, 27].Text.ToString();
-                                shedual.TUAN4_THU4          = xlRange.Cells[i, 28].Text.ToString();
-                                shedual.TUAN4_THU5          = xlRange.Cells[i, 29].Text.ToString();
-                                shedual.TUAN4_THU6          = xlRange.Cells[i, 30].Text.ToString();
-                                shedual.TUAN4_THU7          = xlRange.Cells[i, 31].Text.ToString();
-                                shedual.TUAN4_CN            = xlRange.Cells[i, 32].Text.ToString();   
+                                shedual.MA_NHAN_VIEN        =Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.THANG               =cbMonth.Value.Month;
+                                shedual.NAM                 =cbYear.Value.Year;
+                                shedual.TUAN1_THU2          =Regex.Replace(xlRange.Cells[i, 5].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU3          =Regex.Replace(xlRange.Cells[i, 6].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU4          =Regex.Replace(xlRange.Cells[i, 7].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU5          =Regex.Replace(xlRange.Cells[i, 8].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU6          =Regex.Replace(xlRange.Cells[i, 9].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU7          =Regex.Replace(xlRange.Cells[i, 10].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_CN            =Regex.Replace(xlRange.Cells[i, 11].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU2          =Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU3          =Regex.Replace(xlRange.Cells[i, 13].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU4          =Regex.Replace(xlRange.Cells[i, 14].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU5          =Regex.Replace(xlRange.Cells[i, 15].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU6          =Regex.Replace(xlRange.Cells[i, 16].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU7          =Regex.Replace(xlRange.Cells[i, 17].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_CN            =Regex.Replace(xlRange.Cells[i, 18].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU2          =Regex.Replace(xlRange.Cells[i, 19].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU3          =Regex.Replace(xlRange.Cells[i, 20].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU4          =Regex.Replace(xlRange.Cells[i, 21].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU5          =Regex.Replace(xlRange.Cells[i, 22].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU6          =Regex.Replace(xlRange.Cells[i, 23].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU7          =Regex.Replace(xlRange.Cells[i, 24].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_CN            =Regex.Replace(xlRange.Cells[i, 25].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU2          =Regex.Replace(xlRange.Cells[i, 26].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU3          =Regex.Replace(xlRange.Cells[i, 27].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU4          =Regex.Replace(xlRange.Cells[i, 28].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU5          =Regex.Replace(xlRange.Cells[i, 29].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU6          =Regex.Replace(xlRange.Cells[i, 30].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU7          =Regex.Replace(xlRange.Cells[i, 31].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_CN            =Regex.Replace(xlRange.Cells[i, 32].Text.ToString(), @"\r\n?|\n", "");   
                                 try
                                 {
                                     bool result = busSchedual.SaveSchedual(shedual, cbMonth.Value.Month, cbYear.Value.Year);
@@ -761,7 +762,7 @@ namespace ManageWorkExpenses
                 user.HO_TEN = tbName.Text;
                 user.CHUC_VU = tbRegency.Text;
                 user.VAI_TRO = tbRole.Text;
-                user.PHONG_BAN = cbPhongBan.SelectedItem.ToString();
+                // user.PHONG_BAN = cbPhongBan.SelectedItem.ToString();
 
                 DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa nhân viên "+ user.HO_TEN+" có Mã nhân viên là: " + user.MA_NHAN_VIEN, "Xóa Nhân Viên", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -1551,9 +1552,7 @@ namespace ManageWorkExpenses
                 return false;
             }
             // Lấy danh sách các công ty chưa hết kinh phí
-            List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
-            // Set danh sách tạm hợp đồng để chuẩn bị lưu lại
-            listTmpHopDong = listCompany;
+            List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();            
 
             // cài đặt số chạy % của progress bar bắt đầu từ  0
             int n = 0;
@@ -1574,6 +1573,12 @@ namespace ManageWorkExpenses
                 foreach (PropertyInfo property in arrayPropertyInfos)
                 {
                     string nameProperty = property.ToString();
+
+                    // Nếu ngày trùng với chủ nhật thì bỏ qua nếu set ngày chủ nhật  
+                    if (nameProperty.Substring(nameProperty.IndexOf("_") + 1, 2).Equals("CN") && isCN == true)
+                    {
+                        continue;
+                    }
                     // Nếu ô còn trống thì xử lý
                     if (string.IsNullOrEmpty(property.GetValue(item).ToString()))
                     {
@@ -1606,13 +1611,7 @@ namespace ManageWorkExpenses
                                 }
                             }
                             i = random.Next(0, listCompany.Count);
-                        }
-                        // Nếu ngày trùng với chủ nhật thì bỏ qua nếu set ngày chủ nhật
-
-                        if (nameProperty.Substring(nameProperty.IndexOf("_") + 1, 2).Equals("CN") && isCN == true)
-                        {
-                            continue;
-                        }
+                        }                          
                         // Tránh vượt quá kích thước mảng khi chạy
                         if (i < listCompany.Count())
                         {
@@ -1622,7 +1621,6 @@ namespace ManageWorkExpenses
                             // Cộng thêm giá trị cho Chi phí thực đã chi
                             listCompany[i].CHI_PHI_THUC_DA_CHI += dongia;
                         }
-
                     }
                 }
                 // Cập nhật số % cho progress bar
@@ -1631,6 +1629,9 @@ namespace ManageWorkExpenses
                 busTMP.SaveSchedual(item, cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
                 n++;
             }
+            // Set danh sách tạm hợp đồng để chuẩn bị lưu lại
+            listTmpHopDong = listCompany;
+
             return true;
         }
 
@@ -1646,17 +1647,16 @@ namespace ManageWorkExpenses
             }
             // Lấy danh sách các công ty chưa hết kinh phí
             List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
-            // Set danh sách tạm hợp đồng để chuẩn bị lưu lại
-            listTmpHopDong = listCompany;
             
             // cài đặt số chạy % của progress bar bắt đầu từ  0
             int n = 0;
             // Tổng số phần trăm của progress bar
             int totalPercent = listSchedual.Count;
             // 
-            int i = 0;
+            
             foreach (var item in listSchedual)
             {
+                int i = 0;
                 // Getting Type of Generic Class Model
                 Type tModelType = item.GetType();
                 // Tạo một đối tượng PropertyInfo chứa chi tiết về thuộc tính lớp
@@ -1664,8 +1664,15 @@ namespace ManageWorkExpenses
 
                 //Chạy từng giá trị của từng cột
                 foreach (PropertyInfo property in arrayPropertyInfos)
-                {
-                    string nameProperty = property.ToString();
+                {                        
+                    string nameProperty = property.ToString();   
+
+                    // Nếu ngày trùng với chủ nhật thì bỏ qua nếu set ngày chủ nhật
+                    if (nameProperty.Substring(nameProperty.IndexOf("_") + 1, 2).Equals("CN") && isCN == true)
+                    {
+                        continue;
+                    }
+
                     // Nếu ô còn trống thì xử lý
                     if (string.IsNullOrEmpty(property.GetValue(item).ToString()))
                     {
@@ -1679,23 +1686,17 @@ namespace ManageWorkExpenses
                             busTMP.DelAllTMP();
                             return false;
                         }
-                        // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá tức hoặc nhóm công ty khác với phân loại user là công ty đó không sử dụng được với user nữa 
+                        // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá hoặc Nhóm công ty khác với phân loại user thì công ty đó không sử dụng được với user -> chuyển cty tiếp theo.  
                         if (( listCompany[i].TONG_CHI_PHI_MUC_TOI_DA - listCompany[i].CHI_PHI_THUC_DA_CHI ) <= dongia || !nhomNV.Equals(nhomCty))
-                        {
+                        {   
                             // Chuyển sang công ty tiếp theo 
                             i++;
-                            // Nếu chạy hết vòng lặp của công ty rồi thì chạy lại công ty một lần nữa
+                            // Nếu chạy hết vòng lặp của công ty rồi thì thoát.
                             if (i == listCompany.Count())
                             {
-                                i = 0;
+                                break;
                             }
-                        }
-                        // Nếu ngày trùng với chủ nhật thì bỏ qua nếu set ngày chủ nhật
-                        
-                        if (nameProperty.Substring(nameProperty.IndexOf("_")+1, 2).Equals("CN") && isCN ==true)
-                        {
-                            continue;
-                        }
+                        }                        
                         // Tránh vượt quá kích thước mảng khi chạy
                         if (i < listCompany.Count())
                         {
@@ -1714,6 +1715,8 @@ namespace ManageWorkExpenses
                 busTMP.SaveSchedual(item, cbMonthCalc.Value.Month, cbYearCalc.Value.Year);
                 n++;
             }
+            // Set danh sách tạm hợp đồng để chuẩn bị lưu lại
+            listTmpHopDong = listCompany;
             return true;
         }
 
@@ -2023,6 +2026,28 @@ namespace ManageWorkExpenses
                 MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
                 return false;
             }             
+        }
+
+        private void btnResetDefaut_Click( object sender, EventArgs e )
+        {
+            DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn đặt lại CSDL về trạng thái ban đầu? \n Chú ý: Việc đặt lại sẽ xóa toàn bộ Nhân viên, Hợp đồng và toàn bộ lịch công tác!", "Đặt lại trạng thái ban đầu", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                bool IsReset = common.ResetDB();                              
+                MessageBox.Show(( IsReset == true ) ? "Đã khôi phục lại trạng thái ban đầu!" : "Có lỗi khi khôi phục dữ liệu");
+            }
+        }
+
+        private void cbAgree_CheckedChanged( object sender, EventArgs e )
+        {
+            if (cbAgree.Checked == true)
+            {
+                btnResetDefaut.Enabled = true;
+            }
+            else
+            {
+                btnResetDefaut.Enabled = false;
+            }  
         }
     }      
 }

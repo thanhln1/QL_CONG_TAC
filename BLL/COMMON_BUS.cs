@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAO;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace BUS
 {
     public class COMMON_BUS
     {
+        COMMON daoCommon = new COMMON();
         public DateTime ToDateTime(string s, string format = "dd/MM/yyyy", string cultureString = "en-GB")
         {
             try
@@ -42,6 +44,19 @@ namespace BUS
                 throw; // Given Culture is not supported culture
             }
 
+        }
+
+        public bool ResetDB()
+        {            
+            try
+            {
+                return daoCommon.ResetDB();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+           
         }
     }
 }
