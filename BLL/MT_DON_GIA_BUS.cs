@@ -24,5 +24,33 @@ namespace BUS
             }
             return donGia;
         }
+
+        public List<MT_DON_GIA> getAllDongia()
+        {
+            List<MT_DON_GIA> donGia = new List<MT_DON_GIA>();
+            try
+            {
+                donGia = dao.getAllDonGia();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return donGia;
+        }
+
+        public bool UpdateDonGia(MT_DON_GIA dongia)
+        {
+            bool isUpdate = false;
+            try
+            {
+                isUpdate = dao.UpdateDonGia(dongia);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return isUpdate;
+        }
     }
 }
