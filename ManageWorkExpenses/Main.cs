@@ -58,7 +58,8 @@ namespace ManageWorkExpenses
                 this.tabControl.SelectedIndex = 2;
                 loadAllUser();
                 LoadContract();
-                LoadListCustomer();                 
+                LoadListCustomer();
+                GetAllDonGia();
             }                       
                                   
             //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
@@ -1855,6 +1856,21 @@ namespace ManageWorkExpenses
             return gia;
         }
 
+        // lấy danh sách đơn giá
+        private void GetAllDonGia()
+        {
+            List<MT_DON_GIA> listDonGia = new List<MT_DON_GIA>();
+            try
+            {
+                dgvDonGia.DataSource = busDongia.getAllDongia();
+                dgvDonGia.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Thông báo", "Có lỗi khi lấy danh sách đơn giá: "+ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
 
         public int WinRegForm()
         {
@@ -2048,6 +2064,26 @@ namespace ManageWorkExpenses
             {
                 btnResetDefaut.Enabled = false;
             }  
+        }
+
+        private void btnSaveDonGia_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Bạn có muốn lưu thay đổi ?", "Thông báo !", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                MT_DON_GIA dongia = new MT_DON_GIA();
+
+                foreach (DataGridViewRow row in dgvDonGia.Rows)
+                {
+                    dongia.ID = Convert.ToInt32(row.Cells[0].Value.ToString());
+                    dongia.DON_GIA = Convert.ToInt32(row.Cells[2].Value.ToString());
+                    dongia.GHI_CHU = (row.Cells[3].Value.ToString());
+                    bool isUpdate = busDongia.UpdateDonGia(dongia);
+                }
+                GetAllDonGia();
+            }
+
+            
         }
     }      
 }
