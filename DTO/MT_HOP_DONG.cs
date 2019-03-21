@@ -17,9 +17,9 @@ namespace DTO
         public string NHOM_KHACH_HANG { get; set; }
         public string DIA_CHI { get; set; }
         public string TINH { get; set; }
-        public int GIA_TRI_HOP_DONG { get; set; }
-        public int TONG_CHI_PHI_MUC_TOI_DA { get; set; }
-        public int CHI_PHI_THUC_DA_CHI { get; set; }
+        public Double GIA_TRI_HOP_DONG { get; set; }
+        public Double TONG_CHI_PHI_MUC_TOI_DA { get; set; }
+        public Double CHI_PHI_THUC_DA_CHI { get; set; }
         public string GHI_CHU { get; set; }
 
     }
