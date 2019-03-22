@@ -2209,8 +2209,50 @@ namespace ManageWorkExpenses
                 }
                 GetAllDonGia();
             }
-
             
         }
-    }      
+
+        #region Thay đổi đơn giá - chỉ cho nhập số
+        private void dgvDonGia_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            var txtBox = e.Control as TextBox;
+            if (e.Control is TextBox)
+            {
+                if (txtBox != null)
+                {
+                    //txtBox.TextChanged += new EventHandler(txtBox_TextChanged);
+                    txtBox.KeyPress += new KeyPressEventHandler(txtBox_KeyPress);
+                }
+            }
+        }
+
+        //void txtBox_TextChanged(object sender, EventArgs e)
+        //{
+        //    if ((sender as TextBox).Text != null && (sender as TextBox).Text.Trim() != "")
+        //    {              
+        //        if ((sender as TextBox).Text.Length==0)
+        //        {
+        //            (sender as TextBox).Text="0";
+        //        }
+        //    }
+        //}
+        void txtBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+
+            if ((sender as TextBox).Text.Length == 0)
+            {
+                (sender as TextBox).Text = "0";
+            }
+        }
+        #endregion
+
+        private void btnLoadDonGia_Click(object sender, EventArgs e)
+        {
+            GetAllDonGia();
+        }
+    }
 }
