@@ -122,15 +122,16 @@ namespace ManageWorkExpenses
                 user.HO_TEN = tbName.Text;
                 user.CHUC_VU = tbRegency.Text;
                 user.VAI_TRO = tbRole.Text;
+
                 if (string.IsNullOrEmpty(cbPhongBan.SelectedItem.ToString()))
                 {
                     MessageBox.Show("Bạn phải chọn phòng ban");
                 }
                 else
                 {
-                    user.PHONG_BAN = cbPhongBan.SelectedText;
+                    user.PHONG_BAN = cbPhongBan.SelectedItem.ToString();
                 }
-                
+
                 bool isInsert = busUser.SaveUser(user);
                 messeger = ( isInsert == true ) ? "Thành công" : "Đã tồn tại nhân viên có mã: "+ user.MA_NHAN_VIEN;
                 MessageBox.Show(messeger);
@@ -1544,8 +1545,7 @@ namespace ManageWorkExpenses
 
             // Lấy danh sách MT_NHAN_VIEN
             List<MT_NHAN_VIEN> listStaff = busUser.GetListUser();
-
-            List<MT_SCHEDUAL> listMerged = new List<MT_SCHEDUAL>();
+            
             // Nếu danh sách nhân viên hiện tại ít hơn các nhân viên được tính toán thì áp dụng thuật toán tuần tự
             if (listStaff.Count <= listSchedual.Count)
             {
@@ -1579,7 +1579,19 @@ namespace ManageWorkExpenses
                         newSchedual.MA_NHAN_VIEN = staff.MA_NHAN_VIEN;
                         newSchedual.NAM = year;
                         newSchedual.THANG = month;
-                        listNewSchedual.Add(newSchedual);
+
+                        bool isDuplicate = false;
+                        foreach (var item in listSchedual)
+                        {
+                            if (item.MA_NHAN_VIEN.Equals(staff.MA_NHAN_VIEN))
+                            {
+                                isDuplicate = true;
+                            }
+                        }
+                        if (!isDuplicate)
+                        {
+                            listNewSchedual.Add(newSchedual);
+                        }                        
                     }
                 }
                 if (listSchedual.Count <= 0)
@@ -1589,8 +1601,7 @@ namespace ManageWorkExpenses
                 }
                 else
                 {
-                    listMerged = new List<MT_SCHEDUAL>(listSchedual);
-                    listMerged.AddRange(listSchedual.Where(p2 => listNewSchedual.All(p1 => p1.MA_NHAN_VIEN != p2.MA_NHAN_VIEN)));
+                    listSchedual.AddRange(listNewSchedual);
                 }
                 // Lấy danh sách các công ty chưa hết kinh phí
                 List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
@@ -1601,7 +1612,7 @@ namespace ManageWorkExpenses
                 int totalPercent = listSchedual.Count;
                 // 
 
-                foreach (var item in listMerged)
+                foreach (var item in listSchedual)
                 {
                     int i = 0;
                     // Getting Type of Generic Class Model
@@ -1621,7 +1632,7 @@ namespace ManageWorkExpenses
                         }
 
                         // Nếu ô còn trống thì xử lý
-                        if (string.IsNullOrEmpty(property.GetValue(item).ToString()))
+                        if (property.GetValue(item) == null || property.GetValue(item).ToString() =="")
                         {
                             // Lấy đơn giá của Công ty theo địa chỉ
                             int dongia = GetDonGia(listCompany[i].TINH);
@@ -1708,7 +1719,7 @@ namespace ManageWorkExpenses
                         continue;
                     }
                     // Nếu ô còn trống thì xử lý
-                    if (string.IsNullOrEmpty(property.GetValue(item).ToString()))
+                    if (property.GetValue(item) == null || property.GetValue(item).ToString() == "")
                     {
                         // Lấy đơn giá của Công ty theo địa chỉ
                         int dongia = GetDonGia(listCompany[i].TINH);
@@ -1802,7 +1813,7 @@ namespace ManageWorkExpenses
                     }
 
                     // Nếu ô còn trống thì xử lý
-                    if (string.IsNullOrEmpty(property.GetValue(item).ToString()))
+                    if (property.GetValue(item) == null || property.GetValue(item).ToString() == "")
                     {
                         // Lấy đơn giá của Công ty theo địa chỉ
                         int dongia = GetDonGia(listCompany[i].TINH);
