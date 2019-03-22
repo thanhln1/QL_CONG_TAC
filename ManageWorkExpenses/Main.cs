@@ -1697,6 +1697,7 @@ namespace ManageWorkExpenses
             // Tổng số phần trăm của progress bar
             int totalPercent = listSchedual.Count;
             // 
+
             
             List<MT_HOP_DONG> listCompanyUsed = new List<MT_HOP_DONG>();
             foreach (var item in listSchedual)
