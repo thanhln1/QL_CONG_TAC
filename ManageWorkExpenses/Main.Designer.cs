@@ -120,6 +120,52 @@
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.ListSchedual = new System.Windows.Forms.DataGridView();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnSearchSchedualFake = new System.Windows.Forms.Button();
+            this.btnLoadSchedual = new System.Windows.Forms.Button();
+            this.btnImportSchedual = new System.Windows.Forms.Button();
+            this.cbMonth = new System.Windows.Forms.DateTimePicker();
+            this.cbYear = new System.Windows.Forms.DateTimePicker();
+            this.lblThang = new System.Windows.Forms.Label();
+            this.lblNamTaiChinh = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cbCheckCN = new System.Windows.Forms.CheckBox();
+            this.cbMonthCalc = new System.Windows.Forms.DateTimePicker();
+            this.cbYearCalc = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCalc = new System.Windows.Forms.Button();
+            this.rdToiUu = new System.Windows.Forms.RadioButton();
+            this.rdNgauNhien = new System.Windows.Forms.RadioButton();
+            this.rdTuanTu = new System.Windows.Forms.RadioButton();
+            this.tabExport = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbbCustomer = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnExportexcelKQ2 = new System.Windows.Forms.Button();
+            this.cbbYear_tinhtoan = new System.Windows.Forms.DateTimePicker();
+            this.btnExportexcelBangKe = new System.Windows.Forms.Button();
+            this.cbbMonth_tinhtoan = new System.Windows.Forms.DateTimePicker();
+            this.tabConfig = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbAgree = new System.Windows.Forms.CheckBox();
+            this.btnResetDefaut = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtConnectionString = new System.Windows.Forms.TextBox();
+            this.tbDataBase = new System.Windows.Forms.TextBox();
+            this.lblDataBase = new System.Windows.Forms.Label();
+            this.tbPass = new System.Windows.Forms.TextBox();
+            this.lblPass = new System.Windows.Forms.Label();
+            this.tbUser = new System.Windows.Forms.TextBox();
+            this.lblUser = new System.Windows.Forms.Label();
+            this.tbSource = new System.Windows.Forms.TextBox();
+            this.btnSaveConfig = new System.Windows.Forms.Button();
+            this.lblSource = new System.Windows.Forms.Label();
             this.HO_VA_TEN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.INDEX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MA_NHAN_VIEN1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -153,52 +199,6 @@
             this.TUAN4_THU6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TUAN4_THU7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TUAN4_CN = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btnSearchSchedualFake = new System.Windows.Forms.Button();
-            this.btnLoadSchedual = new System.Windows.Forms.Button();
-            this.btnImportSchedual = new System.Windows.Forms.Button();
-            this.cbMonth = new System.Windows.Forms.DateTimePicker();
-            this.cbYear = new System.Windows.Forms.DateTimePicker();
-            this.lblThang = new System.Windows.Forms.Label();
-            this.lblNamTaiChinh = new System.Windows.Forms.Label();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.cbCheckCN = new System.Windows.Forms.CheckBox();
-            this.cbMonthCalc = new System.Windows.Forms.DateTimePicker();
-            this.cbYearCalc = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnCalc = new System.Windows.Forms.Button();
-            this.rdToiUu = new System.Windows.Forms.RadioButton();
-            this.rdNgauNhien = new System.Windows.Forms.RadioButton();
-            this.rdTuanTu = new System.Windows.Forms.RadioButton();
-            this.tabExport = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cbbCustomer = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btnExportexcelKQ2 = new System.Windows.Forms.Button();
-            this.cbbYear_tinhtoan = new System.Windows.Forms.DateTimePicker();
-            this.btnExportexcelBangKe = new System.Windows.Forms.Button();
-            this.cbbMonth_tinhtoan = new System.Windows.Forms.DateTimePicker();
-            this.tabConfig = new System.Windows.Forms.TabPage();
-            this.btnResetDefaut = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtConnectionString = new System.Windows.Forms.TextBox();
-            this.tbDataBase = new System.Windows.Forms.TextBox();
-            this.lblDataBase = new System.Windows.Forms.Label();
-            this.tbPass = new System.Windows.Forms.TextBox();
-            this.lblPass = new System.Windows.Forms.Label();
-            this.tbUser = new System.Windows.Forms.TextBox();
-            this.lblUser = new System.Windows.Forms.Label();
-            this.tbSource = new System.Windows.Forms.TextBox();
-            this.btnSaveConfig = new System.Windows.Forms.Button();
-            this.lblSource = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cbAgree = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.TabNhanVien.SuspendLayout();
@@ -221,8 +221,8 @@
             this.panel7.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabConfig.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -1124,246 +1124,6 @@
             this.ListSchedual.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.ListSchedual_CellFormatting);
             this.ListSchedual.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.ListSchedual_CellPainting);
             // 
-            // HO_VA_TEN
-            // 
-            this.HO_VA_TEN.DataPropertyName = "HO_TEN";
-            this.HO_VA_TEN.HeaderText = "Họ và Tên";
-            this.HO_VA_TEN.MinimumWidth = 150;
-            this.HO_VA_TEN.Name = "HO_VA_TEN";
-            this.HO_VA_TEN.Width = 150;
-            // 
-            // INDEX
-            // 
-            this.INDEX.DataPropertyName = "ID";
-            this.INDEX.FillWeight = 2F;
-            this.INDEX.HeaderText = "ID";
-            this.INDEX.MinimumWidth = 2;
-            this.INDEX.Name = "INDEX";
-            this.INDEX.Visible = false;
-            this.INDEX.Width = 2;
-            // 
-            // MA_NHAN_VIEN1
-            // 
-            this.MA_NHAN_VIEN1.HeaderText = "MA_NHAN_VIEN";
-            this.MA_NHAN_VIEN1.Name = "MA_NHAN_VIEN1";
-            this.MA_NHAN_VIEN1.Visible = false;
-            // 
-            // THANG
-            // 
-            this.THANG.DataPropertyName = "THANG";
-            this.THANG.FillWeight = 2F;
-            this.THANG.HeaderText = "Tháng";
-            this.THANG.MinimumWidth = 2;
-            this.THANG.Name = "THANG";
-            this.THANG.Visible = false;
-            this.THANG.Width = 2;
-            // 
-            // NAM
-            // 
-            this.NAM.DataPropertyName = "NAM";
-            this.NAM.FillWeight = 2F;
-            this.NAM.HeaderText = "Năm";
-            this.NAM.MinimumWidth = 2;
-            this.NAM.Name = "NAM";
-            this.NAM.Visible = false;
-            this.NAM.Width = 2;
-            // 
-            // TUAN1_THU2
-            // 
-            this.TUAN1_THU2.DataPropertyName = "TUAN1_THU2";
-            this.TUAN1_THU2.HeaderText = "TUAN1_THU2";
-            this.TUAN1_THU2.MinimumWidth = 60;
-            this.TUAN1_THU2.Name = "TUAN1_THU2";
-            // 
-            // TUAN1_THU3
-            // 
-            this.TUAN1_THU3.DataPropertyName = "TUAN1_THU3";
-            this.TUAN1_THU3.HeaderText = "TUAN1_THU3";
-            this.TUAN1_THU3.MinimumWidth = 60;
-            this.TUAN1_THU3.Name = "TUAN1_THU3";
-            // 
-            // TUAN1_THU4
-            // 
-            this.TUAN1_THU4.DataPropertyName = "TUAN1_THU4";
-            this.TUAN1_THU4.HeaderText = "TUAN1_THU4";
-            this.TUAN1_THU4.MinimumWidth = 60;
-            this.TUAN1_THU4.Name = "TUAN1_THU4";
-            // 
-            // TUAN1_THU5
-            // 
-            this.TUAN1_THU5.DataPropertyName = "TUAN1_THU5";
-            this.TUAN1_THU5.HeaderText = "TUAN1_THU5";
-            this.TUAN1_THU5.MinimumWidth = 60;
-            this.TUAN1_THU5.Name = "TUAN1_THU5";
-            // 
-            // TUAN1_THU6
-            // 
-            this.TUAN1_THU6.DataPropertyName = "TUAN1_THU6";
-            this.TUAN1_THU6.HeaderText = "TUAN1_THU6";
-            this.TUAN1_THU6.MinimumWidth = 60;
-            this.TUAN1_THU6.Name = "TUAN1_THU6";
-            // 
-            // TUAN1_THU7
-            // 
-            this.TUAN1_THU7.DataPropertyName = "TUAN1_THU7";
-            this.TUAN1_THU7.HeaderText = "TUAN1_THU7";
-            this.TUAN1_THU7.MinimumWidth = 60;
-            this.TUAN1_THU7.Name = "TUAN1_THU7";
-            // 
-            // TUAN1_CN
-            // 
-            this.TUAN1_CN.DataPropertyName = "TUAN1_CN";
-            this.TUAN1_CN.HeaderText = "TUAN1_CN";
-            this.TUAN1_CN.MinimumWidth = 60;
-            this.TUAN1_CN.Name = "TUAN1_CN";
-            // 
-            // TUAN2_THU2
-            // 
-            this.TUAN2_THU2.DataPropertyName = "TUAN2_THU2";
-            this.TUAN2_THU2.HeaderText = "TUAN2_THU2";
-            this.TUAN2_THU2.MinimumWidth = 60;
-            this.TUAN2_THU2.Name = "TUAN2_THU2";
-            // 
-            // TUAN2_THU3
-            // 
-            this.TUAN2_THU3.DataPropertyName = "TUAN2_THU3";
-            this.TUAN2_THU3.HeaderText = "TUAN2_THU3";
-            this.TUAN2_THU3.MinimumWidth = 60;
-            this.TUAN2_THU3.Name = "TUAN2_THU3";
-            // 
-            // TUAN2_THU4
-            // 
-            this.TUAN2_THU4.DataPropertyName = "TUAN2_THU4";
-            this.TUAN2_THU4.HeaderText = "TUAN2_THU4";
-            this.TUAN2_THU4.MinimumWidth = 60;
-            this.TUAN2_THU4.Name = "TUAN2_THU4";
-            // 
-            // TUAN2_THU5
-            // 
-            this.TUAN2_THU5.DataPropertyName = "TUAN2_THU5";
-            this.TUAN2_THU5.HeaderText = "TUAN2_THU5";
-            this.TUAN2_THU5.MinimumWidth = 60;
-            this.TUAN2_THU5.Name = "TUAN2_THU5";
-            // 
-            // TUAN2_THU6
-            // 
-            this.TUAN2_THU6.DataPropertyName = "TUAN2_THU6";
-            this.TUAN2_THU6.HeaderText = "TUAN2_THU6";
-            this.TUAN2_THU6.MinimumWidth = 60;
-            this.TUAN2_THU6.Name = "TUAN2_THU6";
-            // 
-            // TUAN2_THU7
-            // 
-            this.TUAN2_THU7.DataPropertyName = "TUAN2_THU7";
-            this.TUAN2_THU7.HeaderText = "TUAN2_THU7";
-            this.TUAN2_THU7.MinimumWidth = 60;
-            this.TUAN2_THU7.Name = "TUAN2_THU7";
-            // 
-            // TUAN2_CN
-            // 
-            this.TUAN2_CN.DataPropertyName = "TUAN2_CN";
-            this.TUAN2_CN.HeaderText = "TUAN2_CN";
-            this.TUAN2_CN.MinimumWidth = 60;
-            this.TUAN2_CN.Name = "TUAN2_CN";
-            // 
-            // TUAN3_THU2
-            // 
-            this.TUAN3_THU2.DataPropertyName = "TUAN3_THU2";
-            this.TUAN3_THU2.HeaderText = "TUAN3_THU2";
-            this.TUAN3_THU2.MinimumWidth = 60;
-            this.TUAN3_THU2.Name = "TUAN3_THU2";
-            // 
-            // TUAN3_THU3
-            // 
-            this.TUAN3_THU3.DataPropertyName = "TUAN3_THU3";
-            this.TUAN3_THU3.HeaderText = "TUAN3_THU3";
-            this.TUAN3_THU3.MinimumWidth = 60;
-            this.TUAN3_THU3.Name = "TUAN3_THU3";
-            // 
-            // TUAN3_THU4
-            // 
-            this.TUAN3_THU4.DataPropertyName = "TUAN3_THU4";
-            this.TUAN3_THU4.HeaderText = "TUAN3_THU4";
-            this.TUAN3_THU4.MinimumWidth = 60;
-            this.TUAN3_THU4.Name = "TUAN3_THU4";
-            // 
-            // TUAN3_THU5
-            // 
-            this.TUAN3_THU5.DataPropertyName = "TUAN3_THU5";
-            this.TUAN3_THU5.HeaderText = "TUAN3_THU5";
-            this.TUAN3_THU5.MinimumWidth = 60;
-            this.TUAN3_THU5.Name = "TUAN3_THU5";
-            // 
-            // TUAN3_THU6
-            // 
-            this.TUAN3_THU6.DataPropertyName = "TUAN3_THU6";
-            this.TUAN3_THU6.HeaderText = "TUAN3_THU6";
-            this.TUAN3_THU6.MinimumWidth = 60;
-            this.TUAN3_THU6.Name = "TUAN3_THU6";
-            // 
-            // TUAN3_THU7
-            // 
-            this.TUAN3_THU7.DataPropertyName = "TUAN3_THU7";
-            this.TUAN3_THU7.HeaderText = "TUAN3_THU7";
-            this.TUAN3_THU7.MinimumWidth = 60;
-            this.TUAN3_THU7.Name = "TUAN3_THU7";
-            // 
-            // TUAN3_CN
-            // 
-            this.TUAN3_CN.DataPropertyName = "TUAN3_CN";
-            this.TUAN3_CN.HeaderText = "TUAN3_CN";
-            this.TUAN3_CN.MinimumWidth = 60;
-            this.TUAN3_CN.Name = "TUAN3_CN";
-            // 
-            // TUAN4_THU2
-            // 
-            this.TUAN4_THU2.DataPropertyName = "TUAN4_THU2";
-            this.TUAN4_THU2.HeaderText = "TUAN4_THU2";
-            this.TUAN4_THU2.MinimumWidth = 60;
-            this.TUAN4_THU2.Name = "TUAN4_THU2";
-            // 
-            // TUAN4_THU3
-            // 
-            this.TUAN4_THU3.DataPropertyName = "TUAN4_THU3";
-            this.TUAN4_THU3.HeaderText = "TUAN4_THU3";
-            this.TUAN4_THU3.MinimumWidth = 60;
-            this.TUAN4_THU3.Name = "TUAN4_THU3";
-            // 
-            // TUAN4_THU4
-            // 
-            this.TUAN4_THU4.DataPropertyName = "TUAN4_THU4";
-            this.TUAN4_THU4.HeaderText = "TUAN4_THU4";
-            this.TUAN4_THU4.MinimumWidth = 60;
-            this.TUAN4_THU4.Name = "TUAN4_THU4";
-            // 
-            // TUAN4_THU5
-            // 
-            this.TUAN4_THU5.DataPropertyName = "TUAN4_THU5";
-            this.TUAN4_THU5.HeaderText = "TUAN4_THU5";
-            this.TUAN4_THU5.MinimumWidth = 60;
-            this.TUAN4_THU5.Name = "TUAN4_THU5";
-            // 
-            // TUAN4_THU6
-            // 
-            this.TUAN4_THU6.DataPropertyName = "TUAN4_THU6";
-            this.TUAN4_THU6.HeaderText = "TUAN4_THU6";
-            this.TUAN4_THU6.MinimumWidth = 60;
-            this.TUAN4_THU6.Name = "TUAN4_THU6";
-            // 
-            // TUAN4_THU7
-            // 
-            this.TUAN4_THU7.DataPropertyName = "TUAN4_THU7";
-            this.TUAN4_THU7.HeaderText = "TUAN4_THU7";
-            this.TUAN4_THU7.MinimumWidth = 60;
-            this.TUAN4_THU7.Name = "TUAN4_THU7";
-            // 
-            // TUAN4_CN
-            // 
-            this.TUAN4_CN.DataPropertyName = "TUAN4_CN";
-            this.TUAN4_CN.HeaderText = "TUAN4_CN";
-            this.TUAN4_CN.MinimumWidth = 60;
-            this.TUAN4_CN.Name = "TUAN4_CN";
-            // 
             // panel5
             // 
             this.panel5.Controls.Add(this.groupBox6);
@@ -1726,6 +1486,28 @@
             this.tabConfig.Text = "Cấu hình";
             this.tabConfig.UseVisualStyleBackColor = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.cbAgree);
+            this.groupBox2.Controls.Add(this.btnResetDefaut);
+            this.groupBox2.Location = new System.Drawing.Point(8, 304);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(457, 140);
+            this.groupBox2.TabIndex = 21;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Khôi phục trạng thái ban đầu";
+            // 
+            // cbAgree
+            // 
+            this.cbAgree.AutoSize = true;
+            this.cbAgree.Location = new System.Drawing.Point(9, 32);
+            this.cbAgree.Name = "cbAgree";
+            this.cbAgree.Size = new System.Drawing.Size(215, 17);
+            this.cbAgree.TabIndex = 20;
+            this.cbAgree.Text = "Đồng ý đặt lại DB về trạng thái ban đầu";
+            this.cbAgree.UseVisualStyleBackColor = true;
+            this.cbAgree.CheckedChanged += new System.EventHandler(this.cbAgree_CheckedChanged);
+            // 
             // btnResetDefaut
             // 
             this.btnResetDefaut.BackColor = System.Drawing.Color.Red;
@@ -1847,27 +1629,248 @@
             this.lblSource.TabIndex = 19;
             this.lblSource.Text = "Source";
             // 
-            // groupBox2
+            // HO_VA_TEN
             // 
-            this.groupBox2.Controls.Add(this.cbAgree);
-            this.groupBox2.Controls.Add(this.btnResetDefaut);
-            this.groupBox2.Location = new System.Drawing.Point(8, 304);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(457, 140);
-            this.groupBox2.TabIndex = 21;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Khôi phục trạng thái ban đầu";
+            this.HO_VA_TEN.DataPropertyName = "HO_TEN";
+            this.HO_VA_TEN.HeaderText = "Họ và Tên";
+            this.HO_VA_TEN.MinimumWidth = 150;
+            this.HO_VA_TEN.Name = "HO_VA_TEN";
+            this.HO_VA_TEN.Width = 150;
             // 
-            // cbAgree
+            // INDEX
             // 
-            this.cbAgree.AutoSize = true;
-            this.cbAgree.Location = new System.Drawing.Point(9, 32);
-            this.cbAgree.Name = "cbAgree";
-            this.cbAgree.Size = new System.Drawing.Size(215, 17);
-            this.cbAgree.TabIndex = 20;
-            this.cbAgree.Text = "Đồng ý đặt lại DB về trạng thái ban đầu";
-            this.cbAgree.UseVisualStyleBackColor = true;
-            this.cbAgree.CheckedChanged += new System.EventHandler(this.cbAgree_CheckedChanged);
+            this.INDEX.DataPropertyName = "ID";
+            this.INDEX.FillWeight = 2F;
+            this.INDEX.HeaderText = "ID";
+            this.INDEX.MinimumWidth = 2;
+            this.INDEX.Name = "INDEX";
+            this.INDEX.Visible = false;
+            this.INDEX.Width = 2;
+            // 
+            // MA_NHAN_VIEN1
+            // 
+            this.MA_NHAN_VIEN1.DataPropertyName = "MA_NHAN_VIEN";
+            this.MA_NHAN_VIEN1.FillWeight = 5F;
+            this.MA_NHAN_VIEN1.HeaderText = "MA_NHAN_VIEN";
+            this.MA_NHAN_VIEN1.Name = "MA_NHAN_VIEN1";
+            this.MA_NHAN_VIEN1.Visible = false;
+            this.MA_NHAN_VIEN1.Width = 5;
+            // 
+            // THANG
+            // 
+            this.THANG.DataPropertyName = "THANG";
+            this.THANG.FillWeight = 2F;
+            this.THANG.HeaderText = "Tháng";
+            this.THANG.MinimumWidth = 2;
+            this.THANG.Name = "THANG";
+            this.THANG.Visible = false;
+            this.THANG.Width = 2;
+            // 
+            // NAM
+            // 
+            this.NAM.DataPropertyName = "NAM";
+            this.NAM.FillWeight = 2F;
+            this.NAM.HeaderText = "Năm";
+            this.NAM.MinimumWidth = 2;
+            this.NAM.Name = "NAM";
+            this.NAM.Visible = false;
+            this.NAM.Width = 2;
+            // 
+            // TUAN1_THU2
+            // 
+            this.TUAN1_THU2.DataPropertyName = "TUAN1_THU2";
+            this.TUAN1_THU2.HeaderText = "TUAN1_THU2";
+            this.TUAN1_THU2.MinimumWidth = 60;
+            this.TUAN1_THU2.Name = "TUAN1_THU2";
+            // 
+            // TUAN1_THU3
+            // 
+            this.TUAN1_THU3.DataPropertyName = "TUAN1_THU3";
+            this.TUAN1_THU3.HeaderText = "TUAN1_THU3";
+            this.TUAN1_THU3.MinimumWidth = 60;
+            this.TUAN1_THU3.Name = "TUAN1_THU3";
+            // 
+            // TUAN1_THU4
+            // 
+            this.TUAN1_THU4.DataPropertyName = "TUAN1_THU4";
+            this.TUAN1_THU4.HeaderText = "TUAN1_THU4";
+            this.TUAN1_THU4.MinimumWidth = 60;
+            this.TUAN1_THU4.Name = "TUAN1_THU4";
+            // 
+            // TUAN1_THU5
+            // 
+            this.TUAN1_THU5.DataPropertyName = "TUAN1_THU5";
+            this.TUAN1_THU5.HeaderText = "TUAN1_THU5";
+            this.TUAN1_THU5.MinimumWidth = 60;
+            this.TUAN1_THU5.Name = "TUAN1_THU5";
+            // 
+            // TUAN1_THU6
+            // 
+            this.TUAN1_THU6.DataPropertyName = "TUAN1_THU6";
+            this.TUAN1_THU6.HeaderText = "TUAN1_THU6";
+            this.TUAN1_THU6.MinimumWidth = 60;
+            this.TUAN1_THU6.Name = "TUAN1_THU6";
+            // 
+            // TUAN1_THU7
+            // 
+            this.TUAN1_THU7.DataPropertyName = "TUAN1_THU7";
+            this.TUAN1_THU7.HeaderText = "TUAN1_THU7";
+            this.TUAN1_THU7.MinimumWidth = 60;
+            this.TUAN1_THU7.Name = "TUAN1_THU7";
+            // 
+            // TUAN1_CN
+            // 
+            this.TUAN1_CN.DataPropertyName = "TUAN1_CN";
+            this.TUAN1_CN.HeaderText = "TUAN1_CN";
+            this.TUAN1_CN.MinimumWidth = 60;
+            this.TUAN1_CN.Name = "TUAN1_CN";
+            // 
+            // TUAN2_THU2
+            // 
+            this.TUAN2_THU2.DataPropertyName = "TUAN2_THU2";
+            this.TUAN2_THU2.HeaderText = "TUAN2_THU2";
+            this.TUAN2_THU2.MinimumWidth = 60;
+            this.TUAN2_THU2.Name = "TUAN2_THU2";
+            // 
+            // TUAN2_THU3
+            // 
+            this.TUAN2_THU3.DataPropertyName = "TUAN2_THU3";
+            this.TUAN2_THU3.HeaderText = "TUAN2_THU3";
+            this.TUAN2_THU3.MinimumWidth = 60;
+            this.TUAN2_THU3.Name = "TUAN2_THU3";
+            // 
+            // TUAN2_THU4
+            // 
+            this.TUAN2_THU4.DataPropertyName = "TUAN2_THU4";
+            this.TUAN2_THU4.HeaderText = "TUAN2_THU4";
+            this.TUAN2_THU4.MinimumWidth = 60;
+            this.TUAN2_THU4.Name = "TUAN2_THU4";
+            // 
+            // TUAN2_THU5
+            // 
+            this.TUAN2_THU5.DataPropertyName = "TUAN2_THU5";
+            this.TUAN2_THU5.HeaderText = "TUAN2_THU5";
+            this.TUAN2_THU5.MinimumWidth = 60;
+            this.TUAN2_THU5.Name = "TUAN2_THU5";
+            // 
+            // TUAN2_THU6
+            // 
+            this.TUAN2_THU6.DataPropertyName = "TUAN2_THU6";
+            this.TUAN2_THU6.HeaderText = "TUAN2_THU6";
+            this.TUAN2_THU6.MinimumWidth = 60;
+            this.TUAN2_THU6.Name = "TUAN2_THU6";
+            // 
+            // TUAN2_THU7
+            // 
+            this.TUAN2_THU7.DataPropertyName = "TUAN2_THU7";
+            this.TUAN2_THU7.HeaderText = "TUAN2_THU7";
+            this.TUAN2_THU7.MinimumWidth = 60;
+            this.TUAN2_THU7.Name = "TUAN2_THU7";
+            // 
+            // TUAN2_CN
+            // 
+            this.TUAN2_CN.DataPropertyName = "TUAN2_CN";
+            this.TUAN2_CN.HeaderText = "TUAN2_CN";
+            this.TUAN2_CN.MinimumWidth = 60;
+            this.TUAN2_CN.Name = "TUAN2_CN";
+            // 
+            // TUAN3_THU2
+            // 
+            this.TUAN3_THU2.DataPropertyName = "TUAN3_THU2";
+            this.TUAN3_THU2.HeaderText = "TUAN3_THU2";
+            this.TUAN3_THU2.MinimumWidth = 60;
+            this.TUAN3_THU2.Name = "TUAN3_THU2";
+            // 
+            // TUAN3_THU3
+            // 
+            this.TUAN3_THU3.DataPropertyName = "TUAN3_THU3";
+            this.TUAN3_THU3.HeaderText = "TUAN3_THU3";
+            this.TUAN3_THU3.MinimumWidth = 60;
+            this.TUAN3_THU3.Name = "TUAN3_THU3";
+            // 
+            // TUAN3_THU4
+            // 
+            this.TUAN3_THU4.DataPropertyName = "TUAN3_THU4";
+            this.TUAN3_THU4.HeaderText = "TUAN3_THU4";
+            this.TUAN3_THU4.MinimumWidth = 60;
+            this.TUAN3_THU4.Name = "TUAN3_THU4";
+            // 
+            // TUAN3_THU5
+            // 
+            this.TUAN3_THU5.DataPropertyName = "TUAN3_THU5";
+            this.TUAN3_THU5.HeaderText = "TUAN3_THU5";
+            this.TUAN3_THU5.MinimumWidth = 60;
+            this.TUAN3_THU5.Name = "TUAN3_THU5";
+            // 
+            // TUAN3_THU6
+            // 
+            this.TUAN3_THU6.DataPropertyName = "TUAN3_THU6";
+            this.TUAN3_THU6.HeaderText = "TUAN3_THU6";
+            this.TUAN3_THU6.MinimumWidth = 60;
+            this.TUAN3_THU6.Name = "TUAN3_THU6";
+            // 
+            // TUAN3_THU7
+            // 
+            this.TUAN3_THU7.DataPropertyName = "TUAN3_THU7";
+            this.TUAN3_THU7.HeaderText = "TUAN3_THU7";
+            this.TUAN3_THU7.MinimumWidth = 60;
+            this.TUAN3_THU7.Name = "TUAN3_THU7";
+            // 
+            // TUAN3_CN
+            // 
+            this.TUAN3_CN.DataPropertyName = "TUAN3_CN";
+            this.TUAN3_CN.HeaderText = "TUAN3_CN";
+            this.TUAN3_CN.MinimumWidth = 60;
+            this.TUAN3_CN.Name = "TUAN3_CN";
+            // 
+            // TUAN4_THU2
+            // 
+            this.TUAN4_THU2.DataPropertyName = "TUAN4_THU2";
+            this.TUAN4_THU2.HeaderText = "TUAN4_THU2";
+            this.TUAN4_THU2.MinimumWidth = 60;
+            this.TUAN4_THU2.Name = "TUAN4_THU2";
+            // 
+            // TUAN4_THU3
+            // 
+            this.TUAN4_THU3.DataPropertyName = "TUAN4_THU3";
+            this.TUAN4_THU3.HeaderText = "TUAN4_THU3";
+            this.TUAN4_THU3.MinimumWidth = 60;
+            this.TUAN4_THU3.Name = "TUAN4_THU3";
+            // 
+            // TUAN4_THU4
+            // 
+            this.TUAN4_THU4.DataPropertyName = "TUAN4_THU4";
+            this.TUAN4_THU4.HeaderText = "TUAN4_THU4";
+            this.TUAN4_THU4.MinimumWidth = 60;
+            this.TUAN4_THU4.Name = "TUAN4_THU4";
+            // 
+            // TUAN4_THU5
+            // 
+            this.TUAN4_THU5.DataPropertyName = "TUAN4_THU5";
+            this.TUAN4_THU5.HeaderText = "TUAN4_THU5";
+            this.TUAN4_THU5.MinimumWidth = 60;
+            this.TUAN4_THU5.Name = "TUAN4_THU5";
+            // 
+            // TUAN4_THU6
+            // 
+            this.TUAN4_THU6.DataPropertyName = "TUAN4_THU6";
+            this.TUAN4_THU6.HeaderText = "TUAN4_THU6";
+            this.TUAN4_THU6.MinimumWidth = 60;
+            this.TUAN4_THU6.Name = "TUAN4_THU6";
+            // 
+            // TUAN4_THU7
+            // 
+            this.TUAN4_THU7.DataPropertyName = "TUAN4_THU7";
+            this.TUAN4_THU7.HeaderText = "TUAN4_THU7";
+            this.TUAN4_THU7.MinimumWidth = 60;
+            this.TUAN4_THU7.Name = "TUAN4_THU7";
+            // 
+            // TUAN4_CN
+            // 
+            this.TUAN4_CN.DataPropertyName = "TUAN4_CN";
+            this.TUAN4_CN.HeaderText = "TUAN4_CN";
+            this.TUAN4_CN.MinimumWidth = 60;
+            this.TUAN4_CN.Name = "TUAN4_CN";
             // 
             // Main
             // 
@@ -1911,10 +1914,10 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.tabConfig.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2036,6 +2039,23 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbCheckCN;
+        private System.Windows.Forms.ComboBox cbPhongBan;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TabPage tabConfig;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btnResetDefaut;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox txtConnectionString;
+        private System.Windows.Forms.TextBox tbDataBase;
+        private System.Windows.Forms.Label lblDataBase;
+        private System.Windows.Forms.TextBox tbPass;
+        private System.Windows.Forms.Label lblPass;
+        private System.Windows.Forms.TextBox tbUser;
+        private System.Windows.Forms.Label lblUser;
+        private System.Windows.Forms.TextBox tbSource;
+        private System.Windows.Forms.Button btnSaveConfig;
+        private System.Windows.Forms.Label lblSource;
+        private System.Windows.Forms.CheckBox cbAgree;
         private System.Windows.Forms.DataGridViewTextBoxColumn HO_VA_TEN;
         private System.Windows.Forms.DataGridViewTextBoxColumn INDEX;
         private System.Windows.Forms.DataGridViewTextBoxColumn MA_NHAN_VIEN1;
@@ -2069,23 +2089,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU6;
         private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_THU7;
         private System.Windows.Forms.DataGridViewTextBoxColumn TUAN4_CN;
-        private System.Windows.Forms.ComboBox cbPhongBan;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TabPage tabConfig;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button btnResetDefaut;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox txtConnectionString;
-        private System.Windows.Forms.TextBox tbDataBase;
-        private System.Windows.Forms.Label lblDataBase;
-        private System.Windows.Forms.TextBox tbPass;
-        private System.Windows.Forms.Label lblPass;
-        private System.Windows.Forms.TextBox tbUser;
-        private System.Windows.Forms.Label lblUser;
-        private System.Windows.Forms.TextBox tbSource;
-        private System.Windows.Forms.Button btnSaveConfig;
-        private System.Windows.Forms.Label lblSource;
-        private System.Windows.Forms.CheckBox cbAgree;
     }
 }
 

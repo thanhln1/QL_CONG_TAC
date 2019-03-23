@@ -1544,7 +1544,7 @@ namespace ManageWorkExpenses
 
             // Lấy danh sách MT_NHAN_VIEN
             List<MT_NHAN_VIEN> listStaff = busUser.GetListUser();
-            
+
             // Nếu danh sách nhân viên hiện tại ít hơn các nhân viên được tính toán thì áp dụng thuật toán tuần tự
             if (listStaff.Count <= listSchedual.Count)
             {
@@ -1563,7 +1563,7 @@ namespace ManageWorkExpenses
             {
                 List<MT_SCHEDUAL> listNewSchedual = new List<MT_SCHEDUAL>();
                 // Kiểm tra nếu không có dữ liệu thì thoát
-                if (listStaff.Count<=0)
+                if (listStaff.Count <= 0)
                 {
                     MessageBox.Show("Không tồn tại cán bộ nào để chạy thuật toán. Xin thử lại.");
                     return false;
@@ -1590,7 +1590,7 @@ namespace ManageWorkExpenses
                         if (!isDuplicate)
                         {
                             listNewSchedual.Add(newSchedual);
-                        }                        
+                        }
                     }
                 }
                 if (listSchedual.Count <= 0)
@@ -1610,10 +1610,8 @@ namespace ManageWorkExpenses
                 // Tổng số phần trăm của progress bar
                 int totalPercent = listSchedual.Count;
                 // 
-
                 foreach (var item in listSchedual)
                 {
-                    int i = 0;
                     // Getting Type of Generic Class Model
                     Type tModelType = item.GetType();
                     // Tạo một đối tượng PropertyInfo chứa chi tiết về thuộc tính lớp
@@ -1631,37 +1629,40 @@ namespace ManageWorkExpenses
                         }
 
                         // Nếu ô còn trống thì xử lý
-                        if (property.GetValue(item) == null || property.GetValue(item).ToString() =="")
+                        if (property.GetValue(item) == null || property.GetValue(item).ToString() == "")
                         {
-                            // Lấy đơn giá của Công ty theo địa chỉ
-                            int dongia = GetDonGia(listCompany[i].TINH);
                             string nhomNV = busUser.getGroupUser(item.MA_NHAN_VIEN);
-                            string nhomCty = busContract.getGroupCompany(listCompany[i].MA_KHACH_HANG);
-                            if (string.IsNullOrEmpty(nhomNV) || string.IsNullOrEmpty(nhomCty))
+                            foreach (var company in listCompany)
                             {
-                                MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên: " + item.MA_NHAN_VIEN + " hoặc Khách hàng: " + listCompany[i].MA_KHACH_HANG);
-                                busTMP.DelAllTMP();
-                                return false;
-                            }
-                            // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá hoặc Nhóm công ty khác với phân loại user thì công ty đó không sử dụng được với user -> chuyển cty tiếp theo.  
-                            if (( listCompany[i].TONG_CHI_PHI_MUC_TOI_DA - listCompany[i].CHI_PHI_THUC_DA_CHI ) <= dongia || !nhomNV.Equals(nhomCty))
-                            {
-                                // Chuyển sang công ty tiếp theo 
-                                i++;
-                                // Nếu chạy hết vòng lặp của công ty rồi thì thoát.
-                                if (i == listCompany.Count())
+                                string nhomCty = busContract.getGroupCompany(company.MA_KHACH_HANG);
+                                // Lấy đơn giá của Công ty theo địa chỉ
+                                int dongia = GetDonGia(company.TINH);
+                                if (dongia == 0)
                                 {
+                                    MessageBox.Show("Kiểm tra lại thông tin Tỉnh thành!");
+                                    return false;
+                                }
+
+                                if (string.IsNullOrEmpty(nhomNV) || string.IsNullOrEmpty(nhomCty))
+                                {
+                                    MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên: " + item.MA_NHAN_VIEN + " hoặc Khách hàng: " + company.MA_KHACH_HANG);
+                                    busTMP.DelAllTMP();
+                                    return false;
+                                }
+                                // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá hoặc Nhóm công ty khác với phân loại user thì công ty đó không sử dụng được với user -> chuyển cty tiếp theo.  
+                                if ((company.TONG_CHI_PHI_MUC_TOI_DA - company.CHI_PHI_THUC_DA_CHI) < dongia || !nhomNV.Equals(nhomCty))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    // Set giá trị cho ô trống
+                                    property.SetValue(item, company.MA_KHACH_HANG);
+
+                                    // Cộng thêm giá trị cho Chi phí thực đã chi
+                                    company.CHI_PHI_THUC_DA_CHI += dongia;
                                     break;
                                 }
-                            }
-                            // Tránh vượt quá kích thước mảng khi chạy
-                            if (i < listCompany.Count())
-                            {
-                                // Set giá trị cho ô trống
-                                property.SetValue(item, listCompany[i].MA_KHACH_HANG);
-
-                                // Cộng thêm giá trị cho Chi phí thực đã chi
-                                listCompany[i].CHI_PHI_THUC_DA_CHI += dongia;
                             }
 
                         }
@@ -1723,6 +1724,11 @@ namespace ManageWorkExpenses
                     {
                         // Lấy đơn giá của Công ty theo địa chỉ
                         int dongia = GetDonGia(listCompany[i].TINH);
+                        if (dongia == 0)
+                        {
+                            MessageBox.Show("Kiểm tra lại thông tin Tỉnh thành!");
+                            return false;
+                        }
                         string nhomNV = busUser.getGroupUser(item.MA_NHAN_VIEN);
                         string nhomCty = busContract.getGroupCompany(listCompany[i].MA_KHACH_HANG);
                         if (string.IsNullOrEmpty(nhomNV) || string.IsNullOrEmpty(nhomCty))
@@ -1795,7 +1801,6 @@ namespace ManageWorkExpenses
             
             foreach (var item in listSchedual)
             {
-                int i = 0;
                 // Getting Type of Generic Class Model
                 Type tModelType = item.GetType();
                 // Tạo một đối tượng PropertyInfo chứa chi tiết về thuộc tính lớp
@@ -1814,36 +1819,39 @@ namespace ManageWorkExpenses
 
                     // Nếu ô còn trống thì xử lý
                     if (property.GetValue(item) == null || property.GetValue(item).ToString() == "")
-                    {
-                        // Lấy đơn giá của Công ty theo địa chỉ
-                        int dongia = GetDonGia(listCompany[i].TINH);
+                    {                       
                         string nhomNV = busUser.getGroupUser(item.MA_NHAN_VIEN);
-                        string nhomCty = busContract.getGroupCompany(listCompany[i].MA_KHACH_HANG);
-                        if (string.IsNullOrEmpty(nhomNV) || string.IsNullOrEmpty(nhomCty))
+                        foreach (var company in listCompany)
                         {
-                            MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên: "+ item.MA_NHAN_VIEN+" hoặc Khách hàng: "+listCompany[i].MA_KHACH_HANG);
-                            busTMP.DelAllTMP();
-                            return false;
-                        }
-                        // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá hoặc Nhóm công ty khác với phân loại user thì công ty đó không sử dụng được với user -> chuyển cty tiếp theo.  
-                        if (( listCompany[i].TONG_CHI_PHI_MUC_TOI_DA - listCompany[i].CHI_PHI_THUC_DA_CHI ) <= dongia || !nhomNV.Equals(nhomCty))
-                        {   
-                            // Chuyển sang công ty tiếp theo 
-                            i++;
-                            // Nếu chạy hết vòng lặp của công ty rồi thì thoát.
-                            if (i == listCompany.Count())
+                            string nhomCty = busContract.getGroupCompany(company.MA_KHACH_HANG);
+                            // Lấy đơn giá của Công ty theo địa chỉ
+                            int dongia = GetDonGia(company.TINH);
+                            if (dongia == 0)
                             {
+                                MessageBox.Show("Kiểm tra lại thông tin Tỉnh thành!");
+                                return false;
+                            }
+
+                            if (string.IsNullOrEmpty(nhomNV) || string.IsNullOrEmpty(nhomCty))
+                            {
+                                MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên: " + item.MA_NHAN_VIEN + " hoặc Khách hàng: " + company.MA_KHACH_HANG);
+                                busTMP.DelAllTMP();
+                                return false;
+                            }
+                            // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá hoặc Nhóm công ty khác với phân loại user thì công ty đó không sử dụng được với user -> chuyển cty tiếp theo.  
+                            if ((company.TONG_CHI_PHI_MUC_TOI_DA - company.CHI_PHI_THUC_DA_CHI) < dongia || !nhomNV.Equals(nhomCty))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                // Set giá trị cho ô trống
+                                property.SetValue(item, company.MA_KHACH_HANG);
+
+                                // Cộng thêm giá trị cho Chi phí thực đã chi
+                                company.CHI_PHI_THUC_DA_CHI += dongia;
                                 break;
                             }
-                        }                        
-                        // Tránh vượt quá kích thước mảng khi chạy
-                        if (i < listCompany.Count())
-                        {
-                            // Set giá trị cho ô trống
-                            property.SetValue(item, listCompany[i].MA_KHACH_HANG);
-
-                            // Cộng thêm giá trị cho Chi phí thực đã chi
-                            listCompany[i].CHI_PHI_THUC_DA_CHI += dongia; 
                         }
 
                     }
