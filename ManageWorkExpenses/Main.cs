@@ -2225,7 +2225,15 @@ namespace ManageWorkExpenses
                 {
                     dongia.ID = Convert.ToInt32(row.Cells[0].Value.ToString());
                     dongia.DON_GIA = Convert.ToInt32(row.Cells[2].Value.ToString());
-                    dongia.GHI_CHU = (row.Cells[3].Value.ToString());
+                    if (row.Cells[3].Value==null)
+                    {
+                        dongia.GHI_CHU = "";
+                    }
+                    else
+                    {
+                        dongia.GHI_CHU = (row.Cells[3].Value.ToString());
+                    }
+                    
                     bool isUpdate = busDongia.UpdateDonGia(dongia);
                 }
                 GetAllDonGia();
@@ -2241,22 +2249,20 @@ namespace ManageWorkExpenses
             {
                 if (txtBox != null)
                 {
-                    //txtBox.TextChanged += new EventHandler(txtBox_TextChanged);
+                    txtBox.TextChanged += new EventHandler(txtBox_TextChanged);
                     txtBox.KeyPress += new KeyPressEventHandler(txtBox_KeyPress);
                 }
             }
         }
 
-        //void txtBox_TextChanged(object sender, EventArgs e)
-        //{
-        //    if ((sender as TextBox).Text != null && (sender as TextBox).Text.Trim() != "")
-        //    {              
-        //        if ((sender as TextBox).Text.Length==0)
-        //        {
-        //            (sender as TextBox).Text="0";
-        //        }
-        //    }
-        //}
+        void txtBox_TextChanged(object sender, EventArgs e)
+        {
+            if ((sender as TextBox).Text == "")
+            {              
+              (sender as TextBox).Text = "0";
+            }
+        }
+
         void txtBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))

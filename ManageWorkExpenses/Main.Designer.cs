@@ -190,12 +190,9 @@
             this.cbbMonth_tinhtoan = new System.Windows.Forms.DateTimePicker();
             this.tabConfig = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnLoadDonGia = new System.Windows.Forms.Button();
             this.btnSaveDonGia = new System.Windows.Forms.Button();
             this.dgvDonGia = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DIA_CHI = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DON_GIA = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GHI_CHU = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbAgree = new System.Windows.Forms.CheckBox();
             this.btnResetDefaut = new System.Windows.Forms.Button();
@@ -210,7 +207,10 @@
             this.tbSource = new System.Windows.Forms.TextBox();
             this.btnSaveConfig = new System.Windows.Forms.Button();
             this.lblSource = new System.Windows.Forms.Label();
-            this.btnLoadDonGia = new System.Windows.Forms.Button();
+            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DIA_CHI = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DON_GIA = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GHI_CHU = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.TabNhanVien.SuspendLayout();
@@ -1753,6 +1753,16 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Cập nhập đơn giá";
             // 
+            // btnLoadDonGia
+            // 
+            this.btnLoadDonGia.Location = new System.Drawing.Point(6, 391);
+            this.btnLoadDonGia.Name = "btnLoadDonGia";
+            this.btnLoadDonGia.Size = new System.Drawing.Size(106, 32);
+            this.btnLoadDonGia.TabIndex = 24;
+            this.btnLoadDonGia.Text = "Tải lại";
+            this.btnLoadDonGia.UseVisualStyleBackColor = true;
+            this.btnLoadDonGia.Click += new System.EventHandler(this.btnLoadDonGia_Click);
+            // 
             // btnSaveDonGia
             // 
             this.btnSaveDonGia.Location = new System.Drawing.Point(261, 391);
@@ -1807,35 +1817,6 @@
             this.dgvDonGia.Size = new System.Drawing.Size(361, 361);
             this.dgvDonGia.TabIndex = 22;
             this.dgvDonGia.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvDonGia_EditingControlShowing);
-            // 
-            // dataGridViewTextBoxColumn14
-            // 
-            this.dataGridViewTextBoxColumn14.DataPropertyName = "ID";
-            this.dataGridViewTextBoxColumn14.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
-            this.dataGridViewTextBoxColumn14.Visible = false;
-            // 
-            // DIA_CHI
-            // 
-            this.DIA_CHI.DataPropertyName = "DIA_CHI";
-            this.DIA_CHI.HeaderText = "Địa chỉ";
-            this.DIA_CHI.Name = "DIA_CHI";
-            this.DIA_CHI.ReadOnly = true;
-            // 
-            // DON_GIA
-            // 
-            this.DON_GIA.DataPropertyName = "DON_GIA";
-            dataGridViewCellStyle8.NullValue = null;
-            this.DON_GIA.DefaultCellStyle = dataGridViewCellStyle8;
-            this.DON_GIA.HeaderText = "Đơn giá";
-            this.DON_GIA.Name = "DON_GIA";
-            // 
-            // GHI_CHU
-            // 
-            this.GHI_CHU.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.GHI_CHU.DataPropertyName = "GHI_CHU";
-            this.GHI_CHU.HeaderText = "Ghi chú";
-            this.GHI_CHU.Name = "GHI_CHU";
             // 
             // groupBox2
             // 
@@ -1980,15 +1961,35 @@
             this.lblSource.TabIndex = 19;
             this.lblSource.Text = "Source";
             // 
-            // btnLoadDonGia
+            // dataGridViewTextBoxColumn14
             // 
-            this.btnLoadDonGia.Location = new System.Drawing.Point(6, 391);
-            this.btnLoadDonGia.Name = "btnLoadDonGia";
-            this.btnLoadDonGia.Size = new System.Drawing.Size(106, 32);
-            this.btnLoadDonGia.TabIndex = 24;
-            this.btnLoadDonGia.Text = "Tải lại";
-            this.btnLoadDonGia.UseVisualStyleBackColor = true;
-            this.btnLoadDonGia.Click += new System.EventHandler(this.btnLoadDonGia_Click);
+            this.dataGridViewTextBoxColumn14.DataPropertyName = "ID";
+            this.dataGridViewTextBoxColumn14.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            this.dataGridViewTextBoxColumn14.Visible = false;
+            // 
+            // DIA_CHI
+            // 
+            this.DIA_CHI.DataPropertyName = "DIA_CHI";
+            this.DIA_CHI.HeaderText = "Địa chỉ";
+            this.DIA_CHI.Name = "DIA_CHI";
+            this.DIA_CHI.ReadOnly = true;
+            // 
+            // DON_GIA
+            // 
+            this.DON_GIA.DataPropertyName = "DON_GIA";
+            dataGridViewCellStyle8.NullValue = null;
+            this.DON_GIA.DefaultCellStyle = dataGridViewCellStyle8;
+            this.DON_GIA.HeaderText = "Đơn giá";
+            this.DON_GIA.Name = "DON_GIA";
+            // 
+            // GHI_CHU
+            // 
+            this.GHI_CHU.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.GHI_CHU.DataPropertyName = "GHI_CHU";
+            this.GHI_CHU.HeaderText = "Ghi chú";
+            this.GHI_CHU.Name = "GHI_CHU";
+            this.GHI_CHU.Visible = false;
             // 
             // Main
             // 
@@ -2212,11 +2213,11 @@
         private System.Windows.Forms.GroupBox groupBox4;
         public System.Windows.Forms.DataGridView dgvDonGia;
         private System.Windows.Forms.Button btnSaveDonGia;
+        private System.Windows.Forms.Button btnLoadDonGia;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
         private System.Windows.Forms.DataGridViewTextBoxColumn DIA_CHI;
         private System.Windows.Forms.DataGridViewTextBoxColumn DON_GIA;
         private System.Windows.Forms.DataGridViewTextBoxColumn GHI_CHU;
-        private System.Windows.Forms.Button btnLoadDonGia;
     }
 }
 
