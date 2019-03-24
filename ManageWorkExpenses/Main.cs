@@ -2104,7 +2104,8 @@ namespace ManageWorkExpenses
             catch (Exception ex)
             {
                 MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: "+ ex.Message);
-            }            
+            }
+            this.Enabled = false;
         }
 
         private void btnSaveConfig_Click( object sender, EventArgs e )
@@ -2280,6 +2281,18 @@ namespace ManageWorkExpenses
         private void btnLoadDonGia_Click(object sender, EventArgs e)
         {
             GetAllDonGia();
+        }
+
+        private void cbShowPass_CheckedChanged(object sender, EventArgs e)
+        {    
+            if (cbShowPass.Checked == true)
+            {
+                tbPass.PasswordChar = '\0';
+            }
+            else
+            {
+                tbPass.PasswordChar = '*';
+            }
         }
     }
 }
