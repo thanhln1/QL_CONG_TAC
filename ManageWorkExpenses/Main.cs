@@ -1550,7 +1550,7 @@ namespace ManageWorkExpenses
             // Nếu danh sách nhân viên hiện tại ít hơn các nhân viên được tính toán thì áp dụng thuật toán tuần tự
             if (listStaff.Count <= listSchedual.Count)
             {
-                DialogResult dialogResult = MessageBox.Show("Lịch công tác có số lượng cán bộ không nhiều hơn Số cán bộ khả dụng.  \n.Chương trình sẽ áp dụng thuật toán tuần tự", "Số liệu không thích hơp. Chuyển sang thuật toán tuần tự?", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Lịch công tác có số lượng cán bộ ít hơn Số cán bộ khả dụng.  \nChương trình sẽ áp dụng thuật toán tuần tự", "Số liệu không thích hơp. Chuyển sang thuật toán tuần tự?", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     return RunCalcTuanTu(month, year, isCN);
@@ -1683,6 +1683,8 @@ namespace ManageWorkExpenses
 
         private bool RunCalcNgauNhien(int month, int year, bool isCN)
         {
+            MessageBox.Show("Thuật toán đang được phát triển, xin thử lại sau!");
+            return false;
 
             // Lấy danh sách MT_SCHEDUAL 
             List<MT_SCHEDUAL> listSchedual = busCaculation.getListSchedual(month, year);
