@@ -2107,7 +2107,7 @@ namespace ManageWorkExpenses
             {
                 MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: "+ ex.Message);
             }
-            this.Enabled = false;
+            btnSave.Enabled = false;
         }
 
         private void btnSaveConfig_Click( object sender, EventArgs e )
