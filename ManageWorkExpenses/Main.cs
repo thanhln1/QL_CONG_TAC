@@ -555,30 +555,69 @@ namespace ManageWorkExpenses
         }
 
         private void btnImportSchedual_Click( object sender, EventArgs e )
-        {
-            var fileContent = string.Empty;
-            var filePath = string.Empty;
-
+        {          
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 string messeger = "";
-               // openFileDialog.InitialDirectory = "c:\\";
+                // openFileDialog.InitialDirectory = "c:\\";
                 openFileDialog.Filter = "Excell files (*.xlsx)| Ole Excel File (*.xls)|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (openFileDialog.ShowDialog()== DialogResult.OK)
                 {
+                    string filePath = openFileDialog.FileName;
+                    var fileStream = openFileDialog.OpenFile();
+                    StreamReader reader = new StreamReader(fileStream);
+
+                    if (isProcessRunning)
+                    {
+                        MessageBox.Show("Thuật toán đang chạy, xin vui lòng chờ");
+                        return;
+                    }
+
+                    Thread backgroundThread = new Thread(
+                            new ThreadStart(() =>
+                            {
+                                isProcessRunning = true;
+                                ImportSchedual(messeger, filePath, reader);
+                                if (progressDialog.InvokeRequired)
+                                    progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+                                isProcessRunning = false;
+                            }
+                        ));
+
+                    backgroundThread.Start();
+                    progressDialog.ShowDialog();
+                }
+            }             
+        }
+
+        private void ImportSchedual(string messeger, string filePath, StreamReader reader)
+        {
+            var fileContent = string.Empty;
+            //var filePath = string.Empty;
+
+            //using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            //{
+                //string messeger = "";
+                //// openFileDialog.InitialDirectory = "c:\\";
+                //openFileDialog.Filter = "Excell files (*.xlsx)| Ole Excel File (*.xls)|All files (*.*)|*.*";
+                //openFileDialog.FilterIndex = 2;
+                //openFileDialog.RestoreDirectory = true;
+
+                //if (openFileDialog.ShowDialog() == DialogResult.OK)
+                //{
                     //Get the path of specified file
-                    filePath = openFileDialog.FileName;
+                    //filePath = filepath;
 
                     //Read the contents of the file into a stream
                     try
                     {
-                        var fileStream = openFileDialog.OpenFile();
-
-                        using (StreamReader reader = new StreamReader(fileStream))
-                        {
+                        //var fileStream = openFileDialog.OpenFile();
+                        //var fileStream = "";
+                        //using (StreamReader reader = new StreamReader(fileStream))
+                        //{
                             fileContent = reader.ReadToEnd();
 
                             //Create COM Objects. Create a COM object for everything that is referenced
@@ -587,7 +626,7 @@ namespace ManageWorkExpenses
                             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-                            int rowCount = xlRange.Rows.Count;       
+                            int rowCount = xlRange.Rows.Count;
 
 
                             //iterate over the rows and columns and print to the console as it appears in the file excel is not zero based!!
@@ -595,66 +634,71 @@ namespace ManageWorkExpenses
                             MT_LICH_CT calenda = new MT_LICH_CT();
                             calenda.THANG = cbMonth.Value.Month;
                             calenda.NAM = cbYear.Value.Year;
-                            calenda.FROM_DATE = DateTime.FromOADate(Convert.ToDouble(( xlWorksheet.Cells[4, 5] as Excel.Range ).Value2)); 
-                            calenda.TO_DATE = DateTime.FromOADate(Convert.ToDouble(( xlWorksheet.Cells[4, 32] as Excel.Range ).Value2));
+                            calenda.FROM_DATE = DateTime.FromOADate(Convert.ToDouble((xlWorksheet.Cells[4, 5] as Excel.Range).Value2));
+                            calenda.TO_DATE = DateTime.FromOADate(Convert.ToDouble((xlWorksheet.Cells[4, 32] as Excel.Range).Value2));
 
                             bool isSuccess = busCalenda.SaveCalenda(calenda);
-                            if ( isSuccess == true )
+                            if (isSuccess == true)
                             {
                                 messeger += "Ghi Thành công Tháng : " + calenda.THANG + " Năm :" + calenda.NAM + "\n";
                             }
                             else
                             {
-                               MessageBox.Show("Không lưu được tháng, Dữ liệu có thể đã tồn tại.");
-                               return;
+                                MessageBox.Show("Không lưu được tháng, Dữ liệu có thể đã tồn tại.");
+                                return;
                             }
-                            
+
+                            // cài đặt số chạy % của progress bar bắt đầu từ  0
+                            int n = 0;
+                            // Tổng số phần trăm của progress bar
+                            int totalPercent = rowCount;
+                            // 
                             // Add to schedual
-                            for (int i = 6 ; i <= rowCount ; i++)
+                            for (int i = 6; i <= rowCount; i++)
                             {
                                 MT_SCHEDUAL shedual = new MT_SCHEDUAL();
 
                                 //write the value to the console 
                                 //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "")) 
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "TT" 
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "A" 
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "B" 
+                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", ""))
+                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "TT"
+                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "A"
+                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "B"
                                     || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "STT")
                                 {
                                     continue;
-                                }  
-                                shedual.MA_NHAN_VIEN        =Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.THANG               =cbMonth.Value.Month;
-                                shedual.NAM                 =cbYear.Value.Year;
-                                shedual.TUAN1_THU2          =Regex.Replace(xlRange.Cells[i, 5].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU3          =Regex.Replace(xlRange.Cells[i, 6].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU4          =Regex.Replace(xlRange.Cells[i, 7].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU5          =Regex.Replace(xlRange.Cells[i, 8].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU6          =Regex.Replace(xlRange.Cells[i, 9].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU7          =Regex.Replace(xlRange.Cells[i, 10].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_CN            =Regex.Replace(xlRange.Cells[i, 11].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU2          =Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU3          =Regex.Replace(xlRange.Cells[i, 13].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU4          =Regex.Replace(xlRange.Cells[i, 14].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU5          =Regex.Replace(xlRange.Cells[i, 15].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU6          =Regex.Replace(xlRange.Cells[i, 16].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU7          =Regex.Replace(xlRange.Cells[i, 17].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_CN            =Regex.Replace(xlRange.Cells[i, 18].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU2          =Regex.Replace(xlRange.Cells[i, 19].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU3          =Regex.Replace(xlRange.Cells[i, 20].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU4          =Regex.Replace(xlRange.Cells[i, 21].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU5          =Regex.Replace(xlRange.Cells[i, 22].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU6          =Regex.Replace(xlRange.Cells[i, 23].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU7          =Regex.Replace(xlRange.Cells[i, 24].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_CN            =Regex.Replace(xlRange.Cells[i, 25].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU2          =Regex.Replace(xlRange.Cells[i, 26].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU3          =Regex.Replace(xlRange.Cells[i, 27].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU4          =Regex.Replace(xlRange.Cells[i, 28].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU5          =Regex.Replace(xlRange.Cells[i, 29].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU6          =Regex.Replace(xlRange.Cells[i, 30].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU7          =Regex.Replace(xlRange.Cells[i, 31].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_CN            =Regex.Replace(xlRange.Cells[i, 32].Text.ToString(), @"\r\n?|\n", "");   
+                                }
+                                shedual.MA_NHAN_VIEN = Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.THANG = cbMonth.Value.Month;
+                                shedual.NAM = cbYear.Value.Year;
+                                shedual.TUAN1_THU2 = Regex.Replace(xlRange.Cells[i, 5].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU3 = Regex.Replace(xlRange.Cells[i, 6].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU4 = Regex.Replace(xlRange.Cells[i, 7].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU5 = Regex.Replace(xlRange.Cells[i, 8].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU6 = Regex.Replace(xlRange.Cells[i, 9].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_THU7 = Regex.Replace(xlRange.Cells[i, 10].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN1_CN = Regex.Replace(xlRange.Cells[i, 11].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU2 = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU3 = Regex.Replace(xlRange.Cells[i, 13].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU4 = Regex.Replace(xlRange.Cells[i, 14].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU5 = Regex.Replace(xlRange.Cells[i, 15].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU6 = Regex.Replace(xlRange.Cells[i, 16].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_THU7 = Regex.Replace(xlRange.Cells[i, 17].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN2_CN = Regex.Replace(xlRange.Cells[i, 18].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU2 = Regex.Replace(xlRange.Cells[i, 19].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU3 = Regex.Replace(xlRange.Cells[i, 20].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU4 = Regex.Replace(xlRange.Cells[i, 21].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU5 = Regex.Replace(xlRange.Cells[i, 22].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU6 = Regex.Replace(xlRange.Cells[i, 23].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_THU7 = Regex.Replace(xlRange.Cells[i, 24].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN3_CN = Regex.Replace(xlRange.Cells[i, 25].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU2 = Regex.Replace(xlRange.Cells[i, 26].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU3 = Regex.Replace(xlRange.Cells[i, 27].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU4 = Regex.Replace(xlRange.Cells[i, 28].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU5 = Regex.Replace(xlRange.Cells[i, 29].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU6 = Regex.Replace(xlRange.Cells[i, 30].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_THU7 = Regex.Replace(xlRange.Cells[i, 31].Text.ToString(), @"\r\n?|\n", "");
+                                shedual.TUAN4_CN = Regex.Replace(xlRange.Cells[i, 32].Text.ToString(), @"\r\n?|\n", "");
                                 try
                                 {
                                     bool result = busSchedual.SaveSchedual(shedual, cbMonth.Value.Month, cbYear.Value.Year);
@@ -664,15 +708,15 @@ namespace ManageWorkExpenses
                                 {
                                     messeger += "Lỗi ghi Nhân viên: " + shedual.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
                                 }
+
+                                // Cập nhật số % cho progress bar
+                                progressDialog.UpdateProgress(n * 100 / totalPercent);
+                                n++;
                             }
 
                             //cleanup
                             GC.Collect();
                             GC.WaitForPendingFinalizers();
-
-                            //  rule of thumb for releasing com objects:
-                            //  never use two dots, all COM objects must be referenced and released individually
-                            //  ex: [somthing].[something].[something] is bad
 
                             //release com objects to fully kill excel process from running in the background
                             Marshal.ReleaseComObject(xlRange);
@@ -689,23 +733,21 @@ namespace ManageWorkExpenses
                             MessageBox.Show(messeger);
                             int month = cbMonth.Value.Month;
                             int year = cbYear.Value.Year;
-                            List<VW_SCHEDUAL>  listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
+                            List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
                             if (listRealSchedual == null)
                             {
                                 MessageBox.Show("Không tải được dữ liệu!");
                             }
                             ListSchedual.DataSource = listRealSchedual;
                             ListSchedual.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                        }
+                        //}
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
                     }
-
-                }
-
-            }
+                //}
+            //}
         }
 
         private void btnUpdate_Click( object sender, EventArgs e )
