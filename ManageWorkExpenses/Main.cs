@@ -194,9 +194,6 @@ namespace ManageWorkExpenses
 
         private void btnImportNhanVien_Click( object sender, EventArgs e )
         {
-            var fileContent = string.Empty;
-            var filePath = string.Empty;
-
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 string messeger = "";
@@ -207,234 +204,246 @@ namespace ManageWorkExpenses
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    //Get the path of specified file
-                    filePath = openFileDialog.FileName;
+                    string filePath = openFileDialog.FileName;
+                    var fileStream = openFileDialog.OpenFile();
+                    StreamReader reader = new StreamReader(fileStream);
 
-                    //Read the contents of the file into a stream
-                    try
+                    if (isProcessRunning)
                     {
-                        var fileStream = openFileDialog.OpenFile();
+                        MessageBox.Show("Đang tải dữ liệu, xin vui lòng chờ");
+                        return;
+                    }
 
-                        using (StreamReader reader = new StreamReader(fileStream))
-                        {
-                            fileContent = reader.ReadToEnd();
-
-                            //Create COM Objects. Create a COM object for everything that is referenced
-                            Excel.Application xlApp = new Excel.Application();
-                            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
-                            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-                            Excel.Range xlRange = xlWorksheet.UsedRange;
-
-                            int rowCount = xlRange.Rows.Count;
-                            // int colCount = xlRange.Columns.Count;
-
-                            //iterate over the rows and columns and print to the console as it appears in the file
-                            //excel is not zero based!!
-                            for (int i = 3 ; i <= rowCount ; i++)
+                    Thread backgroundThread = new Thread(
+                            new ThreadStart(() =>
                             {
-                                MT_NHAN_VIEN staff = new MT_NHAN_VIEN();
-
-                                //write the value to the console 
-                                //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(xlRange.Cells[i, 1].Text.ToString()))
-                                {
-                                    continue;
-                                }
-                                // MA_NHAN_VIEN
-                                staff.MA_NHAN_VIEN = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n","");
-
-                                // HO_TEN
-                                staff.HO_TEN = Regex.Replace(xlRange.Cells[i, 2].Value2.ToString(), @"\r\n?|\n", "");
-
-                                // CHUC_VU
-                                staff.CHUC_VU = Regex.Replace(xlRange.Cells[i, 3].Value2.ToString(), @"\r\n?|\n", "");
-
-                                // VAI_TRO
-                                staff.VAI_TRO = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
-
-                                // PHONG_BAN
-                                staff.PHONG_BAN = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
-
-                                try
-                                {
-                                    bool result = busUser.SaveUser(staff);
-                                    if (result)
-                                    {
-                                        messeger += "Ghi Thành công Nhân viên có mã  : " + staff.MA_NHAN_VIEN + "\n";
-                                    }
-                                    else
-                                    {
-                                        messeger += "Không ghi được Nhân viên có mã : " + staff.MA_NHAN_VIEN + " Lý do: Bản ghi bị trùng số HĐ. \n";
-                                    }
-
-                                }
-                                catch (Exception ex)
-                                {
-                                    messeger += "Lỗi ghi nhân viên có mã: " + staff.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
-                                }
+                                isProcessRunning = true;
+                                ImportNhanVien(messeger, filePath, reader);
+                                if (progressDialog.InvokeRequired)
+                                    progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+                                isProcessRunning = false;
                             }
+                        ));
 
-                            //cleanup
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
+                    backgroundThread.Start();
+                    progressDialog.ShowDialog();
 
-                            //  rule of thumb for releasing com objects:
-                            //  never use two dots, all COM objects must be referenced and released individually
-                            //  ex: [somthing].[something].[something] is bad
-
-                            //release com objects to fully kill excel process from running in the background
-                            Marshal.ReleaseComObject(xlRange);
-                            Marshal.ReleaseComObject(xlWorksheet);
-
-                            //close and release
-                            xlWorkbook.Close();
-                            Marshal.ReleaseComObject(xlWorkbook);
-
-                            //quit and release
-                            xlApp.Quit();
-                            Marshal.ReleaseComObject(xlApp);
-
-                            MessageBox.Show(messeger);
-                            loadAllUser();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
-                    }
+                    loadAllUser();
 
                 }
-
             }
         }
+        private void ImportNhanVien(string messeger, string filePath, StreamReader reader)
+        {
+            var fileContent = string.Empty;
+            try
+            {
+                 fileContent = reader.ReadToEnd();
+                 //Create COM Objects. Create a COM object for everything that is referenced
+                 Excel.Application xlApp = new Excel.Application();
+                 Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
+                 Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+                 Excel.Range xlRange = xlWorksheet.UsedRange;
+
+                 int rowCount = xlRange.Rows.Count;
+                 // int colCount = xlRange.Columns.Count;
+                 int n = 0;
+                 // Tổng số phần trăm của progress bar
+                 int totalPercent = rowCount - 3;
+                 //iterate over the rows and columns and print to the console as it appears in the file
+                 //excel is not zero based!!
+                 for (int i = 3; i <= rowCount; i++)
+                 {
+                     MT_NHAN_VIEN staff = new MT_NHAN_VIEN();
+
+                     //write the value to the console 
+                     //SO_HOP_DONG
+                     if (string.IsNullOrEmpty(xlRange.Cells[i, 1].Text.ToString()))
+                     {
+                         continue;
+                     }
+                     // MA_NHAN_VIEN
+                     staff.MA_NHAN_VIEN = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
+                     // HO_TEN
+                     staff.HO_TEN = Regex.Replace(xlRange.Cells[i, 2].Value2.ToString(), @"\r\n?|\n", "");
+                     // CHUC_VU
+                     staff.CHUC_VU = Regex.Replace(xlRange.Cells[i, 3].Value2.ToString(), @"\r\n?|\n", "");
+                     // VAI_TRO
+                     staff.VAI_TRO = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
+                     // PHONG_BAN
+                     staff.PHONG_BAN = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
+
+                     try
+                     {
+                         bool result = busUser.SaveUser(staff);
+                         if (result)
+                         {
+                             messeger += "Ghi Thành công Nhân viên có mã  : " + staff.MA_NHAN_VIEN + "\n";
+                         }
+                         else
+                         {
+                             messeger += "Không ghi được Nhân viên có mã : " + staff.MA_NHAN_VIEN + " Lý do: Bản ghi bị trùng số HĐ. \n";
+                         }
+
+                     }
+                     catch (Exception ex)
+                     {
+                         messeger += "Lỗi ghi nhân viên có mã: " + staff.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
+                     }
+                     // Cập nhật số % cho progress bar
+                     progressDialog.UpdateProgress(n * 100 / totalPercent);
+                     n++;
+                 }
+                 //cleanup
+                 GC.Collect();
+                 GC.WaitForPendingFinalizers();
+                 //release com objects to fully kill excel process from running in the background
+                 Marshal.ReleaseComObject(xlRange);
+                 Marshal.ReleaseComObject(xlWorksheet);
+                 //close and release
+                 xlWorkbook.Close();
+                 Marshal.ReleaseComObject(xlWorkbook);
+
+                 //quit and release
+                 xlApp.Quit();
+                 Marshal.ReleaseComObject(xlApp);
+                 MessageBox.Show(messeger);
+            }    
+            catch (Exception ex)
+            {
+                MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
+            }
+        }  
 
         private void btnImportContract_Click( object sender, EventArgs e )
         {
-            var fileContent = string.Empty;
-            var filePath = string.Empty;
-
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 string messeger = "";
-                // openFileDialog.InitialDirectory = "c:\\";
                 openFileDialog.Filter = "Excell files (*.xlsx)| Ole Excel File (*.xls)|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    //Get the path of specified file
-                    filePath = openFileDialog.FileName;
+                    string filePath = openFileDialog.FileName;
+                    var fileStream = openFileDialog.OpenFile();
+                    StreamReader reader = new StreamReader(fileStream);
 
-                    //Read the contents of the file into a stream
+                    if (isProcessRunning)
+                    {
+                        MessageBox.Show("Đang tải dữ liệu, xin vui lòng chờ");
+                        return;
+                    }
+
+                    Thread backgroundThread = new Thread(
+                            new ThreadStart(() =>
+                            {
+                                isProcessRunning = true;
+                                ImportContract(messeger, filePath, reader);
+                                if (progressDialog.InvokeRequired)
+                                    progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+                                isProcessRunning = false;
+                            }
+                        ));
+
+                    backgroundThread.Start();
+                    progressDialog.ShowDialog();
+                    LoadContract();
+                }
+            }         
+        }
+        private void ImportContract(string messeger, string filePath, StreamReader reader)
+        {
+            var fileContent = string.Empty;
+            try
+            {
+                fileContent = reader.ReadToEnd();
+                //Create COM Objects. Create a COM object for everything that is referenced
+                Excel.Application xlApp = new Excel.Application();
+                Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
+                Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+                Excel.Range xlRange = xlWorksheet.UsedRange;
+
+                int rowCount = xlRange.Rows.Count;
+                // int colCount = xlRange.Columns.Count;
+                int n = 0;
+                // Tổng số phần trăm của progress bar
+                int totalPercent = rowCount - 3;
+                //iterate over the rows and columns and print to the console as it appears in the file
+                //excel is not zero based!!
+                for (int i = 3; i <= rowCount; i++)
+                {
+                    MT_HOP_DONG contract = new MT_HOP_DONG();
+
+                    //write the value to the console 
+                    //SO_HOP_DONG
+                    if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "")))
+                    {
+                        continue;
+                    }
+                    contract.SO_HOP_DONG = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
+                    //NGAY_HOP_DONG    
+                    DateTimeFormatInfo DateInfo = CultureInfo.CurrentCulture.DateTimeFormat;
+                    contract.NGAY_HOP_DONG = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 2].Text.ToString().Trim()), CultureInfo.CurrentCulture);
+                    //NGAY_THANH_LY
+                    contract.NGAY_THANH_LY = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 3].Text.ToString().Trim()), CultureInfo.CurrentCulture);
+                    //KHACH_HANG
+                    contract.KHACH_HANG = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
+                    //MA_KHACH_HANG
+                    contract.MA_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
+                    //NHOM_KHACH_HANG
+                    contract.NHOM_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 6].Value2.ToString(), @"\r\n?|\n", "");
+                    //DIA_CHI
+                    contract.DIA_CHI = Regex.Replace(xlRange.Cells[i, 7].Value2.ToString(), @"\r\n?|\n", "");
+                    //TINH
+                    contract.TINH = Regex.Replace(xlRange.Cells[i, 8].Value2.ToString(), @"\r\n?|\n", "");
+                    //GIA_TRI_HOP_DONG
+                    contract.GIA_TRI_HOP_DONG = xlRange.Cells[i, 9].Value2;
+                    //TONG_CHI_PHI_MUC_TOI_DA
+                    contract.TONG_CHI_PHI_MUC_TOI_DA = xlRange.Cells[i, 10].Value2;
+                    //CHI_PHI_THUC_DA_CHI
+                    contract.CHI_PHI_THUC_DA_CHI = xlRange.Cells[i, 11].Value2;
+                    //GHI_CHU
+                    contract.GHI_CHU = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
+
                     try
                     {
-                        var fileStream = openFileDialog.OpenFile();
-
-                        using (StreamReader reader = new StreamReader(fileStream))
-                        {
-                            fileContent = reader.ReadToEnd();
-
-                            //Create COM Objects. Create a COM object for everything that is referenced
-                            Excel.Application xlApp = new Excel.Application();
-                            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
-                            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-                            Excel.Range xlRange = xlWorksheet.UsedRange;
-
-                            int rowCount = xlRange.Rows.Count;
-                            // int colCount = xlRange.Columns.Count;
-
-                            //iterate over the rows and columns and print to the console as it appears in the file
-                            //excel is not zero based!!
-                            for (int i = 3 ; i <= rowCount ; i++)
-                            {
-                                MT_HOP_DONG contract = new MT_HOP_DONG();
-
-                                //write the value to the console 
-                                //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", ""))) 
-                                {
-                                    continue;
-                                }
-                                contract.SO_HOP_DONG = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
-
-                                //NGAY_HOP_DONG    
-                                DateTimeFormatInfo DateInfo = CultureInfo.CurrentCulture.DateTimeFormat;  
-
-                                contract.NGAY_HOP_DONG = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 2].Text.ToString().Trim()), CultureInfo.CurrentCulture);
-
-                                //NGAY_THANH_LY
-                                contract.NGAY_THANH_LY = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 3].Text.ToString().Trim()), CultureInfo.CurrentCulture);
-
-                                //KHACH_HANG
-                                contract.KHACH_HANG = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //MA_KHACH_HANG
-                                contract.MA_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //NHOM_KHACH_HANG
-                                contract.NHOM_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 6].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //DIA_CHI
-                                contract.DIA_CHI = Regex.Replace(xlRange.Cells[i, 7].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //TINH
-                                contract.TINH = Regex.Replace(xlRange.Cells[i, 8].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //GIA_TRI_HOP_DONG
-                                contract.GIA_TRI_HOP_DONG = xlRange.Cells[i, 9].Value2;
-
-                                //TONG_CHI_PHI_MUC_TOI_DA
-                                contract.TONG_CHI_PHI_MUC_TOI_DA = xlRange.Cells[i, 10].Value2;
-
-                                //CHI_PHI_THUC_DA_CHI
-                                contract.CHI_PHI_THUC_DA_CHI = xlRange.Cells[i, 11].Value2;
-
-                                //GHI_CHU
-                                contract.GHI_CHU = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
-
-                                try
-                                {
-                                    bool result = busContract.SaveContract(contract);
-                                    messeger += (result == true) ? "Ghi Thành công HĐ số : " + contract.SO_HOP_DONG + "\n" : "Không ghi được HĐ số : " + contract.SO_HOP_DONG + " Lý do: Bản ghi bị trùng số HĐ \n";
-                                }
-                                catch (Exception ex)
-                                {
-                                    messeger += "Lỗi ghi HĐ số : " + contract.SO_HOP_DONG + " Lý do: " + ex.Message;
-                                }
-                            }
-
-                            //cleanup
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
-
-                            //  rule of thumb for releasing com objects:
-                            //  never use two dots, all COM objects must be referenced and released individually
-                            //  ex: [somthing].[something].[something] is bad
-
-                            //release com objects to fully kill excel process from running in the background
-                            Marshal.ReleaseComObject(xlRange);
-                            Marshal.ReleaseComObject(xlWorksheet);
-
-                            //close and release
-                            xlWorkbook.Close();
-                            Marshal.ReleaseComObject(xlWorkbook);
-
-                            //quit and release
-                            xlApp.Quit();
-                            Marshal.ReleaseComObject(xlApp);
-
-                            MessageBox.Show(messeger);
-                            LoadContract();
-                        }
+                        bool result = busContract.SaveContract(contract);
+                        messeger += (result == true) ? "Ghi Thành công HĐ số : " + contract.SO_HOP_DONG + "\n" : "Không ghi được HĐ số : " + contract.SO_HOP_DONG + " Lý do: Bản ghi bị trùng số HĐ \n";
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
-                    } 
-                }   
-            } 
-        }
+                        messeger += "Lỗi ghi HĐ số : " + contract.SO_HOP_DONG + " Lý do: " + ex.Message;
+                    }
+                    // Cập nhật số % cho progress bar
+                    progressDialog.UpdateProgress(n * 100 / totalPercent);
+                    n++;
+                }
+
+                //cleanup
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                //release com objects to fully kill excel process from running in the background
+                Marshal.ReleaseComObject(xlRange);
+                Marshal.ReleaseComObject(xlWorksheet);
+
+                //close and release
+                xlWorkbook.Close();
+                Marshal.ReleaseComObject(xlWorkbook);
+
+                //quit and release
+                xlApp.Quit();
+                Marshal.ReleaseComObject(xlApp);
+
+                MessageBox.Show(messeger);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
+            }
+        }          
 
         private void btnReloadContract_Click( object sender, EventArgs e )
         {
@@ -589,6 +598,16 @@ namespace ManageWorkExpenses
 
                     backgroundThread.Start();
                     progressDialog.ShowDialog();
+
+                    int month = cbMonth.Value.Month;
+                    int year = cbYear.Value.Year;
+                    List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
+                    if (listRealSchedual == null)
+                    {
+                        MessageBox.Show("Không tải được dữ liệu!");
+                    }
+                    ListSchedual.DataSource = listRealSchedual;
+                    ListSchedual.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 }
             }             
         }
@@ -596,159 +615,126 @@ namespace ManageWorkExpenses
         private void ImportSchedual(string messeger, string filePath, StreamReader reader)
         {
             var fileContent = string.Empty;
-            //var filePath = string.Empty;
+            try
+            {
+                 fileContent = reader.ReadToEnd();
 
-            //using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            //{
-                //string messeger = "";
-                //// openFileDialog.InitialDirectory = "c:\\";
-                //openFileDialog.Filter = "Excell files (*.xlsx)| Ole Excel File (*.xls)|All files (*.*)|*.*";
-                //openFileDialog.FilterIndex = 2;
-                //openFileDialog.RestoreDirectory = true;
+                 //Create COM Objects. Create a COM object for everything that is referenced
+                 Excel.Application xlApp = new Excel.Application();
+                 Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
+                 Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+                 Excel.Range xlRange = xlWorksheet.UsedRange;
 
-                //if (openFileDialog.ShowDialog() == DialogResult.OK)
-                //{
-                    //Get the path of specified file
-                    //filePath = filepath;
+                 int rowCount = xlRange.Rows.Count;
 
-                    //Read the contents of the file into a stream
-                    try
-                    {
-                        //var fileStream = openFileDialog.OpenFile();
-                        //var fileStream = "";
-                        //using (StreamReader reader = new StreamReader(fileStream))
-                        //{
-                            fileContent = reader.ReadToEnd();
+                 //iterate over the rows and columns and print to the console as it appears in the file excel is not zero based!!
+                 // Add to MT_LICH_CT
+                 MT_LICH_CT calenda = new MT_LICH_CT();
+                 calenda.THANG = cbMonth.Value.Month;
+                 calenda.NAM = cbYear.Value.Year;
+                 calenda.FROM_DATE = DateTime.FromOADate(Convert.ToDouble((xlWorksheet.Cells[4, 5] as Excel.Range).Value2));
+                 calenda.TO_DATE = DateTime.FromOADate(Convert.ToDouble((xlWorksheet.Cells[4, 32] as Excel.Range).Value2));
 
-                            //Create COM Objects. Create a COM object for everything that is referenced
-                            Excel.Application xlApp = new Excel.Application();
-                            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
-                            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-                            Excel.Range xlRange = xlWorksheet.UsedRange;
+                 bool isSuccess = busCalenda.SaveCalenda(calenda);
+                 if (isSuccess == true)
+                 {
+                     messeger += "Ghi Thành công Tháng : " + calenda.THANG + " Năm :" + calenda.NAM + "\n";
+                 }
+                 else
+                 {
+                     MessageBox.Show("Không lưu được tháng, Dữ liệu có thể đã tồn tại.");
+                     return;
+                 }
 
-                            int rowCount = xlRange.Rows.Count;
+                 // cài đặt số chạy % của progress bar bắt đầu từ  0
+                 int n = 0;
+                 // Tổng số phần trăm của progress bar
+                 int totalPercent = rowCount - 5;
+                 // 
+                 // Add to schedual
+                 for (int i = 6; i <= rowCount; i++)
+                 {
+                     MT_SCHEDUAL shedual = new MT_SCHEDUAL();
 
+                     //write the value to the console 
+                     //SO_HOP_DONG
+                     if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", ""))
+                         || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "TT"
+                         || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "A"
+                         || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "B"
+                         || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "STT")
+                     {
+                         continue;
+                     }
+                     shedual.MA_NHAN_VIEN   = Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.THANG          = cbMonth.Value.Month;
+                     shedual.NAM            = cbYear.Value.Year;
+                     shedual.TUAN1_THU2     = Regex.Replace(xlRange.Cells[i, 5].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN1_THU3     = Regex.Replace(xlRange.Cells[i, 6].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN1_THU4     = Regex.Replace(xlRange.Cells[i, 7].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN1_THU5     = Regex.Replace(xlRange.Cells[i, 8].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN1_THU6     = Regex.Replace(xlRange.Cells[i, 9].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN1_THU7     = Regex.Replace(xlRange.Cells[i, 10].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN1_CN       = Regex.Replace(xlRange.Cells[i, 11].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN2_THU2     = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN2_THU3     = Regex.Replace(xlRange.Cells[i, 13].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN2_THU4     = Regex.Replace(xlRange.Cells[i, 14].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN2_THU5     = Regex.Replace(xlRange.Cells[i, 15].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN2_THU6     = Regex.Replace(xlRange.Cells[i, 16].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN2_THU7     = Regex.Replace(xlRange.Cells[i, 17].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN2_CN       = Regex.Replace(xlRange.Cells[i, 18].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN3_THU2     = Regex.Replace(xlRange.Cells[i, 19].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN3_THU3     = Regex.Replace(xlRange.Cells[i, 20].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN3_THU4     = Regex.Replace(xlRange.Cells[i, 21].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN3_THU5     = Regex.Replace(xlRange.Cells[i, 22].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN3_THU6     = Regex.Replace(xlRange.Cells[i, 23].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN3_THU7     = Regex.Replace(xlRange.Cells[i, 24].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN3_CN       = Regex.Replace(xlRange.Cells[i, 25].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN4_THU2     = Regex.Replace(xlRange.Cells[i, 26].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN4_THU3     = Regex.Replace(xlRange.Cells[i, 27].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN4_THU4     = Regex.Replace(xlRange.Cells[i, 28].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN4_THU5     = Regex.Replace(xlRange.Cells[i, 29].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN4_THU6     = Regex.Replace(xlRange.Cells[i, 30].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN4_THU7     = Regex.Replace(xlRange.Cells[i, 31].Text.ToString(), @"\r\n?|\n", "");
+                     shedual.TUAN4_CN       = Regex.Replace(xlRange.Cells[i, 32].Text.ToString(), @"\r\n?|\n", "");
+                     try
+                     {
+                         bool result = busSchedual.SaveSchedual(shedual, cbMonth.Value.Month, cbYear.Value.Year);
+                         messeger += (result == true) ? "Ghi Thành công Nhân viên: " + shedual.MA_NHAN_VIEN + "\n" : "Không ghi được Nhân viên: " + shedual.MA_NHAN_VIEN + "\n";
+                     }
+                     catch (Exception ex)
+                     {
+                         messeger += "Lỗi ghi Nhân viên: " + shedual.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
+                     }
 
-                            //iterate over the rows and columns and print to the console as it appears in the file excel is not zero based!!
-                            // Add to MT_LICH_CT
-                            MT_LICH_CT calenda = new MT_LICH_CT();
-                            calenda.THANG = cbMonth.Value.Month;
-                            calenda.NAM = cbYear.Value.Year;
-                            calenda.FROM_DATE = DateTime.FromOADate(Convert.ToDouble((xlWorksheet.Cells[4, 5] as Excel.Range).Value2));
-                            calenda.TO_DATE = DateTime.FromOADate(Convert.ToDouble((xlWorksheet.Cells[4, 32] as Excel.Range).Value2));
+                     // Cập nhật số % cho progress bar
+                     progressDialog.UpdateProgress(n * 100 / totalPercent);
+                     n++;
+                 }
 
-                            bool isSuccess = busCalenda.SaveCalenda(calenda);
-                            if (isSuccess == true)
-                            {
-                                messeger += "Ghi Thành công Tháng : " + calenda.THANG + " Năm :" + calenda.NAM + "\n";
-                            }
-                            else
-                            {
-                                MessageBox.Show("Không lưu được tháng, Dữ liệu có thể đã tồn tại.");
-                                return;
-                            }
+                 //cleanup
+                 GC.Collect();
+                 GC.WaitForPendingFinalizers();
 
-                            // cài đặt số chạy % của progress bar bắt đầu từ  0
-                            int n = 0;
-                            // Tổng số phần trăm của progress bar
-                            int totalPercent = rowCount;
-                            // 
-                            // Add to schedual
-                            for (int i = 6; i <= rowCount; i++)
-                            {
-                                MT_SCHEDUAL shedual = new MT_SCHEDUAL();
+                 //release com objects to fully kill excel process from running in the background
+                 Marshal.ReleaseComObject(xlRange);
+                 Marshal.ReleaseComObject(xlWorksheet);
 
-                                //write the value to the console 
-                                //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", ""))
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "TT"
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "A"
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "B"
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "STT")
-                                {
-                                    continue;
-                                }
-                                shedual.MA_NHAN_VIEN = Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.THANG = cbMonth.Value.Month;
-                                shedual.NAM = cbYear.Value.Year;
-                                shedual.TUAN1_THU2 = Regex.Replace(xlRange.Cells[i, 5].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU3 = Regex.Replace(xlRange.Cells[i, 6].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU4 = Regex.Replace(xlRange.Cells[i, 7].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU5 = Regex.Replace(xlRange.Cells[i, 8].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU6 = Regex.Replace(xlRange.Cells[i, 9].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU7 = Regex.Replace(xlRange.Cells[i, 10].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_CN = Regex.Replace(xlRange.Cells[i, 11].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU2 = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU3 = Regex.Replace(xlRange.Cells[i, 13].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU4 = Regex.Replace(xlRange.Cells[i, 14].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU5 = Regex.Replace(xlRange.Cells[i, 15].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU6 = Regex.Replace(xlRange.Cells[i, 16].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU7 = Regex.Replace(xlRange.Cells[i, 17].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_CN = Regex.Replace(xlRange.Cells[i, 18].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU2 = Regex.Replace(xlRange.Cells[i, 19].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU3 = Regex.Replace(xlRange.Cells[i, 20].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU4 = Regex.Replace(xlRange.Cells[i, 21].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU5 = Regex.Replace(xlRange.Cells[i, 22].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU6 = Regex.Replace(xlRange.Cells[i, 23].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU7 = Regex.Replace(xlRange.Cells[i, 24].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_CN = Regex.Replace(xlRange.Cells[i, 25].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU2 = Regex.Replace(xlRange.Cells[i, 26].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU3 = Regex.Replace(xlRange.Cells[i, 27].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU4 = Regex.Replace(xlRange.Cells[i, 28].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU5 = Regex.Replace(xlRange.Cells[i, 29].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU6 = Regex.Replace(xlRange.Cells[i, 30].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU7 = Regex.Replace(xlRange.Cells[i, 31].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_CN = Regex.Replace(xlRange.Cells[i, 32].Text.ToString(), @"\r\n?|\n", "");
-                                try
-                                {
-                                    bool result = busSchedual.SaveSchedual(shedual, cbMonth.Value.Month, cbYear.Value.Year);
-                                    messeger += (result == true) ? "Ghi Thành công Nhân viên: " + shedual.MA_NHAN_VIEN + "\n" : "Không ghi được Nhân viên: " + shedual.MA_NHAN_VIEN + "\n";
-                                }
-                                catch (Exception ex)
-                                {
-                                    messeger += "Lỗi ghi Nhân viên: " + shedual.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
-                                }
+                 //close and release
+                 xlWorkbook.Close();
+                 Marshal.ReleaseComObject(xlWorkbook);
 
-                                // Cập nhật số % cho progress bar
-                                progressDialog.UpdateProgress(n * 100 / totalPercent);
-                                n++;
-                            }
+                 //quit and release
+                 xlApp.Quit();
+                 Marshal.ReleaseComObject(xlApp);
 
-                            //cleanup
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
-
-                            //release com objects to fully kill excel process from running in the background
-                            Marshal.ReleaseComObject(xlRange);
-                            Marshal.ReleaseComObject(xlWorksheet);
-
-                            //close and release
-                            xlWorkbook.Close();
-                            Marshal.ReleaseComObject(xlWorkbook);
-
-                            //quit and release
-                            xlApp.Quit();
-                            Marshal.ReleaseComObject(xlApp);
-
-                            MessageBox.Show(messeger);
-                            int month = cbMonth.Value.Month;
-                            int year = cbYear.Value.Year;
-                            List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
-                            if (listRealSchedual == null)
-                            {
-                                MessageBox.Show("Không tải được dữ liệu!");
-                            }
-                            ListSchedual.DataSource = listRealSchedual;
-                            ListSchedual.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                        //}
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
-                    }
-                //}
-            //}
-        }
+                 MessageBox.Show(messeger);                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
+            }
+        }           
 
         private void btnUpdate_Click( object sender, EventArgs e )
         {
