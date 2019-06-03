@@ -168,15 +168,12 @@
             this.lblNamTaiChinh = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.cbCheckCN = new System.Windows.Forms.CheckBox();
-            this.cbMonthCalc = new System.Windows.Forms.DateTimePicker();
-            this.cbYearCalc = new System.Windows.Forms.DateTimePicker();
+            this.cbToDate = new System.Windows.Forms.DateTimePicker();
+            this.cbFromDate = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCalc = new System.Windows.Forms.Button();
-            this.rdToiUu = new System.Windows.Forms.RadioButton();
-            this.rdNgauNhien = new System.Windows.Forms.RadioButton();
-            this.rdTuanTu = new System.Windows.Forms.RadioButton();
             this.tabExport = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel7 = new System.Windows.Forms.Panel();
@@ -1483,15 +1480,12 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.cbCheckCN);
-            this.groupBox5.Controls.Add(this.cbMonthCalc);
-            this.groupBox5.Controls.Add(this.cbYearCalc);
+            this.groupBox5.Controls.Add(this.cbToDate);
+            this.groupBox5.Controls.Add(this.cbFromDate);
             this.groupBox5.Controls.Add(this.label1);
             this.groupBox5.Controls.Add(this.label4);
             this.groupBox5.Controls.Add(this.btnSave);
             this.groupBox5.Controls.Add(this.btnCalc);
-            this.groupBox5.Controls.Add(this.rdToiUu);
-            this.groupBox5.Controls.Add(this.rdNgauNhien);
-            this.groupBox5.Controls.Add(this.rdTuanTu);
             this.groupBox5.Location = new System.Drawing.Point(14, 263);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(223, 315);
@@ -1504,57 +1498,57 @@
             this.cbCheckCN.AutoSize = true;
             this.cbCheckCN.Checked = true;
             this.cbCheckCN.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCheckCN.Location = new System.Drawing.Point(7, 170);
+            this.cbCheckCN.Location = new System.Drawing.Point(11, 88);
             this.cbCheckCN.Name = "cbCheckCN";
             this.cbCheckCN.Size = new System.Drawing.Size(134, 17);
             this.cbCheckCN.TabIndex = 40;
             this.cbCheckCN.Text = "Bỏ qua ngày Chủ Nhật";
             this.cbCheckCN.UseVisualStyleBackColor = true;
             // 
-            // cbMonthCalc
+            // cbToDate
             // 
-            this.cbMonthCalc.CustomFormat = "MM";
-            this.cbMonthCalc.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbMonthCalc.Location = new System.Drawing.Point(103, 40);
-            this.cbMonthCalc.Name = "cbMonthCalc";
-            this.cbMonthCalc.ShowUpDown = true;
-            this.cbMonthCalc.Size = new System.Drawing.Size(53, 20);
-            this.cbMonthCalc.TabIndex = 36;
+            this.cbToDate.CustomFormat = "dd/MM/yyyy";
+            this.cbToDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbToDate.Location = new System.Drawing.Point(103, 40);
+            this.cbToDate.Name = "cbToDate";
+            this.cbToDate.ShowUpDown = true;
+            this.cbToDate.Size = new System.Drawing.Size(88, 20);
+            this.cbToDate.TabIndex = 36;
             // 
-            // cbYearCalc
+            // cbFromDate
             // 
-            this.cbYearCalc.CustomFormat = "yyyy";
-            this.cbYearCalc.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbYearCalc.Location = new System.Drawing.Point(103, 16);
-            this.cbYearCalc.Name = "cbYearCalc";
-            this.cbYearCalc.ShowUpDown = true;
-            this.cbYearCalc.Size = new System.Drawing.Size(53, 20);
-            this.cbYearCalc.TabIndex = 35;
+            this.cbFromDate.CustomFormat = "dd/MM/yyyy";
+            this.cbFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbFromDate.Location = new System.Drawing.Point(103, 16);
+            this.cbFromDate.Name = "cbFromDate";
+            this.cbFromDate.ShowUpDown = true;
+            this.cbFromDate.Size = new System.Drawing.Size(89, 20);
+            this.cbFromDate.TabIndex = 35;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(8, 48);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.Size = new System.Drawing.Size(48, 13);
             this.label1.TabIndex = 20;
-            this.label1.Text = "Tháng";
+            this.label1.Text = "Tới ngày";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(8, 16);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(79, 13);
+            this.label4.Size = new System.Drawing.Size(46, 13);
             this.label4.TabIndex = 19;
-            this.label4.Text = "Năm Tài Chính";
+            this.label4.Text = "Từ ngày";
             // 
             // btnSave
             // 
             this.btnSave.Enabled = false;
             this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(6, 254);
+            this.btnSave.Location = new System.Drawing.Point(7, 167);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(185, 40);
             this.btnSave.TabIndex = 42;
@@ -1566,45 +1560,13 @@
             // 
             this.btnCalc.Image = ((System.Drawing.Image)(resources.GetObject("btnCalc.Image")));
             this.btnCalc.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCalc.Location = new System.Drawing.Point(6, 208);
+            this.btnCalc.Location = new System.Drawing.Point(6, 111);
             this.btnCalc.Name = "btnCalc";
             this.btnCalc.Size = new System.Drawing.Size(185, 40);
             this.btnCalc.TabIndex = 41;
             this.btnCalc.Text = "Chạy Thuật Toán";
             this.btnCalc.UseVisualStyleBackColor = true;
             this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
-            // 
-            // rdToiUu
-            // 
-            this.rdToiUu.AutoSize = true;
-            this.rdToiUu.Location = new System.Drawing.Point(7, 127);
-            this.rdToiUu.Name = "rdToiUu";
-            this.rdToiUu.Size = new System.Drawing.Size(55, 17);
-            this.rdToiUu.TabIndex = 39;
-            this.rdToiUu.Text = "Tối ưu";
-            this.rdToiUu.UseVisualStyleBackColor = true;
-            // 
-            // rdNgauNhien
-            // 
-            this.rdNgauNhien.AutoSize = true;
-            this.rdNgauNhien.Location = new System.Drawing.Point(7, 103);
-            this.rdNgauNhien.Name = "rdNgauNhien";
-            this.rdNgauNhien.Size = new System.Drawing.Size(80, 17);
-            this.rdNgauNhien.TabIndex = 38;
-            this.rdNgauNhien.Text = "Ngẫu nhiên";
-            this.rdNgauNhien.UseVisualStyleBackColor = true;
-            // 
-            // rdTuanTu
-            // 
-            this.rdTuanTu.AutoSize = true;
-            this.rdTuanTu.Checked = true;
-            this.rdTuanTu.Location = new System.Drawing.Point(7, 79);
-            this.rdTuanTu.Name = "rdTuanTu";
-            this.rdTuanTu.Size = new System.Drawing.Size(62, 17);
-            this.rdTuanTu.TabIndex = 37;
-            this.rdTuanTu.TabStop = true;
-            this.rdTuanTu.Text = "Tuần tự";
-            this.rdTuanTu.UseVisualStyleBackColor = true;
             // 
             // tabExport
             // 
@@ -2158,9 +2120,6 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCalc;
-        private System.Windows.Forms.RadioButton rdToiUu;
-        private System.Windows.Forms.RadioButton rdNgauNhien;
-        private System.Windows.Forms.RadioButton rdTuanTu;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button btnSearchSchedualFake;
         private System.Windows.Forms.Button btnLoadSchedual;
@@ -2175,8 +2134,8 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DateTimePicker cbNgayThanhLy;
         private System.Windows.Forms.DateTimePicker cbNgayHopDong;
-        private System.Windows.Forms.DateTimePicker cbMonthCalc;
-        private System.Windows.Forms.DateTimePicker cbYearCalc;
+        private System.Windows.Forms.DateTimePicker cbToDate;
+        private System.Windows.Forms.DateTimePicker cbFromDate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbCheckCN;
