@@ -58,5 +58,23 @@ namespace BUS
             }
            
         }
+
+        public static DateTime ConverToDateTime( dynamic value )
+        {
+            DateTime dt = new DateTime();
+            // Set value.                               
+            if (value != null)
+            {
+                if (value is double)
+                {
+                    dt= DateTime.FromOADate((double)value);
+                }
+                else
+                {
+                    DateTime.TryParse((string)value, out dt);
+                }
+            }
+           return dt;
+        }
     }
 }

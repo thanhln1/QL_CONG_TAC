@@ -113,6 +113,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MT_WORKING_BUS.cs" />
+    <Compile Include="MT_WORKING_DAO.cs" />
     <Compile Include="ProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,6 +171,10 @@
     <ProjectReference Include="..\BLL\BUS.csproj">
       <Project>{412EDCD9-1F29-45EF-88F8-725790B705C5}</Project>
       <Name>BUS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAO\DAO.csproj">
+      <Project>{BDD218C3-19A2-4DE8-9452-0E7EF417DC20}</Project>
+      <Name>DAO</Name>
     </ProjectReference>
     <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{EB151CC7-845A-4B65-9DC4-ADB7F74061A1}</Project>

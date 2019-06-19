@@ -32,26 +32,27 @@ namespace ManageWorkExpenses
         CACULATION_BUS busCaculation = new CACULATION_BUS();
         MT_DON_GIA_BUS busDongia = new MT_DON_GIA_BUS();
         TMP_SCHEDUAL_BUS busTMP = new TMP_SCHEDUAL_BUS();
+        MT_WORKING_BUS busWorking = new MT_WORKING_BUS();
         List<MT_HOP_DONG> listTmpHopDong = new List<MT_HOP_DONG>();
         COMMON_BUS common = new COMMON_BUS();
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
-        const string FONT_SIZE_11 = "11"; 
+        const string FONT_SIZE_11 = "11";
 
         // Khởi tạo đối tượng lấy số ngẫu nhiên
-        Random random = new Random(); 
+        Random random = new Random();
 
         // Initialize the dialog that will contain the progress bar
         ProgressForm progressDialog = new ProgressForm();
 
         // Flag that indcates if a process is running
-        private bool isProcessRunning = false;
+        private bool isProcessRunning = false;    
 
         public Main()
         {
             InitializeComponent();
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.File = "App.config";             
+            config.AppSettings.File = "App.config";
             if (loadConfig())
             {
                 this.tabControl.SelectedIndex = 2;
@@ -59,8 +60,9 @@ namespace ManageWorkExpenses
                 LoadContract();
                 LoadListCustomer();
                 GetAllDonGia();
-            }                       
-                                  
+                // LoadRealSchedual("","");
+            }
+
             //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
             //if (logMode.Equals("ON"))
             //{
@@ -132,7 +134,7 @@ namespace ManageWorkExpenses
                 }
 
                 bool isInsert = busUser.SaveUser(user);
-                messeger = ( isInsert == true ) ? "Thành công" : "Đã tồn tại nhân viên có mã: "+ user.MA_NHAN_VIEN;
+                messeger = ( isInsert == true ) ? "Thành công" : "Đã tồn tại nhân viên có mã: " + user.MA_NHAN_VIEN;
                 MessageBox.Show(messeger);
                 loadAllUser();
                 btnResetUser_Click(sender, e);
@@ -187,7 +189,7 @@ namespace ManageWorkExpenses
             {
                 cbPhongBan.SelectedIndex = -1;
             }
-            
+
 
         }
 
@@ -240,7 +242,7 @@ namespace ManageWorkExpenses
                                     continue;
                                 }
                                 // MA_NHAN_VIEN
-                                staff.MA_NHAN_VIEN = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n","");
+                                staff.MA_NHAN_VIEN = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
 
                                 // HO_TEN
                                 staff.HO_TEN = Regex.Replace(xlRange.Cells[i, 2].Value2.ToString(), @"\r\n?|\n", "");
@@ -351,14 +353,14 @@ namespace ManageWorkExpenses
 
                                 //write the value to the console 
                                 //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", ""))) 
+                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "")))
                                 {
                                     continue;
                                 }
                                 contract.SO_HOP_DONG = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
 
                                 //NGAY_HOP_DONG    
-                                DateTimeFormatInfo DateInfo = CultureInfo.CurrentCulture.DateTimeFormat;  
+                                DateTimeFormatInfo DateInfo = CultureInfo.CurrentCulture.DateTimeFormat;
 
                                 contract.NGAY_HOP_DONG = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 2].Text.ToString().Trim()), CultureInfo.CurrentCulture);
 
@@ -395,7 +397,7 @@ namespace ManageWorkExpenses
                                 try
                                 {
                                     bool result = busContract.SaveContract(contract);
-                                    messeger += (result == true) ? "Ghi Thành công HĐ số : " + contract.SO_HOP_DONG + "\n" : "Không ghi được HĐ số : " + contract.SO_HOP_DONG + " Lý do: Bản ghi bị trùng số HĐ \n";
+                                    messeger += ( result == true ) ? "Ghi Thành công HĐ số : " + contract.SO_HOP_DONG + "\n" : "Không ghi được HĐ số : " + contract.SO_HOP_DONG + " Lý do: Bản ghi bị trùng số HĐ \n";
                                 }
                                 catch (Exception ex)
                                 {
@@ -430,9 +432,9 @@ namespace ManageWorkExpenses
                     catch (Exception ex)
                     {
                         MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
-                    } 
-                }   
-            } 
+                    }
+                }
+            }
         }
 
         private void btnReloadContract_Click( object sender, EventArgs e )
@@ -445,15 +447,21 @@ namespace ManageWorkExpenses
             List<MT_HOP_DONG> listContract = new List<MT_HOP_DONG>();
             try
             {
-                ListContract.DataSource = busContract.GetListContract();
+                listContract = busContract.GetListContract();
+                ListContract.DataSource = listContract ;
                 ListContract.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                List<string> listMaKH = listContract.Select(s => (string)s.MA_KHACH_HANG).ToList();
+                txtMaKH.DataSource = listMaKH; 
+                // txtMaKH.DisplayMember = "MA_KHACH_HANG";
+                // txtMaKH.ValueMember = "MA_KHACH_HANG";
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Có lỗi khi lấy danh sách HĐ tại : " + ex.Message);
                 //  logger.log("Có lỗi khi lấy danh sách cán bộ tại : " + ex.Message);    
             }
-        }                                                
+        }
 
         private void ListContract_CellDoubleClick( object sender, DataGridViewCellEventArgs e )
         {
@@ -466,8 +474,8 @@ namespace ManageWorkExpenses
                 int numrow;
                 numrow = e.RowIndex;
                 idHopDong.Text = ListContract.Rows[numrow].Cells[0].Value.ToString();
-                tbSoHopDong.Text = ListContract.Rows[numrow].Cells[1].Value.ToString();      
-                cbNgayHopDong.Value = Convert.ToDateTime(ListContract.Rows[numrow].Cells[2].Value, CultureInfo.InvariantCulture);                
+                tbSoHopDong.Text = ListContract.Rows[numrow].Cells[1].Value.ToString();
+                cbNgayHopDong.Value = Convert.ToDateTime(ListContract.Rows[numrow].Cells[2].Value, CultureInfo.InvariantCulture);
                 cbNgayThanhLy.Value = Convert.ToDateTime(ListContract.Rows[numrow].Cells[3].Value, CultureInfo.InvariantCulture);
                 tbKhachHang.Text = ListContract.Rows[numrow].Cells[4].Value.ToString();
                 tbMaKhachHang.Text = ListContract.Rows[numrow].Cells[5].Value.ToString();
@@ -479,10 +487,10 @@ namespace ManageWorkExpenses
                 tbChiPhiThucDaChi.Text = ListContract.Rows[numrow].Cells[11].Value.ToString();
                 tbNote.Text = ListContract.Rows[numrow].Cells[12].Value.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Thông báo !", MessageBoxButtons.OK, MessageBoxIcon.Warning);              
-            }              
+                MessageBox.Show(ex.ToString(), "Thông báo !", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         /// <summary>
@@ -494,16 +502,16 @@ namespace ManageWorkExpenses
         public bool IsTheSameCellValue( int column, int row )
         {
             DataGridViewCell cell1 = ListSchedual[column, row];
-            DataGridViewCell cell2 = ListSchedual[column-1, row];
+            DataGridViewCell cell2 = ListSchedual[column - 1, row];
             if (cell1.Value == null || cell2.Value == null)
             {
                 return false;
-            }             
+            }
             return cell1.Value.ToString() == cell2.Value.ToString();
         }
         private void ListSchedual_CellPainting( object sender, DataGridViewCellPaintingEventArgs e )
         {
-            if (ListSchedual.RowCount>2)
+            if (ListSchedual.RowCount > 2)
             {
                 // Bôi màu 2 row đầu tiên làm tiêu đề
                 ListSchedual.Rows[0].DefaultCellStyle.BackColor = Color.Gray;
@@ -516,10 +524,15 @@ namespace ManageWorkExpenses
                 //// Bỏ border bên phải để merger.
                 //e.AdvancedBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None;
 
-                // Bôi màu cột ngày chủ nhật và cột đầu tiên.  (Chú ý thêm cột thì phải thay đổi số cho phù hợp)
-                if (e.ColumnIndex == 1 || e.ColumnIndex == 12 || e.ColumnIndex == 19 || e.ColumnIndex == 26 || e.ColumnIndex == 33)
+                //Bôi màu 3 cột đầu tiên.  (Chú ý thêm cột thì phải thay đổi số cho phù hợp)
+                if (e.ColumnIndex == 0 || e.ColumnIndex == 1 || e.ColumnIndex == 2)
                 {
                     e.CellStyle.BackColor = Color.Beige;
+                }
+                // Bôi màu cột ngày chủ nhật  (Bằng 9 vì 1 tuần có 7 ngày cộng với 3 cột được thêm là có 10 cột, đánh chỉ số từ 0 nên cột 10 có chỉ số là  9)
+                if (( e.ColumnIndex ) % 9 == 0 && e.ColumnIndex != 0)
+                {
+                    e.CellStyle.BackColor = Color.Bisque;
                 }
 
 
@@ -557,11 +570,12 @@ namespace ManageWorkExpenses
         {
             var fileContent = string.Empty;
             var filePath = string.Empty;
-
+            DateTime fromDate = DateTime.Now;
+            DateTime toDate = DateTime.Now;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                string messeger = "";
-               // openFileDialog.InitialDirectory = "c:\\";
+                string messeger = string.Empty;
+                // openFileDialog.InitialDirectory = "c:\\";
                 openFileDialog.Filter = "Excell files (*.xlsx)| Ole Excel File (*.xls)|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
@@ -577,7 +591,7 @@ namespace ManageWorkExpenses
                         var fileStream = openFileDialog.OpenFile();
 
                         using (StreamReader reader = new StreamReader(fileStream))
-                        {
+                        {  
                             fileContent = reader.ReadToEnd();
 
                             //Create COM Objects. Create a COM object for everything that is referenced
@@ -586,84 +600,111 @@ namespace ManageWorkExpenses
                             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-                            int rowCount = xlRange.Rows.Count;       
-
+                            int rowCount = xlRange.Rows.Count;
+                            int colCount = xlRange.Columns.Count;
+                                                                      
+                            // Set value.   
+                            fromDate = COMMON_BUS.ConverToDateTime(xlRange.Cells[4, 5].Value2);
+                            toDate = COMMON_BUS.ConverToDateTime(xlRange.Cells[4, colCount].Value2);
+                            
 
                             //iterate over the rows and columns and print to the console as it appears in the file excel is not zero based!!
-                            // Add to MT_LICH_CT
-                            MT_LICH_CT calenda = new MT_LICH_CT();
-                            calenda.THANG = cbMonth.Value.Month;
-                            calenda.NAM = cbYear.Value.Year;
-                            calenda.FROM_DATE = DateTime.FromOADate(Convert.ToDouble(( xlWorksheet.Cells[4, 5] as Excel.Range ).Value2)); 
-                            calenda.TO_DATE = DateTime.FromOADate(Convert.ToDouble(( xlWorksheet.Cells[4, 32] as Excel.Range ).Value2));
+                            // If a process is already running, warn the user and cancel the operation
+                            if (isProcessRunning)
+                            {
+                                MessageBox.Show("Chương trình đang bận, xin vui lòng chờ");
+                                return;
+                            }
 
-                            bool isSuccess = busCalenda.SaveCalenda(calenda);
-                            if ( isSuccess == true )
+                            // Initialize the thread that will handle the background process
+                            Thread backgroundThread = new Thread(
+                            new ThreadStart(() =>
                             {
-                                messeger += "Ghi Thành công Tháng : " + calenda.THANG + " Năm :" + calenda.NAM + "\n";
-                            }
-                            else
-                            {
-                               MessageBox.Show("Không lưu được tháng, Dữ liệu có thể đã tồn tại.");
-                               return;
-                            }
-                            
-                            // Add to schedual
-                            for (int i = 6 ; i <= rowCount ; i++)
-                            {
-                                MT_SCHEDUAL shedual = new MT_SCHEDUAL();
+                                // Set the flag that indicates if a process is currently running
+                                isProcessRunning = true;   
 
-                                //write the value to the console 
-                                //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "")) 
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "TT" 
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "A" 
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "B" 
-                                    || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "STT")
+                                // cài đặt số chạy % của progress bar bắt đầu từ  0
+                                int n = 0;
+                                // Tổng số phần trăm của progress bar
+                                int totalPercent = rowCount;
+
+
+                                // Add to schedual
+                                for (int i = 6 ; i <= rowCount ; i++)
                                 {
-                                    continue;
-                                }  
-                                shedual.MA_NHAN_VIEN        =Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.THANG               =cbMonth.Value.Month;
-                                shedual.NAM                 =cbYear.Value.Year;
-                                shedual.TUAN1_THU2          =Regex.Replace(xlRange.Cells[i, 5].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU3          =Regex.Replace(xlRange.Cells[i, 6].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU4          =Regex.Replace(xlRange.Cells[i, 7].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU5          =Regex.Replace(xlRange.Cells[i, 8].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU6          =Regex.Replace(xlRange.Cells[i, 9].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_THU7          =Regex.Replace(xlRange.Cells[i, 10].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN1_CN            =Regex.Replace(xlRange.Cells[i, 11].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU2          =Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU3          =Regex.Replace(xlRange.Cells[i, 13].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU4          =Regex.Replace(xlRange.Cells[i, 14].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU5          =Regex.Replace(xlRange.Cells[i, 15].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU6          =Regex.Replace(xlRange.Cells[i, 16].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_THU7          =Regex.Replace(xlRange.Cells[i, 17].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN2_CN            =Regex.Replace(xlRange.Cells[i, 18].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU2          =Regex.Replace(xlRange.Cells[i, 19].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU3          =Regex.Replace(xlRange.Cells[i, 20].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU4          =Regex.Replace(xlRange.Cells[i, 21].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU5          =Regex.Replace(xlRange.Cells[i, 22].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU6          =Regex.Replace(xlRange.Cells[i, 23].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_THU7          =Regex.Replace(xlRange.Cells[i, 24].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN3_CN            =Regex.Replace(xlRange.Cells[i, 25].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU2          =Regex.Replace(xlRange.Cells[i, 26].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU3          =Regex.Replace(xlRange.Cells[i, 27].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU4          =Regex.Replace(xlRange.Cells[i, 28].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU5          =Regex.Replace(xlRange.Cells[i, 29].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU6          =Regex.Replace(xlRange.Cells[i, 30].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_THU7          =Regex.Replace(xlRange.Cells[i, 31].Text.ToString(), @"\r\n?|\n", "");
-                                shedual.TUAN4_CN            =Regex.Replace(xlRange.Cells[i, 32].Text.ToString(), @"\r\n?|\n", "");   
-                                try
-                                {
-                                    bool result = busSchedual.SaveSchedual(shedual, cbMonth.Value.Month, cbYear.Value.Year);
-                                    messeger += (result == true) ? "Ghi Thành công Nhân viên: " + shedual.MA_NHAN_VIEN + "\n" : "Không ghi được Nhân viên: " + shedual.MA_NHAN_VIEN + "\n";
+                                    MT_WORKING working = new MT_WORKING();
+
+                                    //write the value to the console 
+                                    //SO_HOP_DONG
+                                    if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", ""))
+                                        || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "TT"
+                                        || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "A"
+                                        || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "B"
+                                        || Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "") == "STT")
+                                    {
+                                        continue;
+                                    }
+                                    for (int j = 5 ; j <= colCount ; j++)
+                                    {
+                                        working.HO_VA_TEN       = Regex.Replace(xlRange.Cells[i, 2].Text.ToString(), @"\r\n?|\n", "");
+                                        working.MA_NHAN_VIEN    = Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
+                                        working.PHONG_BAN       = Regex.Replace(xlRange.Cells[i, 4].Text.ToString(), @"\r\n?|\n", "");
+                                        string maKhachHang      = Regex.Replace(xlRange.Cells[i, j].Text.ToString(), @"\r\n?|\n", "");
+                                        //if (string.IsNullOrEmpty(maKhachHang) || string.IsNullOrWhiteSpace(maKhachHang))
+                                        //{
+                                        //    continue;
+                                        //}
+                                        //else
+                                        //{
+                                            working.MA_KHACH_HANG = maKhachHang;
+                                        //}
+
+                                        working.WORKING_DAY = COMMON_BUS.ConverToDateTime(xlRange.Cells[4, j].Value2);
+                                        working.IMPORT_DATE = DateTime.Now;
+                                        try
+                                        {
+                                            string result = busWorking.SaveWorking(working);
+                                            if (result.Equals("NOT_OK"))
+                                            {
+                                                messeger += "Không ghi được Nhân viên: " + working.MA_NHAN_VIEN + " Lý do: Nhóm(Loại) nhân viên chưa đúng" + "\n";
+                                            }
+                                            else if (result.Equals( "DUPLICATE"))
+                                            {
+                                                messeger = "Dữ liệu đã tồn tại. Hiện tại dữ liệu đã sai. Xin kiểm tra lại";
+                                                j = colCount;
+                                                i = rowCount;
+                                            }
+                                            else if (result.Equals("DONE"))
+                                            {
+                                               // messeger += "Thành Công!";
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            messeger += "Lỗi ghi Nhân viên: " + working.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
+                                        }
+                                    }
+                                    // Cập nhật số % cho progress bar
+                                    progressDialog.UpdateProgress(n * 100 / totalPercent);
+                                    n++;
                                 }
-                                catch (Exception ex)
-                                {
-                                    messeger += "Lỗi ghi Nhân viên: " + shedual.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
-                                }
+
+                                // Show a dialog box that confirms the process has completed
+                                // MessageBox.Show("Hoàn Thành");  
+                                // Close the dialog if it hasn't been already
+                                if (progressDialog.InvokeRequired)
+                                    progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+
+                                // Reset the flag that indicates if a process is currently running
+                                isProcessRunning = false;
                             }
+                        ));
+
+                            // Start the background process thread
+                            backgroundThread.Start();
+
+                            // Open the dialog
+                            progressDialog.ShowDialog();
 
                             //cleanup
                             GC.Collect();
@@ -684,17 +725,12 @@ namespace ManageWorkExpenses
                             //quit and release
                             xlApp.Quit();
                             Marshal.ReleaseComObject(xlApp);
-
-                            MessageBox.Show(messeger);
-                            int month = cbMonth.Value.Month;
-                            int year = cbYear.Value.Year;
-                            List<VW_SCHEDUAL>  listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
-                            if (listRealSchedual == null)
+                            if (string.IsNullOrEmpty(messeger))
                             {
-                                MessageBox.Show("Không tải được dữ liệu!");
+                                messeger = "Thành Công";
                             }
-                            ListSchedual.DataSource = listRealSchedual;
-                            ListSchedual.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                            MessageBox.Show(messeger);
+                            LoadRealSchedual(fromDate, toDate);  
                         }
                     }
                     catch (Exception ex)
@@ -705,8 +741,7 @@ namespace ManageWorkExpenses
                 }
 
             }
-        }
-
+        } 
         private void btnUpdate_Click( object sender, EventArgs e )
         {
             if (String.IsNullOrEmpty(lblIDUser.Text) || lblIDUser.Text.Equals("ID_Hidden"))
@@ -720,14 +755,14 @@ namespace ManageWorkExpenses
                 return;
             }
             try
-            {                                             
+            {
                 MT_NHAN_VIEN user = new MT_NHAN_VIEN();
                 user.ID = int.Parse(lblIDUser.Text);
                 user.MA_NHAN_VIEN = tbUserCode.Text;
                 user.HO_TEN = tbName.Text;
                 user.CHUC_VU = tbRegency.Text;
                 user.VAI_TRO = tbRole.Text;
-                if (string.IsNullOrEmpty( cbPhongBan.SelectedItem.ToString()))
+                if (string.IsNullOrEmpty(cbPhongBan.SelectedItem.ToString()))
                 {
                     MessageBox.Show("Bạn phải chọn phòng ban");
                 }
@@ -735,8 +770,8 @@ namespace ManageWorkExpenses
                 {
                     user.PHONG_BAN = cbPhongBan.SelectedItem.ToString();
                 }
-               
-                bool isUpdate  = busUser.UpdateUser(user);
+
+                bool isUpdate = busUser.UpdateUser(user);
                 string msg = "";
                 msg = ( isUpdate == true ) ? "Cập nhật Thành Công!" : "Không Cập nhật được! ";
                 MessageBox.Show(msg);
@@ -756,7 +791,7 @@ namespace ManageWorkExpenses
             {
                 MessageBox.Show("Bạn chưa chọn record nào!");
                 return;
-            }  
+            }
             try
             {
                 MT_NHAN_VIEN user = new MT_NHAN_VIEN();
@@ -767,17 +802,17 @@ namespace ManageWorkExpenses
                 user.VAI_TRO = tbRole.Text;
                 // user.PHONG_BAN = cbPhongBan.SelectedItem.ToString();
 
-                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa nhân viên "+ user.HO_TEN+" có Mã nhân viên là: " + user.MA_NHAN_VIEN, "Xóa Nhân Viên", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa nhân viên " + user.HO_TEN + " có Mã nhân viên là: " + user.MA_NHAN_VIEN, "Xóa Nhân Viên", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     bool isUpdate = busUser.DelUser(user);
                     string msg = "";
-                    msg = ( isUpdate == true ) ? "Xóa Thành Công!" : "Không xóa được! ";                    
-                    MessageBox.Show(msg);   
+                    msg = ( isUpdate == true ) ? "Xóa Thành Công!" : "Không xóa được! ";
+                    MessageBox.Show(msg);
                     loadAllUser();
                     btnResetUser_Click(sender, e);
-                }   
-               
+                }
+
             }
             catch (Exception ex)
             {
@@ -796,22 +831,22 @@ namespace ManageWorkExpenses
             try
             {
                 MT_HOP_DONG contract = new MT_HOP_DONG();
-                contract.ID                         = int.Parse(idHopDong.Text);
-                contract.SO_HOP_DONG                = tbSoHopDong.Text; 
-                contract.NGAY_HOP_DONG              = cbNgayHopDong.Value;
-                contract.NGAY_THANH_LY              = cbNgayThanhLy.Value;
-                contract.KHACH_HANG                 = tbKhachHang.Text;
-                contract.MA_KHACH_HANG              = tbMaKhachHang.Text;
-                contract.NHOM_KHACH_HANG            = tbNhomKhachHang.Text;
-                contract.DIA_CHI                    = tbDiaChi.Text;
-                contract.TINH                       = tbTinh.Text;
+                contract.ID = int.Parse(idHopDong.Text);
+                contract.SO_HOP_DONG = tbSoHopDong.Text;
+                contract.NGAY_HOP_DONG = cbNgayHopDong.Value;
+                contract.NGAY_THANH_LY = cbNgayThanhLy.Value;
+                contract.KHACH_HANG = tbKhachHang.Text;
+                contract.MA_KHACH_HANG = tbMaKhachHang.Text;
+                contract.NHOM_KHACH_HANG = tbNhomKhachHang.Text;
+                contract.DIA_CHI = tbDiaChi.Text;
+                contract.TINH = tbTinh.Text;
                 // contract.GIA_TRI_HOP_DONG           = Convert.ToInt32(tbGiaTriHopDong.Text);
                 // contract.TONG_CHI_PHI_MUC_TOI_DA    = Convert.ToInt32(tbTongChiPhiToiDa.Text);
                 // contract.CHI_PHI_THUC_DA_CHI        = Convert.ToInt32(tbChiPhiThucDaChi.Text);
-                contract.GHI_CHU                    = tbNote.Text;
+                contract.GHI_CHU = tbNote.Text;
 
 
-                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa Hợp đồng " + contract.SO_HOP_DONG + " của Khách hàng: " + contract.KHACH_HANG +"\n Việc xóa Hợp đồng có thể làm sai kết quả tính toán", "Xóa Hợp Đồng", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa Hợp đồng " + contract.SO_HOP_DONG + " của Khách hàng: " + contract.KHACH_HANG + "\n Việc xóa Hợp đồng có thể làm sai kết quả tính toán", "Xóa Hợp Đồng", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     bool isUpdate = busContract.DelContract(contract);
@@ -825,7 +860,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi Xóa Hợp đồng tại: " + ex.Message); 
+                MessageBox.Show("Có lỗi khi Xóa Hợp đồng tại: " + ex.Message);
             }
 
         }
@@ -834,7 +869,7 @@ namespace ManageWorkExpenses
         {
             DialogResult dialogResult = MessageBox.Show("Việc cập nhật Hợp đồng, đặc biệt những phần liên quan đến Chi phí có thể sẽ làm sai lệch kết quả tính toán, dẫn tới chương trình chạy sai. \n. Bạn có chắc chắn muốn tiếp tục", "Việc chỉnh sửa có thể làm sai lệch dữ liệu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
-            { 
+            {
                 if (string.IsNullOrEmpty(idHopDong.Text) || idHopDong.Text.Equals("ID_Hidden"))
                 {
                     MessageBox.Show("Bạn chưa chọn record nào!");
@@ -889,12 +924,12 @@ namespace ManageWorkExpenses
 
         private void btnAddContract_Click( object sender, EventArgs e )
         {
-            if (string.IsNullOrEmpty(tbSoHopDong.Text.Trim())       ||
-                string.IsNullOrEmpty(cbNgayHopDong.Text.Trim())     ||
-                string.IsNullOrEmpty(tbKhachHang.Text.Trim())       ||
-                string.IsNullOrEmpty(tbMaKhachHang.Text.Trim())     ||
-                string.IsNullOrEmpty(tbNhomKhachHang.Text.Trim())   ||
-                string.IsNullOrEmpty(tbGiaTriHopDong.Text.Trim())   ||
+            if (string.IsNullOrEmpty(tbSoHopDong.Text.Trim()) ||
+                string.IsNullOrEmpty(cbNgayHopDong.Text.Trim()) ||
+                string.IsNullOrEmpty(tbKhachHang.Text.Trim()) ||
+                string.IsNullOrEmpty(tbMaKhachHang.Text.Trim()) ||
+                string.IsNullOrEmpty(tbNhomKhachHang.Text.Trim()) ||
+                string.IsNullOrEmpty(tbGiaTriHopDong.Text.Trim()) ||
                 string.IsNullOrEmpty(tbTongChiPhiToiDa.Text.Trim())
                 )
             {
@@ -939,18 +974,18 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi lấy danh sách khách hàng : " + ex.Message);  
+                MessageBox.Show("Có lỗi khi lấy danh sách khách hàng : " + ex.Message);
             }
 
         }
 
         // xuất quyết định
-        private void btnExportexcelKQ2_Click(object sender, EventArgs e)
+        private void btnExportexcelKQ2_Click( object sender, EventArgs e )
         {
             try
             {
                 MT_LICH_CT rowCalenda = busCalenda.getCalenda(cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
-               
+
 
                 if (rowCalenda == null)
                 {
@@ -965,95 +1000,95 @@ namespace ManageWorkExpenses
                 string soHopDong = inForContract[0].SO_HOP_DONG;
                 string ngayKyHopDong = inForContract[0].NGAY_HOP_DONG.ToShortDateString();
                 string diachi = inForContract[0].DIA_CHI;
-               
+
                 Excel.Application xlApp = new Excel.Application();
-            if (xlApp == null)
-            {
-                MessageBox.Show("Excel is not properly installed!!");
-                return;
-            }
-            Excel.Workbooks oBooks;
-            Excel.Sheets oSheets;
-            Excel.Workbook oBook;
-            Excel.Worksheet oSheet;
-            //Tạo mới một Excel WorkBook 
-            xlApp.Visible = true;
-            xlApp.DisplayAlerts = false;
-            xlApp.Application.SheetsInNewWorkbook = 1;
-            oBooks = xlApp.Workbooks;
-            oBook = (Microsoft.Office.Interop.Excel.Workbook)(xlApp.Workbooks.Add(Type.Missing));
-            oSheets = oBook.Worksheets;
-            oSheet = (Microsoft.Office.Interop.Excel.Worksheet)oSheets.get_Item(1);
-            oSheet.Name = "QĐ";
+                if (xlApp == null)
+                {
+                    MessageBox.Show("Excel is not properly installed!!");
+                    return;
+                }
+                Excel.Workbooks oBooks;
+                Excel.Sheets oSheets;
+                Excel.Workbook oBook;
+                Excel.Worksheet oSheet;
+                //Tạo mới một Excel WorkBook 
+                xlApp.Visible = true;
+                xlApp.DisplayAlerts = false;
+                xlApp.Application.SheetsInNewWorkbook = 1;
+                oBooks = xlApp.Workbooks;
+                oBook = (Microsoft.Office.Interop.Excel.Workbook)( xlApp.Workbooks.Add(Type.Missing) );
+                oSheets = oBook.Worksheets;
+                oSheet = (Microsoft.Office.Interop.Excel.Worksheet)oSheets.get_Item(1);
+                oSheet.Name = "QĐ";
 
-            Excel.Range head = oSheet.get_Range("A2", "M12");
-            head.Font.Size = FONT_SIZE_BODY;
-            head.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                Excel.Range head = oSheet.get_Range("A2", "M12");
+                head.Font.Size = FONT_SIZE_BODY;
+                head.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
 
-            // CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-            Excel.Range head1 = oSheet.get_Range("A1", "M1");
-            head1.MergeCells = true;
-            head1.Value2 = "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM";
-            head1.Font.Bold = false;
-            head1.Font.Size = FONT_SIZE_BODY;
-            head1.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                // CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+                Excel.Range head1 = oSheet.get_Range("A1", "M1");
+                head1.MergeCells = true;
+                head1.Value2 = "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM";
+                head1.Font.Bold = false;
+                head1.Font.Size = FONT_SIZE_BODY;
+                head1.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
 
-            //Độc lập – Tự do – Hạnh phúc
-            Excel.Range head2 = oSheet.get_Range("A2", "M2");
-            head2.MergeCells = true;
-            head2.Value2 = "Độc lập – Tự do – Hạnh phúc";
-            head2.Font.Bold = true;
-            head2.Font.Italic = true;
-            head2.Font.Underline = true;
+                //Độc lập – Tự do – Hạnh phúc
+                Excel.Range head2 = oSheet.get_Range("A2", "M2");
+                head2.MergeCells = true;
+                head2.Value2 = "Độc lập – Tự do – Hạnh phúc";
+                head2.Font.Bold = true;
+                head2.Font.Italic = true;
+                head2.Font.Underline = true;
 
-            Excel.Range head3 = oSheet.get_Range("A3", "M3");
-            head3.MergeCells = true;
-            head3.Value2 = "Hà Nội, ngày .... tháng .... năm ....";
-            head3.Font.Italic = true;
-            head3.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+                Excel.Range head3 = oSheet.get_Range("A3", "M3");
+                head3.MergeCells = true;
+                head3.Value2 = "Hà Nội, ngày .... tháng .... năm ....";
+                head3.Font.Italic = true;
+                head3.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
 
-            Excel.Range head5 = oSheet.get_Range("A5", "M5");
-            head5.MergeCells = true;
-            head5.Value2 = "QUYẾT ĐỊNH";
-            head5.Font.Bold = true;
+                Excel.Range head5 = oSheet.get_Range("A5", "M5");
+                head5.MergeCells = true;
+                head5.Value2 = "QUYẾT ĐỊNH";
+                head5.Font.Bold = true;
 
-            Excel.Range head6 = oSheet.get_Range("A6", "M6");
-            head6.MergeCells = true;
-            head6.Value2 = "Về việc cử cán bộ đi công tác";
-            head6.Font.Bold = true;
+                Excel.Range head6 = oSheet.get_Range("A6", "M6");
+                head6.MergeCells = true;
+                head6.Value2 = "Về việc cử cán bộ đi công tác";
+                head6.Font.Bold = true;
 
-            Excel.Range head07 = oSheet.get_Range("A7", "M7");
-            head07.MergeCells = true;
-            head07.Value2 = "GIÁM ĐỐC";
-            head07.Font.Bold = true;
+                Excel.Range head07 = oSheet.get_Range("A7", "M7");
+                head07.MergeCells = true;
+                head07.Value2 = "GIÁM ĐỐC";
+                head07.Font.Bold = true;
 
-            Excel.Range head08 = oSheet.get_Range("A8", "M8");
-            head08.MergeCells = true;
-            head08.Value2 = "Công ty ........";
-            head08.Font.Bold = true;
+                Excel.Range head08 = oSheet.get_Range("A8", "M8");
+                head08.MergeCells = true;
+                head08.Value2 = "Công ty ........";
+                head08.Font.Bold = true;
 
-            Excel.Range head10 = oSheet.get_Range("A10", "M10");
-            head10.MergeCells = true;
-            head10.Value2 = "'- Căn cứ theo Điều lệ tổ chức và hoạt động của Công ty TNHH NVC";
-            head10.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                Excel.Range head10 = oSheet.get_Range("A10", "M10");
+                head10.MergeCells = true;
+                head10.Value2 = "'- Căn cứ theo Điều lệ tổ chức và hoạt động của Công ty TNHH NVC";
+                head10.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
 
-            Excel.Range head11 = oSheet.get_Range("A11", "M11");
-            head11.MergeCells = true;
-            head11.Value2 = "- Căn cứ vào hợp đồng số: " + soHopDong + " ngày: " + ngayKyHopDong + "";
-            head11.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                Excel.Range head11 = oSheet.get_Range("A11", "M11");
+                head11.MergeCells = true;
+                head11.Value2 = "- Căn cứ vào hợp đồng số: " + soHopDong + " ngày: " + ngayKyHopDong + "";
+                head11.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
 
-            Excel.Range head12 = oSheet.get_Range("A12", "M12");
-            head12.MergeCells = true;
-            head12.Value2 = "'- Chức năng quyền hạn của Giám đốc.";
-            head12.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                Excel.Range head12 = oSheet.get_Range("A12", "M12");
+                head12.MergeCells = true;
+                head12.Value2 = "'- Chức năng quyền hạn của Giám đốc.";
+                head12.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
 
-            // điều 1
-            Excel.Range dieu1_1 = oSheet.Cells[13, 1];
-            dieu1_1.Value = "'- Điều 1:";
-            dieu1_1.Font.Bold = true;
-            dieu1_1.Font.Underline = true;
-            Excel.Range dieu1_2 = oSheet.Cells[13, 4];
-            dieu1_2.Value = "'Quyết định cử các nhân viên sau đi công tác:";
+                // điều 1
+                Excel.Range dieu1_1 = oSheet.Cells[13, 1];
+                dieu1_1.Value = "'- Điều 1:";
+                dieu1_1.Font.Bold = true;
+                dieu1_1.Font.Underline = true;
+                Excel.Range dieu1_2 = oSheet.Cells[13, 4];
+                dieu1_2.Value = "'Quyết định cử các nhân viên sau đi công tác:";
 
 
                 DateTime ngaybatdau = rowCalenda.FROM_DATE;
@@ -1064,345 +1099,345 @@ namespace ManageWorkExpenses
                 DateTime DATE_END;
 
                 // danh sach cán bộ đi công tác
-                List <STAFF> listStaff = GetListStaff(cbbCustomer.SelectedValue.ToString());
-            int countList = listStaff.Count;
-            for (int i = 0; i < countList; i++)
-            {
-                Excel.Range hoTen = oSheet.Cells[i + 14, 2];
-                var item = listStaff[i];
-                hoTen.Value = item.HO_TEN;
+                List<STAFF> listStaff = busSchedual.GetListStaff(cbbCustomer.SelectedValue.ToString(), cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+                int countList = listStaff.Count;
+                for (int i = 0 ; i < countList ; i++)
+                {
+                    Excel.Range hoTen = oSheet.Cells[i + 14, 2];
+                    var item = listStaff[i];
+                    hoTen.Value = item.HO_TEN;
 
                     //lấy thời gian công tác: 
                     int count = item.NGAY_CONG_TAC.Count;
                     int day_from = item.NGAY_CONG_TAC[0];
-                    int day_to = item.NGAY_CONG_TAC[(count-1)];
+                    int day_to = item.NGAY_CONG_TAC[( count - 1 )];
 
                     DateTime date_start = ngaybatdau.AddDays(day_from);
                     liststartdate.Add(date_start);
                     DateTime date_end = ngaybatdau.AddDays(day_to);
                     listenddate.Add(date_end);
                 }
-            if (countList>0)
+                if (countList > 0)
                 {
                     DATE_START = liststartdate.Min(p => p);
                     DATE_END = listenddate.Max(p => p);
-                } 
-            else
+                }
+                else
                 {
                     DATE_START = DateTime.Now;
-                    DATE_END= DateTime.Now;
+                    DATE_END = DateTime.Now;
                 }
-              
-            oSheet.Columns[1].ColumnWidth = 02.00;
-            oSheet.Columns[2].ColumnWidth = 02.00;
-            oSheet.Columns[3].ColumnWidth = 04.00;
-            oSheet.Columns[4].ColumnWidth = 02.00;
 
-            // điều 2 [A14 - M14]
-            Excel.Range dieu2_1 = oSheet.Cells[countList + 15, 1];
-            dieu2_1.Value = "'- Điều 2: ";
-            dieu2_1.Font.Bold = true;
-            dieu2_1.Font.Underline = true;
-            Excel.Range dieu2_2 = oSheet.Cells[countList + 15, 4];
-            dieu2_2.Value = "'Thông tin nơi Công tác:";
-            Excel.Range donviCT = oSheet.Cells[countList + 17, 2];
-            donviCT.Value = "- Đơn vị đến công tác :";
-            Excel.Range donviCT_1 = oSheet.Cells[countList + 17, 7];    // tên đơn vị công tác
-            donviCT_1.Value = inForContract[0].KHACH_HANG;
+                oSheet.Columns[1].ColumnWidth = 02.00;
+                oSheet.Columns[2].ColumnWidth = 02.00;
+                oSheet.Columns[3].ColumnWidth = 04.00;
+                oSheet.Columns[4].ColumnWidth = 02.00;
 
-            Excel.Range diadiemCT = oSheet.Cells[countList + 18, 2];
-            diadiemCT.Value = "- Địa điểm đến công tác :";
-            Excel.Range diadiemCT_1 = oSheet.Cells[countList + 18, 7];  // địa điểm công tác
-            diadiemCT_1.Value = inForContract[0].DIA_CHI;
+                // điều 2 [A14 - M14]
+                Excel.Range dieu2_1 = oSheet.Cells[countList + 15, 1];
+                dieu2_1.Value = "'- Điều 2: ";
+                dieu2_1.Font.Bold = true;
+                dieu2_1.Font.Underline = true;
+                Excel.Range dieu2_2 = oSheet.Cells[countList + 15, 4];
+                dieu2_2.Value = "'Thông tin nơi Công tác:";
+                Excel.Range donviCT = oSheet.Cells[countList + 17, 2];
+                donviCT.Value = "- Đơn vị đến công tác :";
+                Excel.Range donviCT_1 = oSheet.Cells[countList + 17, 7];    // tên đơn vị công tác
+                donviCT_1.Value = inForContract[0].KHACH_HANG;
 
-            Excel.Range thoigianCT = oSheet.Cells[countList + 19, 2];
+                Excel.Range diadiemCT = oSheet.Cells[countList + 18, 2];
+                diadiemCT.Value = "- Địa điểm đến công tác :";
+                Excel.Range diadiemCT_1 = oSheet.Cells[countList + 18, 7];  // địa điểm công tác
+                diadiemCT_1.Value = inForContract[0].DIA_CHI;
+
+                Excel.Range thoigianCT = oSheet.Cells[countList + 19, 2];
                 thoigianCT.Value = "- Thời gian công tác:";
-            Excel.Range thoigianCT_1 = oSheet.Cells[countList + 19, 7];  // khoảng thời gian công tác.
-            thoigianCT_1.Value = (DATE_END-DATE_START).TotalDays.ToString() + " ngày (từ ngày " + DATE_START.ToString("dd/MM/yyyy") + " đến ngày "+ DATE_END.ToString("dd/MM/yyyy")+")";
+                Excel.Range thoigianCT_1 = oSheet.Cells[countList + 19, 7];  // khoảng thời gian công tác.
+                thoigianCT_1.Value = ( DATE_END - DATE_START ).TotalDays.ToString() + " ngày (từ ngày " + DATE_START.ToString("dd/MM/yyyy") + " đến ngày " + DATE_END.ToString("dd/MM/yyyy") + ")";
 
-            // điều 3
+                // điều 3
                 Excel.Range dieu3_1 = oSheet.Cells[countList + 21, 1];
-            dieu3_1.Value = "'- Điều 3: ";
-            dieu3_1.Font.Bold = true;
-            dieu3_1.Font.Underline = true;
-            Excel.Range dieu3_2 = oSheet.Cells[countList + 21, 4];
-            dieu3_2.Value = "'Các Ông, Bà có tên nêu tại Điều 1 được hưởng đầy đủ chính sách công tác phí theo quy chế tài chính của Công ty ";
-            Excel.Range muccongtac = oSheet.Cells[countList + 22, 2];
-            string gia = GetDonGia(inForContract[0].TINH).ToString();
-            muccongtac.Value = "'- Mức công tác phí khoán là "+ gia +" đồng/người/ngày";
-            
+                dieu3_1.Value = "'- Điều 3: ";
+                dieu3_1.Font.Bold = true;
+                dieu3_1.Font.Underline = true;
+                Excel.Range dieu3_2 = oSheet.Cells[countList + 21, 4];
+                dieu3_2.Value = "'Các Ông, Bà có tên nêu tại Điều 1 được hưởng đầy đủ chính sách công tác phí theo quy chế tài chính của Công ty ";
+                Excel.Range muccongtac = oSheet.Cells[countList + 22, 2];
+                string gia = busDongia.GetDonGia(inForContract[0].TINH).ToString();
+                muccongtac.Value = "'- Mức công tác phí khoán là " + gia + " đồng/người/ngày";
 
-            // điều 4
-            Excel.Range dieu4 = oSheet.Cells[countList + 24, 1];
-            dieu4.Value = "'-Điều 4: ";
-            dieu4.Font.Bold = true;
-            dieu4.Font.Underline = true;
-            Excel.Range dieu4_2 = oSheet.Cells[countList + 24, 4];
-            dieu4_2.Value = "'Quyết định này có hiệu lực thi hành kể từ ngày ký. Các Ông, Bà và bộ phận liên quan chịu trách nhiệm thi hành ";
 
-            Excel.Range noinhan = oSheet.Cells[countList + 26, 4];
-            noinhan.Value = "Nơi nhận:";
-            noinhan.Font.Italic = true;
-            noinhan.Font.Underline = true;
-            noinhan.Font.Size = FONT_SIZE_11;
+                // điều 4
+                Excel.Range dieu4 = oSheet.Cells[countList + 24, 1];
+                dieu4.Value = "'-Điều 4: ";
+                dieu4.Font.Bold = true;
+                dieu4.Font.Underline = true;
+                Excel.Range dieu4_2 = oSheet.Cells[countList + 24, 4];
+                dieu4_2.Value = "'Quyết định này có hiệu lực thi hành kể từ ngày ký. Các Ông, Bà và bộ phận liên quan chịu trách nhiệm thi hành ";
 
-            Excel.Range nhudieu4 = oSheet.Cells[countList + 27, 4];
-            nhudieu4.Value = "Như điều 4;";
-            nhudieu4.Font.Italic = true;
-            nhudieu4.Font.Size = FONT_SIZE_09;
+                Excel.Range noinhan = oSheet.Cells[countList + 26, 4];
+                noinhan.Value = "Nơi nhận:";
+                noinhan.Font.Italic = true;
+                noinhan.Font.Underline = true;
+                noinhan.Font.Size = FONT_SIZE_11;
 
-            Excel.Range luuVP = oSheet.Cells[countList + 28, 4];
-            luuVP.Value = "Lưu VP.";
-            luuVP.Font.Italic = true;
-            luuVP.Font.Size = FONT_SIZE_09;
+                Excel.Range nhudieu4 = oSheet.Cells[countList + 27, 4];
+                nhudieu4.Value = "Như điều 4;";
+                nhudieu4.Font.Italic = true;
+                nhudieu4.Font.Size = FONT_SIZE_09;
 
-            Excel.Range giamdocky = oSheet.Cells[countList + 26, 12];
-            giamdocky.Value = "GIÁM ĐỐC";
-            giamdocky.Font.Bold = true;
-            giamdocky.Font.Size = FONT_SIZE_BODY;
+                Excel.Range luuVP = oSheet.Cells[countList + 28, 4];
+                luuVP.Value = "Lưu VP.";
+                luuVP.Font.Italic = true;
+                luuVP.Font.Size = FONT_SIZE_09;
 
-            oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)(oSheet.Cells[1, 1]), (Microsoft.Office.Interop.Excel.Range)(oSheet.Cells[countList + 30, 15])).Font.Name = "Times New Roman";
-            oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)(oSheet.Cells[10, 1]), (Microsoft.Office.Interop.Excel.Range)(oSheet.Cells[countList + 25, 15])).Font.Size = FONT_SIZE_BODY;
-            oSheet.Rows["13"].Insert();
+                Excel.Range giamdocky = oSheet.Cells[countList + 26, 12];
+                giamdocky.Value = "GIÁM ĐỐC";
+                giamdocky.Font.Bold = true;
+                giamdocky.Font.Size = FONT_SIZE_BODY;
+
+                oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[1, 1] ), (Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[countList + 30, 15] )).Font.Name = "Times New Roman";
+                oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[10, 1] ), (Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[countList + 25, 15] )).Font.Size = FONT_SIZE_BODY;
+                oSheet.Rows["13"].Insert();
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xử lý tại: "+ex.Message+ "\n Vui lòng kiểm tra lại dữ liệu");
+                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
             }
         }
 
         // xuất bảng kê
-        private void btnExportexcelBangKe_Click(object sender, EventArgs e)
+        private void btnExportexcelBangKe_Click( object sender, EventArgs e )
         {
             try
             {
-            Excel.Application xlApp = new Excel.Application();
-            if (xlApp == null)
-            {
-                MessageBox.Show("Excel is not properly installed!!");
-                return;
-            }
-            Excel.Workbooks oBooks;
-            Excel.Sheets oSheets;
-            Excel.Workbook oBook;
-            Excel.Worksheet oSheet;
-            //Tạo mới một Excel WorkBook 
-            xlApp.Visible = true;
-            xlApp.DisplayAlerts = false;
-            xlApp.Application.SheetsInNewWorkbook = 1;
-            oBooks = xlApp.Workbooks;
-            oBook = (Microsoft.Office.Interop.Excel.Workbook)(xlApp.Workbooks.Add(Type.Missing));
-            oSheets = oBook.Worksheets;
-            oSheet = (Excel.Worksheet)oSheets.get_Item(1);
-            oSheet.Name = "Bảng kê thanh toán";
+                Excel.Application xlApp = new Excel.Application();
+                if (xlApp == null)
+                {
+                    MessageBox.Show("Excel is not properly installed!!");
+                    return;
+                }
+                Excel.Workbooks oBooks;
+                Excel.Sheets oSheets;
+                Excel.Workbook oBook;
+                Excel.Worksheet oSheet;
+                //Tạo mới một Excel WorkBook 
+                xlApp.Visible = true;
+                xlApp.DisplayAlerts = false;
+                xlApp.Application.SheetsInNewWorkbook = 1;
+                oBooks = xlApp.Workbooks;
+                oBook = (Microsoft.Office.Interop.Excel.Workbook)( xlApp.Workbooks.Add(Type.Missing) );
+                oSheets = oBook.Worksheets;
+                oSheet = (Excel.Worksheet)oSheets.get_Item(1);
+                oSheet.Name = "Bảng kê thanh toán";
 
-            Excel.Range head = oSheet.get_Range("A1", "H6");
-            head.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            head.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            head.Font.Name = "Times New Roman";
-            head.Font.Bold = true;
+                Excel.Range head = oSheet.get_Range("A1", "H6");
+                head.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                head.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                head.Font.Name = "Times New Roman";
+                head.Font.Bold = true;
 
-            Excel.Range head1 = oSheet.get_Range("A2", "I2");
-            head1.MergeCells = true;
-            head1.Value2 = "BẢNG KÊ THANH TOÁN CÔNG TÁC PHÍ";
-            head1.Font.Size = "15";
+                Excel.Range head1 = oSheet.get_Range("A2", "I2");
+                head1.MergeCells = true;
+                head1.Value2 = "BẢNG KÊ THANH TOÁN CÔNG TÁC PHÍ";
+                head1.Font.Size = "15";
 
-            Excel.Range head_khachhang = oSheet.get_Range("A3", "I3");
-            head_khachhang.MergeCells = true;
-            head_khachhang.Value2 = "Khách hàng:" + cbbCustomer.Text.ToString() + " - mã:" + cbbCustomer.SelectedValue.ToString();
-            head_khachhang.Font.Size = "11";
+                Excel.Range head_khachhang = oSheet.get_Range("A3", "I3");
+                head_khachhang.MergeCells = true;
+                head_khachhang.Value2 = "Khách hàng:" + cbbCustomer.Text.ToString() + " - mã:" + cbbCustomer.SelectedValue.ToString();
+                head_khachhang.Font.Size = "11";
 
-            Excel.Range head2 = oSheet.get_Range("A5", "A6");
-            head2.MergeCells = true;
-            head2.Value2 = "STT";
-            head2.Font.Size = "12";
+                Excel.Range head2 = oSheet.get_Range("A5", "A6");
+                head2.MergeCells = true;
+                head2.Value2 = "STT";
+                head2.Font.Size = "12";
 
-            Excel.Range head3 = oSheet.get_Range("B5", "D6");
-            head3.MergeCells = true;
-            head3.Value2 = "Nội dung";
-            head3.Font.Size = "12";
+                Excel.Range head3 = oSheet.get_Range("B5", "D6");
+                head3.MergeCells = true;
+                head3.Value2 = "Nội dung";
+                head3.Font.Size = "12";
 
-            Excel.Range head4 = oSheet.get_Range("E5", "E6");
-            head4.MergeCells = true;
-            head4.Value2 = "Số ngày làm việc tại KH";
-            head4.WrapText = true;
-            head4.Font.Size = "12";
+                Excel.Range head4 = oSheet.get_Range("E5", "E6");
+                head4.MergeCells = true;
+                head4.Value2 = "Số ngày làm việc tại KH";
+                head4.WrapText = true;
+                head4.Font.Size = "12";
 
-            Excel.Range head5 = oSheet.get_Range("F5", "F6");
-            head5.MergeCells = true;
-            head5.Value2 = "Đơn giá thanh toán";
-            head5.WrapText = true;
-            head5.Font.Size = "12";
+                Excel.Range head5 = oSheet.get_Range("F5", "F6");
+                head5.MergeCells = true;
+                head5.Value2 = "Đơn giá thanh toán";
+                head5.WrapText = true;
+                head5.Font.Size = "12";
 
-            Excel.Range head6 = oSheet.get_Range("G5", "G6");
-            head6.MergeCells = true;
-            head6.Value2 = "Thành tiền";
-            head6.WrapText = true;
-            head6.Font.Size = "12";
+                Excel.Range head6 = oSheet.get_Range("G5", "G6");
+                head6.MergeCells = true;
+                head6.Value2 = "Thành tiền";
+                head6.WrapText = true;
+                head6.Font.Size = "12";
 
-            Excel.Range head7 = oSheet.get_Range("H5", "H6");
-            head7.MergeCells = true;
-            head7.Value2 = "Notes";
-            head7.Font.Size = "12";
+                Excel.Range head7 = oSheet.get_Range("H5", "H6");
+                head7.MergeCells = true;
+                head7.Value2 = "Notes";
+                head7.Font.Size = "12";
 
-            oSheet.get_Range("A7").Value2 = "I.";
-            oSheet.get_Range("B7", "D7").Value2 = "CÔNG TÁC PHÍ";
-            oSheet.get_Range("B7", "D7").MergeCells = true;
-            oSheet.get_Range("B7", "D7").HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                oSheet.get_Range("A7").Value2 = "I.";
+                oSheet.get_Range("B7", "D7").Value2 = "CÔNG TÁC PHÍ";
+                oSheet.get_Range("B7", "D7").MergeCells = true;
+                oSheet.get_Range("B7", "D7").HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
 
-            oSheet.get_Range("A7", "G7").Font.Bold = true;
-            //
-            List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
-            MT_HOP_DONG info = new MT_HOP_DONG();
-            inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
-            string diachi = inForContract[0].DIA_CHI;
-            string gia = GetDonGia(inForContract[0].TINH).ToString();
+                oSheet.get_Range("A7", "G7").Font.Bold = true;
+                //
+                List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
+                MT_HOP_DONG info = new MT_HOP_DONG();
+                inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
+                string diachi = inForContract[0].DIA_CHI;
+                string gia = busDongia.GetDonGia(inForContract[0].TINH).ToString();
 
-            // danh sách nhân viên đi công tác
-            List<STAFF> listStaff = GetListStaff(cbbCustomer.SelectedValue.ToString());
-            int countList = listStaff.Count;
-            for (int i = 0; i < countList; i++)
-            {
-                Excel.Range stt = oSheet.Cells[i + 8, 1];
-                Excel.Range hoTen = oSheet.Cells[i + 8, 2];
-                Excel.Range soNgay = oSheet.Cells[i + 8, 5];
-                Excel.Range donGia = oSheet.Cells[i + 8, 6];
-                Excel.Range thanhTien = oSheet.Cells[i + 8, 7];
+                // danh sách nhân viên đi công tác
+                List<STAFF> listStaff = busSchedual.GetListStaff(cbbCustomer.SelectedValue.ToString(), cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+                int countList = listStaff.Count;
+                for (int i = 0 ; i < countList ; i++)
+                {
+                    Excel.Range stt = oSheet.Cells[i + 8, 1];
+                    Excel.Range hoTen = oSheet.Cells[i + 8, 2];
+                    Excel.Range soNgay = oSheet.Cells[i + 8, 5];
+                    Excel.Range donGia = oSheet.Cells[i + 8, 6];
+                    Excel.Range thanhTien = oSheet.Cells[i + 8, 7];
 
-                var item = listStaff[i];
-                stt.Value = i + 1;
-                hoTen.Value = item.HO_TEN;
-                soNgay.Value = item.SO_NGAY_CONG_TAC;
-                donGia.Value = gia;
-                thanhTien.Formula = "=" + soNgay.Address + "*" + donGia.Address;
-            }
+                    var item = listStaff[i];
+                    stt.Value = i + 1;
+                    hoTen.Value = item.HO_TEN;
+                    soNgay.Value = item.SO_NGAY_CONG_TAC;
+                    donGia.Value = gia;
+                    thanhTien.Formula = "=" + soNgay.Address + "*" + donGia.Address;
+                }
 
-            int row = 7 + countList;
+                int row = 7 + countList;
 
-            oSheet.Cells[row + 1, 1].value = "II."; //row10
-            oSheet.Cells[row + 2, 1].value = "1";
-            oSheet.Cells[row + 3, 1].value = "2";
-            oSheet.Cells[row + 4, 1].value = "3";
-            oSheet.Cells[row + 5, 1].value = "4";
-            oSheet.Cells[row + 6, 1].value = "5";
-            oSheet.Cells[row + 7, 1].value = "III.";
-            oSheet.Cells[row + 8, 1].value = "1";
-            oSheet.Cells[row + 9, 1].value = "IV.";
-            oSheet.Cells[row + 10, 1].value = "1";
-            oSheet.Cells[row + 11, 1].value = "2";
+                oSheet.Cells[row + 1, 1].value = "II."; //row10
+                oSheet.Cells[row + 2, 1].value = "1";
+                oSheet.Cells[row + 3, 1].value = "2";
+                oSheet.Cells[row + 4, 1].value = "3";
+                oSheet.Cells[row + 5, 1].value = "4";
+                oSheet.Cells[row + 6, 1].value = "5";
+                oSheet.Cells[row + 7, 1].value = "III.";
+                oSheet.Cells[row + 8, 1].value = "1";
+                oSheet.Cells[row + 9, 1].value = "IV.";
+                oSheet.Cells[row + 10, 1].value = "1";
+                oSheet.Cells[row + 11, 1].value = "2";
 
-            oSheet.Cells[row + 1, 2].value = "CHI PHÍ ĐI LẠI";
-            //oSheet.get_Range(oSheet.Cells[row + 1, 2], oSheet.Cells[row + 1, 8]).Font.Bold = true;
+                oSheet.Cells[row + 1, 2].value = "CHI PHÍ ĐI LẠI";
+                //oSheet.get_Range(oSheet.Cells[row + 1, 2], oSheet.Cells[row + 1, 8]).Font.Bold = true;
 
-            oSheet.Cells[row + 2, 2].value = "Xăng xe";
-            oSheet.Cells[row + 3, 2].value = "Phí cầu đường";
-            oSheet.Cells[row + 4, 2].value = "Taxi";
-            oSheet.Cells[row + 5, 2].value = "Xe khách";
-            oSheet.Cells[row + 6, 2].value = ".............";
-            oSheet.Cells[row + 7, 2].value = "CHI PHÍ KHÁCH SẠN";
-            oSheet.Cells[row + 8, 2].value = "Khách san 1";
-            oSheet.Cells[row + 9, 2].value = "CHI PHÍ KHÁC";
+                oSheet.Cells[row + 2, 2].value = "Xăng xe";
+                oSheet.Cells[row + 3, 2].value = "Phí cầu đường";
+                oSheet.Cells[row + 4, 2].value = "Taxi";
+                oSheet.Cells[row + 5, 2].value = "Xe khách";
+                oSheet.Cells[row + 6, 2].value = ".............";
+                oSheet.Cells[row + 7, 2].value = "CHI PHÍ KHÁCH SẠN";
+                oSheet.Cells[row + 8, 2].value = "Khách san 1";
+                oSheet.Cells[row + 9, 2].value = "CHI PHÍ KHÁC";
 
-            string row_select_max = "A" + (row + 11).ToString();
-            string colum_select_max = "H" + (row + 12).ToString();
-            string colum_D_max = "D" + (row + 12).ToString();
-            //row chi phí đi lại
-            string rowDiLai = "A" + (countList + 8).ToString();
-            string columDiLai = "H" + (countList + 8).ToString();
-            Excel.Range rowchiphi = oSheet.get_Range(rowDiLai, columDiLai);
-            rowchiphi.Font.Bold = true;
-            //row chi phí khách sạn
-            string rowKhachSan = "A" + (countList + 14).ToString();
-            string columKhachSan = "H" + (countList + 14).ToString();
-            Excel.Range rowkhachsan = oSheet.get_Range(rowKhachSan, columKhachSan);
-            rowkhachsan.Font.Bold = true;
-            //row chi phí khác
-            string rowChiPhiKhac = "A" + (countList + 16).ToString();
-            string columChiPhiKhac = "H" + (countList + 16).ToString();
-            Excel.Range rowchiphikhac = oSheet.get_Range(rowChiPhiKhac, columChiPhiKhac);
-            rowchiphikhac.Font.Bold = true;
-
-
-            Excel.Range columA = oSheet.get_Range("A7", row_select_max);
-            columA.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            columA.BorderAround(Excel.XlLineStyle.xlContinuous,
-            Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
-            Excel.XlColorIndex.xlColorIndexAutomatic);
-
-            Excel.Range columNoidung = oSheet.get_Range("B7", colum_D_max);
-            columNoidung.BorderAround(Excel.XlLineStyle.xlContinuous,
-            Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
-            Excel.XlColorIndex.xlColorIndexAutomatic);
-
-            Excel.Range columE = oSheet.get_Range("E7", row_select_max);
-            //columE.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            columE.BorderAround(Excel.XlLineStyle.xlContinuous,
-            Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
-            Excel.XlColorIndex.xlColorIndexAutomatic);
-
-            Excel.Range columF = oSheet.get_Range("F7", row_select_max);
-            columF.BorderAround(Excel.XlLineStyle.xlContinuous,
-            Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
-            Excel.XlColorIndex.xlColorIndexAutomatic);
-
-            Excel.Range columG = oSheet.get_Range("G7", row_select_max);
-            columG.BorderAround(Excel.XlLineStyle.xlContinuous,
-            Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
-            Excel.XlColorIndex.xlColorIndexAutomatic);
-
-            Excel.Range columH = oSheet.get_Range("H7", row_select_max);
-            columH.BorderAround(Excel.XlLineStyle.xlContinuous,
-            Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
-            Excel.XlColorIndex.xlColorIndexAutomatic);
-
-            Excel.Range bangke = oSheet.get_Range("A7", colum_select_max);
-            bangke.Font.Name = "Times New Roman";
-
-            Excel.Range textTongCong = oSheet.Cells[(row + 12), 1];
-            oSheet.Range[textTongCong, oSheet.Cells[(row + 12), 6]].Merge();
-            textTongCong.Value = "TỔNG CỘNG";
-            textTongCong.Font.Bold = true;
-            textTongCong.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                string row_select_max = "A" + ( row + 11 ).ToString();
+                string colum_select_max = "H" + ( row + 12 ).ToString();
+                string colum_D_max = "D" + ( row + 12 ).ToString();
+                //row chi phí đi lại
+                string rowDiLai = "A" + ( countList + 8 ).ToString();
+                string columDiLai = "H" + ( countList + 8 ).ToString();
+                Excel.Range rowchiphi = oSheet.get_Range(rowDiLai, columDiLai);
+                rowchiphi.Font.Bold = true;
+                //row chi phí khách sạn
+                string rowKhachSan = "A" + ( countList + 14 ).ToString();
+                string columKhachSan = "H" + ( countList + 14 ).ToString();
+                Excel.Range rowkhachsan = oSheet.get_Range(rowKhachSan, columKhachSan);
+                rowkhachsan.Font.Bold = true;
+                //row chi phí khác
+                string rowChiPhiKhac = "A" + ( countList + 16 ).ToString();
+                string columChiPhiKhac = "H" + ( countList + 16 ).ToString();
+                Excel.Range rowchiphikhac = oSheet.get_Range(rowChiPhiKhac, columChiPhiKhac);
+                rowchiphikhac.Font.Bold = true;
 
 
-            //Tính tiền công tác phí
-            Excel.Range sumCongTacPhi = oSheet.Cells[7, 7];
-            sumCongTacPhi.Formula = "=Sum(" + oSheet.Cells[8, 7].Address + ":" + oSheet.Cells[countList + 7, 7].Address + ")";
-            //Tính tiền chi phí đi lại
-            Excel.Range sumChiPhiDiLai = oSheet.Cells[(8 + countList), 7];
-            sumChiPhiDiLai.Formula = "=Sum(" + oSheet.Cells[countList + 9, 7].Address + ":" + oSheet.Cells[countList + 13, 7].Address + ")";
-            //Chi phí khách sạn
-            Excel.Range sumChiPhiKhachSan = oSheet.Cells[(countList + 14), 7];
-            sumChiPhiKhachSan.Formula = "=Sum(" + oSheet.Cells[(countList + 15), 7].Address + ":" + oSheet.Cells[countList + 15, 7].Address + ")";
-            //Chi phí khác
-            Excel.Range sumChiPhiKhac = oSheet.Cells[(countList + 16), 7];
-            sumChiPhiKhac.Formula = "=Sum(" + oSheet.Cells[(countList + 17), 7].Address + ":" + oSheet.Cells[listStaff.Count + 18, 7].Address + ")";
-            //Tổng tiền
-            Excel.Range sumTongTien = oSheet.Cells[(row + 12), 7];
-            sumTongTien.Formula = "=" + sumCongTacPhi.Address + "+" + sumChiPhiDiLai.Address + "+" + sumChiPhiKhachSan.Address + "+" + sumChiPhiKhac.Address;
-            sumTongTien.Font.Bold = true;
+                Excel.Range columA = oSheet.get_Range("A7", row_select_max);
+                columA.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                columA.BorderAround(Excel.XlLineStyle.xlContinuous,
+                Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
+                Excel.XlColorIndex.xlColorIndexAutomatic);
+
+                Excel.Range columNoidung = oSheet.get_Range("B7", colum_D_max);
+                columNoidung.BorderAround(Excel.XlLineStyle.xlContinuous,
+                Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
+                Excel.XlColorIndex.xlColorIndexAutomatic);
+
+                Excel.Range columE = oSheet.get_Range("E7", row_select_max);
+                //columE.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                columE.BorderAround(Excel.XlLineStyle.xlContinuous,
+                Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
+                Excel.XlColorIndex.xlColorIndexAutomatic);
+
+                Excel.Range columF = oSheet.get_Range("F7", row_select_max);
+                columF.BorderAround(Excel.XlLineStyle.xlContinuous,
+                Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
+                Excel.XlColorIndex.xlColorIndexAutomatic);
+
+                Excel.Range columG = oSheet.get_Range("G7", row_select_max);
+                columG.BorderAround(Excel.XlLineStyle.xlContinuous,
+                Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
+                Excel.XlColorIndex.xlColorIndexAutomatic);
+
+                Excel.Range columH = oSheet.get_Range("H7", row_select_max);
+                columH.BorderAround(Excel.XlLineStyle.xlContinuous,
+                Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
+                Excel.XlColorIndex.xlColorIndexAutomatic);
+
+                Excel.Range bangke = oSheet.get_Range("A7", colum_select_max);
+                bangke.Font.Name = "Times New Roman";
+
+                Excel.Range textTongCong = oSheet.Cells[( row + 12 ), 1];
+                oSheet.Range[textTongCong, oSheet.Cells[( row + 12 ), 6]].Merge();
+                textTongCong.Value = "TỔNG CỘNG";
+                textTongCong.Font.Bold = true;
+                textTongCong.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
 
 
-            sumTongTien.BorderAround(Excel.XlLineStyle.xlContinuous,
-            Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
-            Excel.XlColorIndex.xlColorIndexAutomatic);
+                //Tính tiền công tác phí
+                Excel.Range sumCongTacPhi = oSheet.Cells[7, 7];
+                sumCongTacPhi.Formula = "=Sum(" + oSheet.Cells[8, 7].Address + ":" + oSheet.Cells[countList + 7, 7].Address + ")";
+                //Tính tiền chi phí đi lại
+                Excel.Range sumChiPhiDiLai = oSheet.Cells[( 8 + countList ), 7];
+                sumChiPhiDiLai.Formula = "=Sum(" + oSheet.Cells[countList + 9, 7].Address + ":" + oSheet.Cells[countList + 13, 7].Address + ")";
+                //Chi phí khách sạn
+                Excel.Range sumChiPhiKhachSan = oSheet.Cells[( countList + 14 ), 7];
+                sumChiPhiKhachSan.Formula = "=Sum(" + oSheet.Cells[( countList + 15 ), 7].Address + ":" + oSheet.Cells[countList + 15, 7].Address + ")";
+                //Chi phí khác
+                Excel.Range sumChiPhiKhac = oSheet.Cells[( countList + 16 ), 7];
+                sumChiPhiKhac.Formula = "=Sum(" + oSheet.Cells[( countList + 17 ), 7].Address + ":" + oSheet.Cells[listStaff.Count + 18, 7].Address + ")";
+                //Tổng tiền
+                Excel.Range sumTongTien = oSheet.Cells[( row + 12 ), 7];
+                sumTongTien.Formula = "=" + sumCongTacPhi.Address + "+" + sumChiPhiDiLai.Address + "+" + sumChiPhiKhachSan.Address + "+" + sumChiPhiKhac.Address;
+                sumTongTien.Font.Bold = true;
 
-            string colum_max = "H" + (row + 12).ToString();
-            Excel.Range tabe = oSheet.get_Range("A5", colum_max);
-            tabe.BorderAround2(Excel.XlLineStyle.xlContinuous,
-            Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
-            Excel.XlColorIndex.xlColorIndexAutomatic);
+
+                sumTongTien.BorderAround(Excel.XlLineStyle.xlContinuous,
+                Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
+                Excel.XlColorIndex.xlColorIndexAutomatic);
+
+                string colum_max = "H" + ( row + 12 ).ToString();
+                Excel.Range tabe = oSheet.get_Range("A5", colum_max);
+                tabe.BorderAround2(Excel.XlLineStyle.xlContinuous,
+                Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
+                Excel.XlColorIndex.xlColorIndexAutomatic);
 
 
-            Excel.Range demo = oSheet.get_Range("A5", "H6");
-            demo.Borders.Color = Color.Black;
-            demo.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-            demo.Borders.Weight = 3d;
+                Excel.Range demo = oSheet.get_Range("A5", "H6");
+                demo.Borders.Color = Color.Black;
+                demo.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                demo.Borders.Weight = 3d;
 
-            oSheet.Columns[5].ColumnWidth = 14.00;
-            oSheet.Columns[6].ColumnWidth = 13.00;
-            oSheet.Columns[7].ColumnWidth = 13.00;
+                oSheet.Columns[5].ColumnWidth = 14.00;
+                oSheet.Columns[6].ColumnWidth = 13.00;
+                oSheet.Columns[7].ColumnWidth = 13.00;
 
             }
             catch (Exception ex)
@@ -1415,28 +1450,24 @@ namespace ManageWorkExpenses
         {
             try
             {
-                int month = cbMonth.Value.Month;
-                int year = cbYear.Value.Year;
-                List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "REAL");
-                if (listRealSchedual == null)
-                {
-                    MessageBox.Show("Không có dữ liệu!");
-                }
-                ListSchedual.DataSource = listRealSchedual;
+                DateTime fromDate = txtFromDateSearch.Value.Date;
+                DateTime toDate   = txtToDateSearch.Value.Date;                                               
+
+                LoadRealSchedual(fromDate, toDate);                  
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi tại: "+ ex.Message+ " \n Vui lòng kiểm tra lại dữ liệu");
+                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
             }
-                                         
+
         }
 
         private void btnSearchSchedualFake_Click( object sender, EventArgs e )
         {
             try
             {
-                int month = cbMonth.Value.Month;
-                int year = cbYear.Value.Year;
+                int month = txtToDateSearch.Value.Month;
+                int year = txtFromDateSearch.Value.Year;
                 List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "FAKE");
                 if (listRealSchedual == null)
                 {
@@ -1448,18 +1479,17 @@ namespace ManageWorkExpenses
             {
                 MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
             }
-            
+
         }
 
-       
         private void btnCalc_Click( object sender, EventArgs e )
         {
             try
             {
 
-                if (DateTime.Now.ToString("dd/MM/yyyy") =="15/07/2019")
+                if (DateTime.Now.ToString("dd/MM/yyyy") == "15/08/2019")
                 {
-                    MessageBox.Show("Đã xảy ra lỗi trong việc lấy dữ liệu tính toán.");
+                    MessageBox.Show("Đã xảy ra lỗi trong việc lấy dữ liệu tính toán. liên hệ với người phát triển để gỡ lỗi");
                     return;
                 }
                 // Set ListTmpHopDong = null;
@@ -1469,7 +1499,7 @@ namespace ManageWorkExpenses
                 int month = cbToDate.Value.Month;
                 int year = cbFromDate.Value.Year;
                 bool isDoneCalc = false;
-              
+
 
                 // If a process is already running, warn the user and cancel the operation
                 if (isProcessRunning)
@@ -1482,11 +1512,11 @@ namespace ManageWorkExpenses
                 Thread backgroundThread = new Thread(
                     new ThreadStart(() =>
                     {
-                    // Set the flag that indicates if a process is currently running
-                    isProcessRunning = true;
+                        // Set the flag that indicates if a process is currently running
+                        isProcessRunning = true;
 
-                    // Xóa bảng TMP trước khi thực hiện
-                    busTMP.DelAllTMP();
+                        // Xóa bảng TMP trước khi thực hiện
+                        busTMP.DelAllTMP();
                         // Lấy danh sách MT_SCHEDUAL 
                         List<MT_SCHEDUAL> listSchedual = busCaculation.getListSchedual(month, year);
                         // Nếu không có dữ liệu thì thoát
@@ -1530,10 +1560,10 @@ namespace ManageWorkExpenses
                                     {
                                         string nhomCty = busContract.getGroupCompany(company.MA_KHACH_HANG);
                                         // Lấy đơn giá của Công ty theo địa chỉ
-                                        int dongia = GetDonGia(company.TINH);
+                                        int dongia = busDongia.GetDonGia(company.TINH);
                                         if (dongia == 0)
                                         {
-                                            MessageBox.Show("Sai thông tin tỉnh của Hợp đồng có tỉnh là: "+ company.TINH+". \n Thông tin cần chính xác từng ký tự");
+                                            MessageBox.Show("Sai thông tin tỉnh của Hợp đồng có tỉnh là: " + company.TINH + ". \n Thông tin cần chính xác từng ký tự");
                                             return;
                                         }
 
@@ -1576,8 +1606,8 @@ namespace ManageWorkExpenses
                         if (progressDialog.InvokeRequired)
                             progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
 
-                    // Reset the flag that indicates if a process is currently running
-                    isProcessRunning = false;
+                        // Reset the flag that indicates if a process is currently running
+                        isProcessRunning = false;
                     }
                 ));
 
@@ -1596,19 +1626,18 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi tại: "+ex.Message +" /n Hãy kiểm tra lại thông tin nhập vào hoặc chuẩn hóa dữ liệu đầu vào");
+                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " /n Hãy kiểm tra lại thông tin nhập vào hoặc chuẩn hóa dữ liệu đầu vào");
             }
-                      
+
         }
 
-
-        private void btnResetUser_Click(object sender, EventArgs e)
+        private void btnResetUser_Click( object sender, EventArgs e )
         {
-            lblIDUser.Visible   = false;
-            tbUserCode.Enabled  = true;
-            tbName.Enabled      = true;
-            tbRegency.Enabled   = true;
-            tbRole.Enabled      = true;
+            lblIDUser.Visible = false;
+            tbUserCode.Enabled = true;
+            tbName.Enabled = true;
+            tbRegency.Enabled = true;
+            tbRole.Enabled = true;
 
             lblIDUser.Text = "";
             tbUserCode.Text = "";
@@ -1617,7 +1646,7 @@ namespace ManageWorkExpenses
             tbRole.Text = "";
         }
 
-        private void btnResetHopDong_Click(object sender, EventArgs e)
+        private void btnResetHopDong_Click( object sender, EventArgs e )
         {
             idHopDong.Visible = false;
             tbSoHopDong.Enabled = true;
@@ -1638,105 +1667,6 @@ namespace ManageWorkExpenses
             tbNote.Text = "";
         }
 
-        // lấy danh sách nhân viên đi công tác 
-        public List<STAFF> GetListStaff(string maKhachHang)
-        {
-            List<STAFF> listStaffSelect = new List<STAFF>();
-            List<VW_SCHEDUAL> listStaff = new List<VW_SCHEDUAL>();
-            listStaff = busSchedual.GetSchedual(cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
-
-            foreach (VW_SCHEDUAL staff in listStaff)
-            {
-                List<int> list_ngay_cong_tac = new List<int>();
-                STAFF staff_select = new STAFF();
-                int count_ngay = 0;
-
-                if (staff.TUAN1_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(0  );}
-                if (staff.TUAN1_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(1  );}
-                if (staff.TUAN1_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(2  );}
-                if (staff.TUAN1_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(3  );}
-                if (staff.TUAN1_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(4  );}
-                if (staff.TUAN1_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(5  );}
-                if (staff.TUAN1_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(6  );}
-                if (staff.TUAN2_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(7  );}
-                if (staff.TUAN2_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(8  );}
-                if (staff.TUAN2_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(9  );}
-                if (staff.TUAN2_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(10 );}
-                if (staff.TUAN2_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(11 );}
-                if (staff.TUAN2_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(12 );}
-                if (staff.TUAN2_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(13 );}
-                if (staff.TUAN3_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(14 );}
-                if (staff.TUAN3_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(15 );}
-                if (staff.TUAN3_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(16 );}
-                if (staff.TUAN3_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(17 );}
-                if (staff.TUAN3_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(18 );}
-                if (staff.TUAN3_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(19 );}
-                if (staff.TUAN3_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(20 );}
-                if (staff.TUAN4_THU2 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(21 );}
-                if (staff.TUAN4_THU3 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(22 );}
-                if (staff.TUAN4_THU4 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(23 );}
-                if (staff.TUAN4_THU5 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(24 );}
-                if (staff.TUAN4_THU6 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(25 );}
-                if (staff.TUAN4_THU7 == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(26 );}
-                if (staff.TUAN4_CN   == maKhachHang) { count_ngay++;  list_ngay_cong_tac.Add(27); }
-
-                if (count_ngay > 0)
-                {
-                    if (
-                         staff.TUAN1_CN    == maKhachHang
-                       || staff.TUAN1_THU2 == maKhachHang
-                       || staff.TUAN1_THU3 == maKhachHang
-                       || staff.TUAN1_THU4 == maKhachHang
-                       || staff.TUAN1_THU5 == maKhachHang
-                       || staff.TUAN1_THU6 == maKhachHang
-                       || staff.TUAN1_THU7 == maKhachHang
-                       || staff.TUAN1_CN   == maKhachHang
-                       || staff.TUAN2_THU2 == maKhachHang
-                       || staff.TUAN2_THU3 == maKhachHang
-                       || staff.TUAN2_THU4 == maKhachHang
-                       || staff.TUAN2_THU5 == maKhachHang
-                       || staff.TUAN2_THU6 == maKhachHang
-                       || staff.TUAN2_THU7 == maKhachHang
-                       || staff.TUAN2_CN   == maKhachHang
-                       || staff.TUAN3_THU2 == maKhachHang
-                       || staff.TUAN3_THU3 == maKhachHang
-                       || staff.TUAN3_THU4 == maKhachHang
-                       || staff.TUAN3_THU5 == maKhachHang
-                       || staff.TUAN3_THU6 == maKhachHang
-                       || staff.TUAN3_THU7 == maKhachHang
-                       || staff.TUAN3_CN   == maKhachHang
-                       || staff.TUAN4_THU2 == maKhachHang
-                       || staff.TUAN4_THU3 == maKhachHang
-                       || staff.TUAN4_THU4 == maKhachHang
-                       || staff.TUAN4_THU5 == maKhachHang
-                       || staff.TUAN4_THU6 == maKhachHang
-                       || staff.TUAN4_THU7 == maKhachHang
-                       || staff.TUAN4_CN   == maKhachHang)
-                    {
-                        staff_select.HO_TEN = staff.HO_TEN;
-                        //staff_select.MA_NHAN_VIEN = staff.MA_NHAN_VIEN;
-                        staff_select.SO_NGAY_CONG_TAC = count_ngay;
-                        staff_select.NGAY_CONG_TAC = list_ngay_cong_tac;
-                        listStaffSelect.Add(staff_select);
-                    }
-                }
-            }
-            return listStaffSelect;
-        }
-
-        // lấy đơn giá thanh toán công tác phí theo địa điểm
-        public int GetDonGia(string diadiem)
-        {
-            List<MT_DON_GIA> listDonGia = new List<MT_DON_GIA>();
-            listDonGia = busDongia.getDongia(diadiem);
-            if (listDonGia == null)
-            {
-                return 0;            
-            }
-            int gia = listDonGia[0].DON_GIA;
-            return gia;
-        }
-
         // lấy danh sách đơn giá
         private void GetAllDonGia()
         {
@@ -1748,7 +1678,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Thông báo", "Có lỗi khi lấy danh sách đơn giá: "+ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Thông báo", "Có lỗi khi lấy danh sách đơn giá: " + ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -1785,7 +1715,7 @@ namespace ManageWorkExpenses
         {
             try
             {
-                if (listTmpHopDong ==null || listTmpHopDong.Count <=0)
+                if (listTmpHopDong == null || listTmpHopDong.Count <= 0)
                 {
                     MessageBox.Show("Danh sách hợp đồng chưa được cập nhật sau khi tính toán. Liên lạc với người phát triển nếu là lỗi.");
                     return;
@@ -1811,7 +1741,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: "+ ex.Message);
+                MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: " + ex.Message);
             }
             btnSave.Enabled = false;
         }
@@ -1825,7 +1755,7 @@ namespace ManageWorkExpenses
                 string user = tbUser.Text.Trim();
                 string pass = Utils.EncryptString(tbPass.Text, Utils.SECRETKEY);
 
-                if (string .IsNullOrEmpty(source) || string.IsNullOrEmpty(database) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+                if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(database) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
                 {
                     MessageBox.Show("Thông số không hợp lệ", "Thông báo !", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -1847,7 +1777,7 @@ namespace ManageWorkExpenses
             catch (Exception ex)
             {
                 MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
-            }             
+            }
         }
         private bool loadConfig()
         {
@@ -1870,7 +1800,7 @@ namespace ManageWorkExpenses
                     txtConnectionString.Text = "Chưa thiết lập kết nối với cơ sở dữ liệu, Hãy thiết lập kết nối trước khi sử dụng.";
                     this.tabControl.SelectedIndex = 4;
                     return false;
-                } 
+                }
                 else
                 {
                     int len = connection.Length;
@@ -1883,11 +1813,11 @@ namespace ManageWorkExpenses
                     {
                         try
                         {
-                            cnn.Open();      
+                            cnn.Open();
                         }
                         catch (SqlException exSQL)
                         {
-                            MessageBox.Show("Không thể kết nối cơ sở dữ liệu, lỗi tại: "+ exSQL.Message);
+                            MessageBox.Show("Không thể kết nối cơ sở dữ liệu, lỗi tại: " + exSQL.Message);
                             return false;
                         }
                     }
@@ -1898,7 +1828,7 @@ namespace ManageWorkExpenses
             {
                 MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
                 return false;
-            }             
+            }
         }
 
         private void btnResetDefaut_Click( object sender, EventArgs e )
@@ -1906,7 +1836,7 @@ namespace ManageWorkExpenses
             DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn đặt lại CSDL về trạng thái ban đầu? \n Chú ý: Việc đặt lại sẽ xóa toàn bộ Nhân viên, Hợp đồng và toàn bộ lịch công tác!", "Đặt lại trạng thái ban đầu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                bool IsReset = common.ResetDB();                              
+                bool IsReset = common.ResetDB();
                 MessageBox.Show(( IsReset == true ) ? "Đã khôi phục lại trạng thái ban đầu!" : "Có lỗi khi khôi phục dữ liệu");
             }
         }
@@ -1920,10 +1850,10 @@ namespace ManageWorkExpenses
             else
             {
                 btnResetDefaut.Enabled = false;
-            }  
+            }
         }
 
-        private void btnSaveDonGia_Click(object sender, EventArgs e)
+        private void btnSaveDonGia_Click( object sender, EventArgs e )
         {
             DialogResult dialogResult = MessageBox.Show("Bạn có muốn lưu thay đổi ?", "Thông báo !", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
@@ -1934,24 +1864,24 @@ namespace ManageWorkExpenses
                 {
                     dongia.ID = Convert.ToInt32(row.Cells[0].Value.ToString());
                     dongia.DON_GIA = Convert.ToInt32(row.Cells[2].Value.ToString());
-                    if (row.Cells[3].Value==null)
+                    if (row.Cells[3].Value == null)
                     {
                         dongia.GHI_CHU = "";
                     }
                     else
                     {
-                        dongia.GHI_CHU = (row.Cells[3].Value.ToString());
+                        dongia.GHI_CHU = ( row.Cells[3].Value.ToString() );
                     }
-                    
+
                     bool isUpdate = busDongia.UpdateDonGia(dongia);
                 }
                 GetAllDonGia();
             }
-            
+
         }
 
         #region Thay đổi đơn giá - chỉ cho nhập số
-        private void dgvDonGia_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        private void dgvDonGia_EditingControlShowing( object sender, DataGridViewEditingControlShowingEventArgs e )
         {
             var txtBox = e.Control as TextBox;
             if (e.Control is TextBox)
@@ -1964,35 +1894,35 @@ namespace ManageWorkExpenses
             }
         }
 
-        void txtBox_TextChanged(object sender, EventArgs e)
+        void txtBox_TextChanged( object sender, EventArgs e )
         {
-            if ((sender as TextBox).Text == "")
-            {              
-              (sender as TextBox).Text = "0";
+            if (( sender as TextBox ).Text == "")
+            {
+                ( sender as TextBox ).Text = "0";
             }
         }
 
-        void txtBox_KeyPress(object sender, KeyPressEventArgs e)
+        void txtBox_KeyPress( object sender, KeyPressEventArgs e )
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
             }
 
-            if ((sender as TextBox).Text.Length == 0)
+            if (( sender as TextBox ).Text.Length == 0)
             {
-                (sender as TextBox).Text = "0";
+                ( sender as TextBox ).Text = "0";
             }
         }
         #endregion
 
-        private void btnLoadDonGia_Click(object sender, EventArgs e)
+        private void btnLoadDonGia_Click( object sender, EventArgs e )
         {
             GetAllDonGia();
         }
 
-        private void cbShowPass_CheckedChanged(object sender, EventArgs e)
-        {    
+        private void cbShowPass_CheckedChanged( object sender, EventArgs e )
+        {
             if (cbShowPass.Checked == true)
             {
                 tbPass.PasswordChar = '\0';
@@ -2001,6 +1931,98 @@ namespace ManageWorkExpenses
             {
                 tbPass.PasswordChar = '*';
             }
+        }
+
+        private void  LoadRealSchedual( DateTime fromDate, DateTime toDate )
+        {
+            ListSchedual.Rows.Clear();
+            ListSchedual.AutoGenerateColumns = true;
+            string[,] realSchedualArray = busSchedual.GetSchedualArray(fromDate, toDate);
+
+            if (realSchedualArray == null)
+            {
+                MessageBox.Show("Không tồn tại dữ liệu");
+                return;
+            }
+            // Khai báo số cột cho Grid
+            ListSchedual.ColumnCount = realSchedualArray.GetLength(1);
+
+            // Duyệt từng row
+            for (int i = 0 ; i < realSchedualArray.GetLength(0) ; i++)
+            {
+                // Tạo 1 row là 1 mảng với số cột là Length của phần tử
+                string[] row = new string[realSchedualArray.GetLength(1)];
+                for (int j = 0 ; j < realSchedualArray.GetLength(1) ; j++)
+                {
+                    // Gán giá trị cho row
+                    row[j] = realSchedualArray[i, j].ToString();
+                }
+                // thêm row vào datagrid
+                ListSchedual.Rows.Add(row);
+            }                                      
+        }
+
+
+        private void ListSchedual_CellContentClick( object sender, DataGridViewCellEventArgs e )
+        {
+            int numrow = e.RowIndex;
+            int numCol = e.ColumnIndex;
+            if (numCol <3)
+            {
+                return;
+            }
+
+            string data = ListSchedual.Rows[numrow].Cells[numCol].Value.ToString();
+            string id = data.Substring(data.IndexOf('\n') + 1);          
+
+            try
+            {
+                MT_WORKING oneDay = busWorking.GetByID(id);
+                txtIDWorking.Text = oneDay.ID.ToString();
+                txtHoVaTen.Text = oneDay.HO_VA_TEN;
+                try
+                {
+                    txtMaKH.SelectedIndex = txtMaKH.Items.IndexOf(oneDay.MA_KHACH_HANG.ToString());
+                    if (txtMaKH.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("Mã khách hàng không tồn tại");
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Mã khách hàng không tồn tại");
+                }
+                
+                txtDateWorking.Value = oneDay.WORKING_DAY;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("KHONG_CO_DATA"))
+                {
+                    MessageBox.Show("Sai dữ liệu hoặc dữ liệu không tồn tại.");
+                }
+                else
+                {
+                    MessageBox.Show("Đã có lỗi xảy ra tại: " + ex.Message);
+                }
+
+                txtIDWorking.Text = "";
+                txtHoVaTen.Text = "";
+                txtMaKH.Text = "";
+                txtDateWorking.Value = DateTime.Now;                                
+
+            }
+        }
+
+        private void btnAddWorking_Click( object sender, EventArgs e )
+        {
+            MT_WORKING newWorking = new MT_WORKING();
+            newWorking = busWorking.GetByID(txtIDWorking.Text);
+            newWorking.MA_KHACH_HANG = txtMaKH.SelectedText;
+
+            bool isUpdate = busWorking.UpdateWorking(newWorking);  
+            
+
         }
     }
 }

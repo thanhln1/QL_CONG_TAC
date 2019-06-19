@@ -91,5 +91,23 @@ namespace DAO
                 return output.ToList();
             }
         }
+
+        public List<MT_WORKING> GetListSchedual( DateTime fromDate, DateTime toDate )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_WORKING>("select * from MT_WORKING where cast (WORKING_DAY as date) between @FROM and @TO order by MA_NHAN_VIEN ", new { FROM = fromDate, TO = toDate });
+                return output.ToList();
+            }
+        }
+
+        public int getColumnFromDate( DateTime fromDate, DateTime toDate )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                int output = cnn.ExecuteScalar<int>("select  DATEDIFF(day, min(Working_day), max(Working_day) ) from MT_WORKING where cast (WORKING_DAY as date) between @FROM and @TO ", new { FROM = fromDate, TO = toDate });
+                return output;
+            }
+        }
     }
 }

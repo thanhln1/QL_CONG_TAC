@@ -31,18 +31,18 @@ namespace BUS
             }              
         }
 
-        public object GetListContract()
+        public List<MT_HOP_DONG> GetListContract()
         {
-            List<MT_HOP_DONG> listUser = new List<MT_HOP_DONG>();
+            List<MT_HOP_DONG> listContract = new List<MT_HOP_DONG>();
             try
             {
-                listUser = dao.LoadContract();
+                listContract = dao.LoadContract();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return listUser;
+            return listContract;
         }
 
         public bool DelContract( MT_HOP_DONG contract )
