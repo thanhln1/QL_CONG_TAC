@@ -83,7 +83,7 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {                  
-                cnn.Execute("DELETE FROM TMP_SCHEDUAL");
+                cnn.Execute("DELETE FROM TMP_WORKING");
             }
         }
 

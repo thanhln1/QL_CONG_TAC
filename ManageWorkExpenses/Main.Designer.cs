@@ -85,7 +85,8 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.ListSchedual = new System.Windows.Forms.DataGridView();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.panelEditFakeData = new System.Windows.Forms.GroupBox();
+            this.txtMaKH = new System.Windows.Forms.ComboBox();
             this.btnDeleteWorking = new System.Windows.Forms.Button();
             this.btnUpdateWorking = new System.Windows.Forms.Button();
             this.btnAddWorking = new System.Windows.Forms.Button();
@@ -187,7 +188,6 @@
             this.lblFullName = new System.Windows.Forms.Label();
             this.lblStaff = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.txtMaKH = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.tabConfig.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -203,7 +203,7 @@
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListSchedual)).BeginInit();
             this.panel5.SuspendLayout();
-            this.groupBox7.SuspendLayout();
+            this.panelEditFakeData.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.TabHopDong.SuspendLayout();
@@ -718,13 +718,13 @@
             this.ListSchedual.RowHeadersVisible = false;
             this.ListSchedual.Size = new System.Drawing.Size(1041, 677);
             this.ListSchedual.TabIndex = 0;
-            this.ListSchedual.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListSchedual_CellContentClick);
+            this.ListSchedual.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListSchedual_CellClick);
             this.ListSchedual.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.ListSchedual_CellFormatting);
             this.ListSchedual.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.ListSchedual_CellPainting);
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.groupBox7);
+            this.panel5.Controls.Add(this.panelEditFakeData);
             this.panel5.Controls.Add(this.groupBox6);
             this.panel5.Controls.Add(this.btnImportSchedual);
             this.panel5.Controls.Add(this.groupBox5);
@@ -735,24 +735,33 @@
             this.panel5.Size = new System.Drawing.Size(250, 677);
             this.panel5.TabIndex = 0;
             // 
-            // groupBox7
+            // panelEditFakeData
             // 
-            this.groupBox7.Controls.Add(this.txtMaKH);
-            this.groupBox7.Controls.Add(this.btnDeleteWorking);
-            this.groupBox7.Controls.Add(this.btnUpdateWorking);
-            this.groupBox7.Controls.Add(this.btnAddWorking);
-            this.groupBox7.Controls.Add(this.txtIDWorking);
-            this.groupBox7.Controls.Add(this.txtDateWorking);
-            this.groupBox7.Controls.Add(this.label8);
-            this.groupBox7.Controls.Add(this.label7);
-            this.groupBox7.Controls.Add(this.txtHoVaTen);
-            this.groupBox7.Controls.Add(this.label6);
-            this.groupBox7.Location = new System.Drawing.Point(14, 443);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(223, 220);
-            this.groupBox7.TabIndex = 33;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Chỉnh sửa lịch công tác";
+            this.panelEditFakeData.Controls.Add(this.txtMaKH);
+            this.panelEditFakeData.Controls.Add(this.btnDeleteWorking);
+            this.panelEditFakeData.Controls.Add(this.btnUpdateWorking);
+            this.panelEditFakeData.Controls.Add(this.btnAddWorking);
+            this.panelEditFakeData.Controls.Add(this.txtIDWorking);
+            this.panelEditFakeData.Controls.Add(this.txtDateWorking);
+            this.panelEditFakeData.Controls.Add(this.label8);
+            this.panelEditFakeData.Controls.Add(this.label7);
+            this.panelEditFakeData.Controls.Add(this.txtHoVaTen);
+            this.panelEditFakeData.Controls.Add(this.label6);
+            this.panelEditFakeData.Location = new System.Drawing.Point(14, 443);
+            this.panelEditFakeData.Name = "panelEditFakeData";
+            this.panelEditFakeData.Size = new System.Drawing.Size(223, 220);
+            this.panelEditFakeData.TabIndex = 33;
+            this.panelEditFakeData.TabStop = false;
+            this.panelEditFakeData.Text = "Chỉnh sửa lịch công tác fake";
+            this.panelEditFakeData.Visible = false;
+            // 
+            // txtMaKH
+            // 
+            this.txtMaKH.FormattingEnabled = true;
+            this.txtMaKH.Location = new System.Drawing.Point(103, 42);
+            this.txtMaKH.Name = "txtMaKH";
+            this.txtMaKH.Size = new System.Drawing.Size(114, 21);
+            this.txtMaKH.TabIndex = 10;
             // 
             // btnDeleteWorking
             // 
@@ -764,6 +773,7 @@
             this.btnDeleteWorking.TabIndex = 9;
             this.btnDeleteWorking.Text = "     Xóa";
             this.btnDeleteWorking.UseVisualStyleBackColor = true;
+            this.btnDeleteWorking.Click += new System.EventHandler(this.btnDeleteWorking_Click);
             // 
             // btnUpdateWorking
             // 
@@ -776,6 +786,7 @@
             this.btnUpdateWorking.Text = "Cập nhật";
             this.btnUpdateWorking.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnUpdateWorking.UseVisualStyleBackColor = true;
+            this.btnUpdateWorking.Click += new System.EventHandler(this.btnUpdateWorking_Click);
             // 
             // btnAddWorking
             // 
@@ -1804,14 +1815,6 @@
             this.tabControl.Size = new System.Drawing.Size(1305, 709);
             this.tabControl.TabIndex = 1;
             // 
-            // txtMaKH
-            // 
-            this.txtMaKH.FormattingEnabled = true;
-            this.txtMaKH.Location = new System.Drawing.Point(103, 42);
-            this.txtMaKH.Name = "txtMaKH";
-            this.txtMaKH.Size = new System.Drawing.Size(114, 21);
-            this.txtMaKH.TabIndex = 10;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1845,8 +1848,8 @@
             this.panel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ListSchedual)).EndInit();
             this.panel5.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
+            this.panelEditFakeData.ResumeLayout(false);
+            this.panelEditFakeData.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -2006,7 +2009,7 @@
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.DateTimePicker txtToDateSearch;
         private System.Windows.Forms.DateTimePicker txtFromDateSearch;
-        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox panelEditFakeData;
         private System.Windows.Forms.Button btnDeleteWorking;
         private System.Windows.Forms.Button btnUpdateWorking;
         private System.Windows.Forms.Button btnAddWorking;

@@ -27,8 +27,7 @@ namespace ManageWorkExpenses
         //private Logger logger;
         MT_USER_BUS busUser = new MT_USER_BUS();
         MT_CONTRACT_BUS busContract = new MT_CONTRACT_BUS();
-        MT_SCHEDUAL_BUS busSchedual = new MT_SCHEDUAL_BUS();
-        MT_LICH_CT_BUS busCalenda = new MT_LICH_CT_BUS();
+        MT_SCHEDUAL_BUS busSchedual = new MT_SCHEDUAL_BUS(); 
         CACULATION_BUS busCaculation = new CACULATION_BUS();
         MT_DON_GIA_BUS busDongia = new MT_DON_GIA_BUS();
         TMP_SCHEDUAL_BUS busTMP = new TMP_SCHEDUAL_BUS();
@@ -37,8 +36,7 @@ namespace ManageWorkExpenses
         COMMON_BUS common = new COMMON_BUS();
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
-        const string FONT_SIZE_11 = "11";
-
+        const string FONT_SIZE_11 = "11";   
         // Khởi tạo đối tượng lấy số ngẫu nhiên
         Random random = new Random();
 
@@ -46,7 +44,9 @@ namespace ManageWorkExpenses
         ProgressForm progressDialog = new ProgressForm();
 
         // Flag that indcates if a process is running
-        private bool isProcessRunning = false;    
+        private bool isProcessRunning = false; 
+        
+          
 
         public Main()
         {
@@ -568,6 +568,7 @@ namespace ManageWorkExpenses
 
         private void btnImportSchedual_Click( object sender, EventArgs e )
         {
+            panelEditFakeData.Visible = true;
             var fileContent = string.Empty;
             var filePath = string.Empty;
             DateTime fromDate = DateTime.Now;
@@ -979,20 +980,20 @@ namespace ManageWorkExpenses
 
         }
 
-        // xuất quyết định
+        // xuất quyết định Chưa làm xong
         private void btnExportexcelKQ2_Click( object sender, EventArgs e )
         {
             try
             {
-                MT_LICH_CT rowCalenda = busCalenda.getCalenda(cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+               //  MT_LICH_CT rowCalenda = busCalenda.getCalenda(cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
 
 
-                if (rowCalenda == null)
-                {
-                    //MessageBox.Show("Chưa có lịch công tác");
-                    MessageBox.Show("Chưa có lịch công tác !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                //if (rowCalenda == null)
+                //{
+                //    //MessageBox.Show("Chưa có lịch công tác");
+                //    MessageBox.Show("Chưa có lịch công tác !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    return;
+                //}
                 // get thông tin nơi công tác
                 List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
                 MT_HOP_DONG info = new MT_HOP_DONG();
@@ -1091,8 +1092,8 @@ namespace ManageWorkExpenses
                 dieu1_2.Value = "'Quyết định cử các nhân viên sau đi công tác:";
 
 
-                DateTime ngaybatdau = rowCalenda.FROM_DATE;
-                DateTime ngayketthuc = rowCalenda.TO_DATE;
+                //DateTime ngaybatdau = rowCalenda.FROM_DATE;
+                //DateTime ngayketthuc = rowCalenda.TO_DATE;
                 List<DateTime> liststartdate = new List<DateTime>();
                 List<DateTime> listenddate = new List<DateTime>();
                 DateTime DATE_START;
@@ -1112,10 +1113,10 @@ namespace ManageWorkExpenses
                     int day_from = item.NGAY_CONG_TAC[0];
                     int day_to = item.NGAY_CONG_TAC[( count - 1 )];
 
-                    DateTime date_start = ngaybatdau.AddDays(day_from);
-                    liststartdate.Add(date_start);
-                    DateTime date_end = ngaybatdau.AddDays(day_to);
-                    listenddate.Add(date_end);
+                    //DateTime date_start = ngaybatdau.AddDays(day_from);
+                    //liststartdate.Add(date_start);
+                   // DateTime date_end = ngaybatdau.AddDays(day_to);
+                   // listenddate.Add(date_end);
                 }
                 if (countList > 0)
                 {
@@ -1449,16 +1450,17 @@ namespace ManageWorkExpenses
         private void btnLoadSchedual_Click( object sender, EventArgs e )
         {
             try
-            {
+            {                         
                 DateTime fromDate = txtFromDateSearch.Value.Date;
                 DateTime toDate   = txtToDateSearch.Value.Date;                                               
 
                 LoadRealSchedual(fromDate, toDate);                  
-            }
+            }             
             catch (Exception ex)
             {
                 MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
             }
+            panelEditFakeData.Visible = true;
 
         }
 
@@ -1466,6 +1468,7 @@ namespace ManageWorkExpenses
         {
             try
             {
+                
                 int month = txtToDateSearch.Value.Month;
                 int year = txtFromDateSearch.Value.Year;
                 List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "FAKE");
@@ -1474,10 +1477,12 @@ namespace ManageWorkExpenses
                     MessageBox.Show("Không có dữ liệu!");
                 }
                 ListSchedual.DataSource = listRealSchedual;
+                panelEditFakeData.Visible = true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
+                panelEditFakeData.Visible = false;
             }
 
         }
@@ -1496,8 +1501,8 @@ namespace ManageWorkExpenses
                 listTmpHopDong = null;
 
                 bool isCN = cbCheckCN.Checked;
-                int month = cbToDate.Value.Month;
-                int year = cbFromDate.Value.Year;
+                DateTime fromCalcDate = cbToDate.Value;
+                DateTime toCalcDate   = cbFromDate.Value;
                 bool isDoneCalc = false;
 
 
@@ -1512,85 +1517,52 @@ namespace ManageWorkExpenses
                 Thread backgroundThread = new Thread(
                     new ThreadStart(() =>
                     {
-                        // Set the flag that indicates if a process is currently running
+                        // Set the flag that indicates if a process is currently running                    
                         isProcessRunning = true;
 
                         // Xóa bảng TMP trước khi thực hiện
                         busTMP.DelAllTMP();
-                        // Lấy danh sách MT_SCHEDUAL 
-                        List<MT_SCHEDUAL> listSchedual = busCaculation.getListSchedual(month, year);
-                        // Nếu không có dữ liệu thì thoát
-                        if (listSchedual.Count <= 0)
-                        {
-                            MessageBox.Show("Tháng được chọn không có dữ liệu");
-                            return;
-                        }
+
                         // Lấy danh sách các công ty chưa hết kinh phí
                         List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
 
-                        // cài đặt số chạy % của progress bar bắt đầu từ  0
+                        // Lấy danh sách lịch làm việc thật 
+                        string[,] realSchedualArray = busSchedual.GetSchedualArray(fromCalcDate, toCalcDate);
+
+                        if (realSchedualArray == null)
+                        {
+                            MessageBox.Show("Không tồn tại dữ liệu trong khoảng thời gian cần tính toán");
+                            return;
+                        }
+
+                        // Khai báo số cột cho Grid
+                        // ListSchedual.ColumnCount = realSchedualArray.GetLength(1);
+
+
+                        // cài đặt số chạy % của progress bar bắt đầu từ 0
                         int n = 0;
                         // Tổng số phần trăm của progress bar
-                        int totalPercent = listSchedual.Count;
+                        int totalPercent = realSchedualArray.GetLength(1);
                         // 
+
+                        // Duyệt từng row
+                        for (int i = 0 ; i < realSchedualArray.GetLength(0) ; i++)
+                        {
+                            // Tạo 1 row là 1 mảng với số cột là Length của phần tử
+                            string[] row = new string[realSchedualArray.GetLength(1)];
+                            for (int j = 0 ; j < realSchedualArray.GetLength(1) ; j++)
+                            {
+                                // Gán giá trị cho row
+                                row[j] = realSchedualArray[i, j].ToString();
+                            }
+                            // thêm row vào datagrid
+                            
+                        }       
+
 
                         foreach (var item in listSchedual)
                         {
-                            // Getting Type of Generic Class Model
-                            Type tModelType = item.GetType();
-                            // Tạo một đối tượng PropertyInfo chứa chi tiết về thuộc tính lớp
-                            PropertyInfo[] arrayPropertyInfos = tModelType.GetProperties();
-
-                            //Chạy từng giá trị của từng cột
-                            foreach (PropertyInfo property in arrayPropertyInfos)
-                            {
-                                string nameProperty = property.ToString();
-
-                                // Nếu ngày trùng với chủ nhật thì bỏ qua nếu set ngày chủ nhật
-                                if (nameProperty.Substring(nameProperty.IndexOf("_") + 1, 2).Equals("CN") && isCN == true)
-                                {
-                                    continue;
-                                }
-
-                                // Nếu ô còn trống thì xử lý
-                                if (property.GetValue(item) == null || property.GetValue(item).ToString() == "")
-                                {
-                                    string nhomNV = busUser.getGroupUser(item.MA_NHAN_VIEN);
-                                    foreach (var company in listCompany)
-                                    {
-                                        string nhomCty = busContract.getGroupCompany(company.MA_KHACH_HANG);
-                                        // Lấy đơn giá của Công ty theo địa chỉ
-                                        int dongia = busDongia.GetDonGia(company.TINH);
-                                        if (dongia == 0)
-                                        {
-                                            MessageBox.Show("Sai thông tin tỉnh của Hợp đồng có tỉnh là: " + company.TINH + ". \n Thông tin cần chính xác từng ký tự");
-                                            return;
-                                        }
-
-                                        if (string.IsNullOrEmpty(nhomNV) || string.IsNullOrEmpty(nhomCty))
-                                        {
-                                            MessageBox.Show("Kiểm tra lại thông tin phòng ban của Nhân viên: " + item.MA_NHAN_VIEN + " hoặc Khách hàng: " + company.MA_KHACH_HANG);
-                                            busTMP.DelAllTMP();
-                                            return;
-                                        }
-                                        // Nếu tổng chi phí tối đa trừ đã chi <= đơn giá hoặc Nhóm công ty khác với phân loại user thì công ty đó không sử dụng được với user -> chuyển cty tiếp theo.  
-                                        if (( company.TONG_CHI_PHI_MUC_TOI_DA - company.CHI_PHI_THUC_DA_CHI ) < dongia || !nhomNV.Equals(nhomCty))
-                                        {
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            // Set giá trị cho ô trống
-                                            property.SetValue(item, company.MA_KHACH_HANG);
-
-                                            // Cộng thêm giá trị cho Chi phí thực đã chi
-                                            company.CHI_PHI_THUC_DA_CHI += dongia;
-                                            break;
-                                        }
-                                    }
-
-                                }
-                            }
+                            
                             // Cập nhật số % cho progress bar
                             progressDialog.UpdateProgress(n * 100 / totalPercent);
                             // Lưu lại bảng TMP  
@@ -1713,6 +1685,7 @@ namespace ManageWorkExpenses
 
         private void btnSave_Click( object sender, EventArgs e )
         {
+            panelEditFakeData.Visible = true;
             try
             {
                 if (listTmpHopDong == null || listTmpHopDong.Count <= 0)
@@ -1960,20 +1933,32 @@ namespace ManageWorkExpenses
                 // thêm row vào datagrid
                 ListSchedual.Rows.Add(row);
             }                                      
+        }   
+
+        private void btnAddWorking_Click( object sender, EventArgs e )
+        {
+            MT_WORKING newWorking = new MT_WORKING();
+            newWorking = busWorking.GetByID(txtIDWorking.Text);
+            newWorking.MA_KHACH_HANG = txtMaKH.SelectedText;
+
+            bool isUpdate = busWorking.UpdateWorking(newWorking);
+            btnAddWorking.Enabled = false; 
+            btnUpdateWorking.Enabled = false;
         }
 
-
-        private void ListSchedual_CellContentClick( object sender, DataGridViewCellEventArgs e )
+        private void ListSchedual_CellClick( object sender, DataGridViewCellEventArgs e )
         {
+            btnAddWorking.Enabled = true;
+            btnUpdateWorking.Enabled = true;
             int numrow = e.RowIndex;
             int numCol = e.ColumnIndex;
-            if (numCol <3)
+            if (numCol < 3)
             {
                 return;
             }
 
             string data = ListSchedual.Rows[numrow].Cells[numCol].Value.ToString();
-            string id = data.Substring(data.IndexOf('\n') + 1);          
+            string id = data.Substring(data.IndexOf('\n') + 1);
 
             try
             {
@@ -1982,17 +1967,20 @@ namespace ManageWorkExpenses
                 txtHoVaTen.Text = oneDay.HO_VA_TEN;
                 try
                 {
-                    txtMaKH.SelectedIndex = txtMaKH.Items.IndexOf(oneDay.MA_KHACH_HANG.ToString());
-                    if (txtMaKH.SelectedIndex == -1)
+                    if (!string.IsNullOrWhiteSpace(oneDay.MA_KHACH_HANG))
                     {
-                        MessageBox.Show("Mã khách hàng không tồn tại");
+                        txtMaKH.SelectedIndex = txtMaKH.Items.IndexOf(oneDay.MA_KHACH_HANG.ToString());
+                        if (txtMaKH.SelectedIndex == -1)
+                        {
+                            MessageBox.Show("Mã khách hàng không tồn tại");
+                        }
                     }
                 }
                 catch
                 {
-                    MessageBox.Show("Mã khách hàng không tồn tại");
+                    MessageBox.Show("Có lỗi xảy ra với Mã Khách Hàng.");
                 }
-                
+
                 txtDateWorking.Value = oneDay.WORKING_DAY;
             }
             catch (Exception ex)
@@ -2009,20 +1997,23 @@ namespace ManageWorkExpenses
                 txtIDWorking.Text = "";
                 txtHoVaTen.Text = "";
                 txtMaKH.Text = "";
-                txtDateWorking.Value = DateTime.Now;                                
+                txtDateWorking.Value = DateTime.Now;
 
             }
         }
 
-        private void btnAddWorking_Click( object sender, EventArgs e )
+        private void btnUpdateWorking_Click( object sender, EventArgs e )
         {
-            MT_WORKING newWorking = new MT_WORKING();
-            newWorking = busWorking.GetByID(txtIDWorking.Text);
-            newWorking.MA_KHACH_HANG = txtMaKH.SelectedText;
+            btnAddWorking.Enabled = false;
+            btnUpdateWorking.Enabled = false;
+            btnDeleteWorking.Enabled = false;
+        }
 
-            bool isUpdate = busWorking.UpdateWorking(newWorking);  
-            
-
+        private void btnDeleteWorking_Click( object sender, EventArgs e )
+        {
+            btnAddWorking.Enabled = false;
+            btnUpdateWorking.Enabled = false;
+            btnDeleteWorking.Enabled = false;
         }
     }
 }

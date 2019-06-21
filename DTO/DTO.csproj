@@ -78,7 +78,6 @@
     <Compile Include="MT_DON_GIA.cs" />
     <Compile Include="MT_HOP_DONG.cs" />
     <Compile Include="MT_WORKING.cs" />
-    <Compile Include="MT_LICH_CT.cs" />
     <Compile Include="MT_NHAN_VIEN.cs" />
     <Compile Include="TMP_SCHEDUAL.cs" />
     <Compile Include="VW_SCHEDUAL.cs" />
