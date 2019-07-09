@@ -80,8 +80,8 @@
     <Compile Include="COMMON.cs" />
     <Compile Include="MT_CONTRACT_DAO.cs" />
     <Compile Include="MT_DON_GIA_DAO.cs" />
-    <Compile Include="TMP_SCHEDUAL_DAO.cs" />
-    <Compile Include="MT_SCHEDUAL_DAO.cs" />
+    <Compile Include="MT_WORKING_DAO.cs" />
+    <Compile Include="TMP_WORKING_DAO.cs" />
     <Compile Include="MT_USERS_DAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -35,5 +35,27 @@ namespace ManageWorkExpenses
             }
 
         }
+
+        public void SetIndeterminate( bool isIndeterminate )
+        {
+            if (progressBar.InvokeRequired)
+            {
+                progressBar.BeginInvoke(new Action(() =>
+                {
+                    if (isIndeterminate)
+                        progressBar.Style = ProgressBarStyle.Marquee;
+                    else
+                        progressBar.Style = ProgressBarStyle.Blocks;
+                }
+                ));
+            }
+            else
+            {
+                if (isIndeterminate)
+                    progressBar.Style = ProgressBarStyle.Marquee;
+                else
+                    progressBar.Style = ProgressBarStyle.Blocks;
+            }               
+        }
     }
 }

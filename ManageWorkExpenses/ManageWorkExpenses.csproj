@@ -113,8 +113,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MT_WORKING_BUS.cs" />
-    <Compile Include="MT_WORKING_DAO.cs" />
     <Compile Include="ProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>
