@@ -9,9 +9,10 @@ namespace BUS
     public class MT_WORKING_BUS
     {
         MT_WORKING_DAO dao = new MT_WORKING_DAO();
+        public static int DAY_OF_WORKING = 3;
         public MT_WORKING_BUS()
         {
-        }  
+        }
         public string SaveWorking( MT_WORKING working )
         {
             try
@@ -36,11 +37,11 @@ namespace BUS
         {
             try
             {
-                return dao.GetByID(id);    
+                return dao.GetByID(id);
             }
             catch (Exception ex)
             {
-                throw  ex;
+                throw ex;
             }
         }
 
@@ -147,6 +148,96 @@ namespace BUS
                     indexColumn++;
                 }
                 return RsArray;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<OBJ_CALC> GetWorkingEmpty( DateTime fromCalcDate, DateTime toCalcDate )
+        {
+            try
+            {
+                List<OBJ_CALC> ListAvailabe = new List<OBJ_CALC>();
+
+                List<MT_WORKING> listWorking = dao.GetWorkingEmpty(fromCalcDate, toCalcDate);
+
+                string MA_NHAN_VIEN = string.Empty;
+                List<FROM_TO> LIST_DAY_NOT_WORKING = new List<FROM_TO>();
+                FROM_TO SPACE_DAY = new FROM_TO();
+                DateTime FromDate = new DateTime();
+                DateTime ToDate = new DateTime();
+                // int SO_NGAY_CON_TRONG = 0;
+
+                bool isOtherStaff = false;  
+                
+
+                // Bắt đầu duyệt từng phần tử để tạo danh sách còn trống
+                for (int i = 0 ; i < listWorking.Count ; i++)
+                {
+                    // Nếu là phần tử đầu tiên thì set Mã Nhân Viên               
+                    if (i == 0)
+                    {
+                        MA_NHAN_VIEN = listWorking[i].MA_NHAN_VIEN;
+                        SPACE_DAY.FromDate = listWorking[i].WORKING_DAY;
+                        // LIST_DAY_NOT_WORKING.Add(listWorking[i].WORKING_DAY);
+                        // SO_NGAY_CON_TRONG++; 
+
+                        OBJ_CALC item = new OBJ_CALC();
+                        item.MA_NHAN_VIEN = listWorking[i].MA_NHAN_VIEN; ;
+                        item.LIST_DAY_NOT_WORKING = LIST_DAY_NOT_WORKING;
+                        // item.SO_NGAY_CON_TRONG = SO_NGAY_CON_TRONG;
+                        ListAvailabe.Add(item);
+
+                    }                                                                            
+                    else
+                    {
+                        // Nếu phần tử tiếp theo vẫn  là nhân viên đó thì cài đặt các thông số
+                        if (MA_NHAN_VIEN.Equals(listWorking[i].MA_NHAN_VIEN))
+                        {
+                            // Kiểm tra tính liên tục giữa 2 ngày
+                            TimeSpan diff1 = listWorking[i].WORKING_DAY.Subtract(listWorking[i - 1].WORKING_DAY);
+                            // Nếu liên tục thì chỉnh sửa ngày ToDate
+                            if (diff1.TotalDays == 1)
+                            {                                                                      
+                                ToDate = listWorking[i].WORKING_DAY;   
+                            }
+                            // Nếu không liên tục thì kiểm tra và chèn khoảng ngày làm việc đã tạo vào và thêm khoảng mới
+                            else
+                            {
+                                SPACE_DAY.ToDate = listWorking[i].WORKING_DAY;
+                                // Kiểm tra nếu nhiều hơn Số ngày đã cài đặt thì thêm vào danh sách
+                                TimeSpan diff2 = SPACE_DAY.ToDate.Subtract(SPACE_DAY.FromDate);
+                                // Nếu liên tục thì chỉnh sửa ngày ToDate
+                                if (diff1.TotalDays < DAY_OF_WORKING)
+                                {
+                                    LIST_DAY_NOT_WORKING.Add(SPACE_DAY);
+                                }
+                                else
+                                {
+                                    SPACE_DAY.FromDate = listWorking[i].WORKING_DAY;
+                                }  
+                              
+                            }
+
+
+                            
+                        }
+                        // Nếu là nhân viên khác thì cài đặt lại các thông số từ đầu
+                        else
+                        {
+                            isOtherStaff = true;
+                        }
+                        // Nếu không phải nhân viên khác thì tính toán
+                        if (!isOtherStaff)
+                        {
+                            
+                        }
+                    }
+                }
+
+                return ListAvailabe;
             }
             catch (Exception ex)
             {

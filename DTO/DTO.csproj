@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OBJ_CALC.cs" />
     <Compile Include="MT_DON_GIA.cs" />
     <Compile Include="MT_HOP_DONG.cs" />
     <Compile Include="MT_WORKING.cs" />

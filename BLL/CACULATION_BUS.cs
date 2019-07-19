@@ -30,15 +30,18 @@ namespace BUS
 
         public string[,] CALC( string[,] SchedualArray, DateTime fromCalcDate, DateTime toCalcDate )
         {
+            List<OBJ_CALC> ListCalc = new List<OBJ_CALC>();
             // Duyệt từng row
-            for (int i = 0 ; i < SchedualArray.GetLength(0) ; i++)
+            for (int i = 2 ; i < SchedualArray.GetLength(0) ; i++)
             {
-
+                OBJ_CALC calc = new OBJ_CALC();
+                List<string> listEmpty = new List<string>();
+                calc.MA_NHAN_VIEN = SchedualArray[i, 1].ToString();
                 // Tạo 1 row là 1 mảng với số cột là Length của phần tử
                 string[] row = new string[SchedualArray.GetLength(1)];
-                for (int j = 0 ; j < SchedualArray.GetLength(1) ; j++)
+                for (int j = 3 ; j < SchedualArray.GetLength(1) ; j++)
                 {
-                    bool isNull = false;
+                    // bool isNull = false;
                     string data = SchedualArray[i,j].ToString();
                     string id = data.Substring(data.IndexOf('\n') + 1);
 
@@ -46,25 +49,22 @@ namespace BUS
                     MT_WORKING oneDay = daoTMP.getByID(id);
                     if (oneDay.MA_KHACH_HANG.Equals("") || string.IsNullOrWhiteSpace(oneDay.MA_KHACH_HANG))
                     {
-                        if (!isNull)
-                        {
-                            isNull = true;
-                        }
-                    
-                    }
-                    else
-                    {
-                        if (isNull)
-                        {
-                            isNull = false;
-                        }
-
-                    }
-                }                           
+                        listEmpty.Add(id);
+                    }  
+                }
+               // calc.LIST_DAY_NOT_WORKING = listEmpty;
+                ListCalc.Add(calc);                      
              
             }
 
+
             // trả về mảng dữ liệu
+            throw new NotImplementedException();
+        }
+
+        public string[,] CALC( List<OBJ_CALC> DanhSachNgayLamViecConTrong )
+        {
+            
             throw new NotImplementedException();
         }
     }

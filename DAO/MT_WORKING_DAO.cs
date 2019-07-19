@@ -43,9 +43,7 @@ namespace DAO
                 else
                 {
                    throw new NullReferenceException("KHONG_CO_DATA");
-                }
-               
-               
+                }  
             }
         }
 
@@ -103,7 +101,17 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                cnn.Execute("INSERT INTO TMP_WORKING SELECT * FROM MT_WORKING WHERE WORKING_DAY between @from and @to;", new { from = fromCalcDate, to = toCalcDate });
+                cnn.Execute("INSERT INTO TMP_WORKING SELECT * FROM MT_WORKING WHERE  cast (WORKING_DAY as date)  between @from and @to;", new { from = fromCalcDate, to = toCalcDate });
+            }
+        }
+
+        public List<MT_WORKING> GetWorkingEmpty( DateTime fromCalcDate, DateTime toCalcDate )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_WORKING>("select * from MT_WORKING  where MA_KHACH_HANG='' and cast (WORKING_DAY as date)  between @from and @to;", new { from = fromCalcDate, to = toCalcDate });
+                
+                return output.ToList();     
             }
         }
 

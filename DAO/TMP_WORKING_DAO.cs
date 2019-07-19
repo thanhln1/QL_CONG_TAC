@@ -25,7 +25,7 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                cnn.Execute("INSERT INTO TMP_WORKING SELECT * FROM MT_WORKING WHERE WORKING_DAY between @from and @to;", new { from = fromCalcDate, to = toCalcDate });
+                cnn.Execute("INSERT INTO TMP_WORKING SELECT * FROM MT_WORKING WHERE  cast (WORKING_DAY as date) between @from and @to;", new { from = fromCalcDate, to = toCalcDate });
             }
         }
 
