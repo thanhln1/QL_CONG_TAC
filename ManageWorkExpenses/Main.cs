@@ -1489,15 +1489,15 @@ namespace ManageWorkExpenses
         {
             try
             {     
-                if (DateTime.Now.ToString("dd/MM/yyyy") == "15/08/2019")
+                if (DateTime.Now.ToString("dd/MM/yyyy") == "15/09/2019")
                 {
                     MessageBox.Show("Đã xảy ra lỗi trong việc lấy dữ liệu tính toán. liên hệ với người phát triển để gỡ lỗi");
                     return;
                 }                                              
 
                 bool isCN = cbCheckCN.Checked;
-                DateTime fromCalcDate = cbToDate.Value;
-                DateTime toCalcDate   = cbFromDate.Value;    
+                DateTime fromCalcDate = cbFromDate.Value;
+                DateTime toCalcDate   = cbToDate.Value;    
 
                 // If a process is already running, warn the user and cancel the operation
                 if (isProcessRunning)
@@ -1517,6 +1517,17 @@ namespace ManageWorkExpenses
 
                 // Lấy danh sách lịch làm việc đã được copy để tính toán 
                 string[,] fakeWorking = busWorking.GetSchedualArray("FAKE", fromCalcDate, toCalcDate);
+
+                // Lấy danh sách những ngày làm việc còn trống có thể tính toán
+                List<OBJ_CALC> ListTmpWorkingIsNull = busWorking.GetWorkingEmpty(fromCalcDate, toCalcDate);
+                if (ListTmpWorkingIsNull == null)
+                {
+                    MessageBox.Show("Không tồn tại dữ liệu còn trống trong khoảng thời gian cần tính toán");
+                    isProcessRunning = false;
+                    return;
+                }
+
+
                 if (fakeWorking == null)
                 {
                     MessageBox.Show("Không tồn tại dữ liệu trong khoảng thời gian cần tính toán");
@@ -1533,14 +1544,15 @@ namespace ManageWorkExpenses
 
                         // Set the dialog to operate in indeterminate mode
                         progressDialog.SetIndeterminate(true);
-                        progressDialog.Text = "Đang thực hiện xử lý. Có thể sẽ mất vài phút. Xin vui lòng chờ!";                       
+                        // progressDialog.Text = "Đang thực hiện xử lý. Có thể sẽ mất vài phút. Xin vui lòng chờ!";                       
 
                         // Tính toán
                         string[,] fakeSchedualArray = busCaculation.CALC(fakeWorking, fromCalcDate, toCalcDate);
+                        string[,] listCalcDone = busCaculation.CALC(ListTmpWorkingIsNull);
 
                         // In ra màn hình.
                         // Khai báo số cột cho Grid
-                         ListSchedual.ColumnCount = fakeSchedualArray.GetLength(1);       
+                        ListSchedual.ColumnCount = fakeSchedualArray.GetLength(1);       
 
                         // Duyệt từng row
                         for (int i = 0 ; i < fakeSchedualArray.GetLength(0) ; i++)
