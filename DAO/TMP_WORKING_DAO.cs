@@ -36,7 +36,17 @@ namespace DAO
                 var output = cnn.Query<MT_WORKING>("select * from MT_WORKING  where ID=@ID", new { ID = id });
                 return output.First();
             }
-        } 
-        
+        }
+
+        public DateTime getDayByID( int id1 )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING a where a.ID = ID ", new { ID = id1 }).ToList();
+                
+                return output.First().WORKING_DAY;
+
+            }
+        }
     }
 }

@@ -2,14 +2,13 @@
 using DTO;
 using System.Collections.Generic;
 using DAO;
-using System.Linq;
+using System.Linq;       
 
 namespace BUS
 {
     public class MT_WORKING_BUS
     {
-        MT_WORKING_DAO dao = new MT_WORKING_DAO();
-        public static int DAY_OF_WORKING = 3;
+        MT_WORKING_DAO dao = new MT_WORKING_DAO();         
         public MT_WORKING_BUS()
         {
         }
@@ -159,81 +158,99 @@ namespace BUS
         {
             try
             {
+                // Danh sách các đối tượng có thể sử dụng
                 List<OBJ_CALC> ListAvailabe = new List<OBJ_CALC>();
 
+                // Lấy danh sách các nhân viên có ngày làm việc là trống trong bảng TMP_WORRKING
                 List<MT_WORKING> listWorking = dao.GetWorkingEmpty(fromCalcDate, toCalcDate);
 
-                string MA_NHAN_VIEN = string.Empty;
-                List<FROM_TO> LIST_DAY_NOT_WORKING = new List<FROM_TO>();
-                FROM_TO SPACE_DAY = new FROM_TO();
-                DateTime FromDate = new DateTime();
-                DateTime ToDate = new DateTime();
-                // int SO_NGAY_CON_TRONG = 0;
-
-                bool isOtherStaff = false;  
+                // Tạo đối tượng để thêm vào danh sách 
                 
+                string MA_NHAN_VIEN = string.Empty;
+                List<List<int>> LIST_DAY_NOT_WORKING = new List<List<int>>();
+                List<int> SPACE_DAY = new List<int>();   
+                DateTime OldDate = new DateTime();   
 
                 // Bắt đầu duyệt từng phần tử để tạo danh sách còn trống
                 for (int i = 0 ; i < listWorking.Count ; i++)
                 {
+                    
                     // Nếu là phần tử đầu tiên thì set Mã Nhân Viên               
                     if (i == 0)
                     {
                         MA_NHAN_VIEN = listWorking[i].MA_NHAN_VIEN;
-                        SPACE_DAY.FromDate = listWorking[i].WORKING_DAY;
-                        // LIST_DAY_NOT_WORKING.Add(listWorking[i].WORKING_DAY);
-                        // SO_NGAY_CON_TRONG++; 
-
-                        OBJ_CALC item = new OBJ_CALC();
-                        item.MA_NHAN_VIEN = listWorking[i].MA_NHAN_VIEN; ;
-                        item.LIST_DAY_NOT_WORKING = LIST_DAY_NOT_WORKING;
-                        // item.SO_NGAY_CON_TRONG = SO_NGAY_CON_TRONG;
-                        ListAvailabe.Add(item);
-
-                    }                                                                            
+                        OldDate = listWorking[i].WORKING_DAY;
+                        // Thêm Id vào danh sách đã tạo
+                        SPACE_DAY.Add(listWorking[i].ID);
+                    }                                                                          
                     else
-                    {
+                    {                          
                         // Nếu phần tử tiếp theo vẫn  là nhân viên đó thì cài đặt các thông số
                         if (MA_NHAN_VIEN.Equals(listWorking[i].MA_NHAN_VIEN))
                         {
                             // Kiểm tra tính liên tục giữa 2 ngày
                             TimeSpan diff1 = listWorking[i].WORKING_DAY.Subtract(listWorking[i - 1].WORKING_DAY);
-                            // Nếu liên tục thì chỉnh sửa ngày ToDate
+                            // Nếu liên tục thì thêm Id vào danh sách đã tạo
                             if (diff1.TotalDays == 1)
-                            {                                                                      
-                                ToDate = listWorking[i].WORKING_DAY;   
+                            {                                
+                                SPACE_DAY.Add(listWorking[i].ID);
                             }
                             // Nếu không liên tục thì kiểm tra và chèn khoảng ngày làm việc đã tạo vào và thêm khoảng mới
                             else
-                            {
-                                SPACE_DAY.ToDate = listWorking[i].WORKING_DAY;
-                                // Kiểm tra nếu nhiều hơn Số ngày đã cài đặt thì thêm vào danh sách
-                                TimeSpan diff2 = SPACE_DAY.ToDate.Subtract(SPACE_DAY.FromDate);
-                                // Nếu liên tục thì chỉnh sửa ngày ToDate
-                                if (diff1.TotalDays < DAY_OF_WORKING)
+                            {                                  
+                                // Kiểm tra nếu nhiều hơn Số ngày đã cài đặt thì thêm vào danh sách  
+                                if (SPACE_DAY.Count >= COMMON_BUS.DAY_OF_WORKING)
                                 {
-                                    LIST_DAY_NOT_WORKING.Add(SPACE_DAY);
+                                    List<int> listID = SPACE_DAY.ToList();
+                                    LIST_DAY_NOT_WORKING.Add(listID);
                                 }
-                                else
-                                {
-                                    SPACE_DAY.FromDate = listWorking[i].WORKING_DAY;
-                                }  
-                              
+                                SPACE_DAY.Clear();
+                                SPACE_DAY.Add(listWorking[i].ID);
+                                                               
                             }
-
-
-                            
+                            OldDate = listWorking[i].WORKING_DAY;
                         }
-                        // Nếu là nhân viên khác thì cài đặt lại các thông số từ đầu
+                        // Nếu là nhân viên khác thì tạo đối tượng và thêm vào danh sách
                         else
                         {
-                            isOtherStaff = true;
-                        }
-                        // Nếu không phải nhân viên khác thì tính toán
-                        if (!isOtherStaff)
-                        {
+                            if (LIST_DAY_NOT_WORKING.Count >0)
+                            {
+                                // Tạo đối tượng mới và chèn vào danh sách  
+                                OBJ_CALC newObject = new OBJ_CALC();
+                                newObject.MA_NHAN_VIEN = MA_NHAN_VIEN;
+                                List<int> listID = SPACE_DAY.ToList();
+                                LIST_DAY_NOT_WORKING.Add(listID);
+                                newObject.LIST_DAY_NOT_WORKING = LIST_DAY_NOT_WORKING.ToList();
+                                ListAvailabe.Add(newObject);
+
+                                LIST_DAY_NOT_WORKING.Clear();
+                            }                      
                             
-                        }
+
+                            // Sau khi chèn danh sách thì tạo mới đối tượng cho nhân viên tiếp theo
+                            MA_NHAN_VIEN = listWorking[i].MA_NHAN_VIEN;
+                            SPACE_DAY.Clear();
+                            LIST_DAY_NOT_WORKING.Clear();
+                            OldDate = listWorking[i].WORKING_DAY;
+                            // Thêm Id vào danh sách đã tạo
+                            SPACE_DAY.Add(listWorking[i].ID);
+
+                        }   
+                    }
+                    if (i== (listWorking.Count-1))
+                    {                                         
+                        // Kiểm tra nếu nhiều hơn Số ngày đã cài đặt thì thêm vào danh sách  
+                        if (SPACE_DAY.Count >= COMMON_BUS.DAY_OF_WORKING)
+                        {
+                            List<int> listID = SPACE_DAY.ToList();
+                            LIST_DAY_NOT_WORKING.Add(listID);
+
+                            OBJ_CALC newObject = new OBJ_CALC();
+                            newObject.MA_NHAN_VIEN = MA_NHAN_VIEN;
+                            newObject.LIST_DAY_NOT_WORKING = LIST_DAY_NOT_WORKING.ToList();
+                            ListAvailabe.Add(newObject);
+                                                            
+                        } 
                     }
                 }
 

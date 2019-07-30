@@ -11,6 +11,8 @@ namespace BUS
     public class COMMON_BUS
     {
         COMMON daoCommon = new COMMON();
+
+        public static int DAY_OF_WORKING = 3;
         public DateTime ToDateTime(string s, string format = "dd/MM/yyyy", string cultureString = "en-GB")
         {
             try

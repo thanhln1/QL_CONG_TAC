@@ -1516,7 +1516,7 @@ namespace ManageWorkExpenses
                 List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
 
                 // Lấy danh sách lịch làm việc đã được copy để tính toán 
-                string[,] fakeWorking = busWorking.GetSchedualArray("FAKE", fromCalcDate, toCalcDate);
+               // string[,] fakeWorking = busWorking.GetSchedualArray("FAKE", fromCalcDate, toCalcDate);
 
                 // Lấy danh sách những ngày làm việc còn trống có thể tính toán
                 List<OBJ_CALC> ListTmpWorkingIsNull = busWorking.GetWorkingEmpty(fromCalcDate, toCalcDate);
@@ -1528,12 +1528,12 @@ namespace ManageWorkExpenses
                 }
 
 
-                if (fakeWorking == null)
-                {
-                    MessageBox.Show("Không tồn tại dữ liệu trong khoảng thời gian cần tính toán");
-                    isProcessRunning = false;
-                    return;
-                }
+                //if (fakeWorking == null)
+                //{
+                //    MessageBox.Show("Không tồn tại dữ liệu trong khoảng thời gian cần tính toán");
+                //    isProcessRunning = false;
+                //    return;
+                //}
 
                 // Initialize the thread that will handle the background process
                 Thread backgroundThread = new Thread(
@@ -1543,39 +1543,55 @@ namespace ManageWorkExpenses
                         isProcessRunning = true;
 
                         // Set the dialog to operate in indeterminate mode
-                        progressDialog.SetIndeterminate(true);
-                        // progressDialog.Text = "Đang thực hiện xử lý. Có thể sẽ mất vài phút. Xin vui lòng chờ!";                       
+                        progressDialog.SetIndeterminate(true);                      
 
-                        // Tính toán
-                        string[,] fakeSchedualArray = busCaculation.CALC(fakeWorking, fromCalcDate, toCalcDate);
-                        string[,] listCalcDone = busCaculation.CALC(ListTmpWorkingIsNull);
+                        // Lấy danh sách cá ngày đã được tính toán trùng và khả dụng                                                                               
+                        List<List<string>> fakeSchedualArray = busCaculation.CALC(ListTmpWorkingIsNull);
 
-                        // In ra màn hình.
-                        // Khai báo số cột cho Grid
-                        ListSchedual.ColumnCount = fakeSchedualArray.GetLength(1);       
-
-                        // Duyệt từng row
-                        for (int i = 0 ; i < fakeSchedualArray.GetLength(0) ; i++)
+                        if (fakeSchedualArray.Count <= 0)
                         {
-                            // Tạo 1 row là 1 mảng với số cột là Length của phần tử
-                            string[] row = new string[fakeSchedualArray.GetLength(1)];
-                            for (int j = 0 ; j < fakeSchedualArray.GetLength(1) ; j++)
+                            MessageBox.Show("Không có dữ liệu khả dụng để tính toán");
+                            // Close the dialog if it hasn't been already
+                            if (progressDialog.InvokeRequired)
+                                progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+
+                            // Reset the flag that indicates if a process is currently running
+                            isProcessRunning = false;
+                        }
+                        else
+                        {
+                            // Set các Mã công ty vao danh sách đã lấy được và lấy ra để in ra màn hình
+                            string[,] tmpWorkingDone = busCaculation.SetCompany(fakeSchedualArray, listCompany);
+
+                            // In ra màn hình.
+                            // Khai báo số cột cho Grid
+                            ListSchedual.ColumnCount = tmpWorkingDone.GetLength(1);
+
+                            // Duyệt từng row
+                            for (int i = 0 ; i < tmpWorkingDone.GetLength(0) ; i++)
                             {
-                                // Gán giá trị cho row
-                                row[j] = fakeSchedualArray[i, j].ToString();
+                                // Tạo 1 row là 1 mảng với số cột là Length của phần tử
+                                string[] row = new string[tmpWorkingDone.GetLength(1)];
+                                for (int j = 0 ; j < tmpWorkingDone.GetLength(1) ; j++)
+                                {
+                                    // Gán giá trị cho row
+                                    row[j] = tmpWorkingDone[i, j].ToString();
+                                }
+                                // thêm row vào datagrid
+                                ListSchedual.Rows.Add(row);
                             }
-                            // thêm row vào datagrid
-                            ListSchedual.Rows.Add(row); 
-                        }                                                       
 
-                        // Show a dialog box that confirms the process has completed
-                         MessageBox.Show("Hoàn Thành");  
-                        // Close the dialog if it hasn't been already
-                        if (progressDialog.InvokeRequired)
-                            progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+                            // Show a dialog box that confirms the process has completed
+                            MessageBox.Show("Hoàn Thành");
+                            // Close the dialog if it hasn't been already
+                            if (progressDialog.InvokeRequired)
+                                progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
 
-                        // Reset the flag that indicates if a process is currently running
-                        isProcessRunning = false;
+                            // Reset the flag that indicates if a process is currently running
+                            isProcessRunning = false;
+                        }
+
+                        
                     }
                 ));
 
