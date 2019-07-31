@@ -41,14 +41,14 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(ConnectionString("Default")))
             {
-                cnn.Execute("TRUNCATE TABLE HIS_SCHEDUAL;");  
+                cnn.Execute("TRUNCATE TABLE HIS_WORKING;");  
                 cnn.Execute("TRUNCATE TABLE MT_CONG_TY;"); 
                 cnn.Execute("TRUNCATE TABLE MT_DINH_MUC_CT;"); 
                 cnn.Execute("TRUNCATE TABLE MT_HOP_DONG;"); 
                 cnn.Execute("TRUNCATE TABLE MT_LICH_CT;"); 
                 cnn.Execute("TRUNCATE TABLE MT_NHAN_VIEN;"); 
-                cnn.Execute("TRUNCATE TABLE MT_SCHEDUAL;"); 
-                cnn.Execute("TRUNCATE TABLE TMP_SCHEDUAL;"); 
+                cnn.Execute("TRUNCATE TABLE MT_WORKING;"); 
+                cnn.Execute("TRUNCATE TABLE TMP_WORKING;"); 
                 return true;
             }
         }

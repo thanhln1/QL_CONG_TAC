@@ -2,7 +2,8 @@
 using DTO;
 using System.Collections.Generic;
 using DAO;
-using System.Linq;       
+using System.Linq;
+using System.Diagnostics;
 
 namespace BUS
 {
@@ -68,25 +69,22 @@ namespace BUS
                 if (RealOrFake.Equals("REAL"))
                 {
                     listWorking = dao.GetListRealSchedual(fromDate, toDate);
+                    Columns = dao.getColumnFromDateOfREAL(fromDate, toDate) + 4;
                 }
                 else if (RealOrFake.Equals("FAKE"))
                 {
                     listWorking = dao.GetListFakeSchedual(fromDate, toDate);
+                    Columns = dao.getColumnFromDateOfFake(fromDate, toDate) + 4;
                 }
-                else
+                else if (RealOrFake.Equals("TMP"))
                 {
-
-                }
+                    listWorking = dao.GetListTMPSchedual();
+                    Columns = dao.getColumnFromDateofTMP() + 4;
+                }  
                 if (listWorking.Count == 0)
                 {
                     return null;
-                }
-
-
-                //TimeSpan interval = toDate.Subtract(fromDate);
-                //Columns = interval.Days + 3;
-
-                Columns = dao.getColumnFromDate(fromDate, toDate) + 4;
+                }       
 
                 Rows = ( from ld in listWorking select new { id = ld.MA_NHAN_VIEN } ).ToList().Distinct().Count() + 2;
 
@@ -149,7 +147,13 @@ namespace BUS
                 return RsArray;
             }
             catch (Exception ex)
-            {
+            {                     
+                // Get stack trace for the exception with source file information
+                var st = new StackTrace(ex, true);
+                // Get the top stack frame
+                var frame = st.GetFrame(0);
+                // Get the line number from the stack frame
+                var line = frame.GetFileLineNumber();
                 throw ex;
             }
         }

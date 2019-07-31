@@ -519,32 +519,13 @@ namespace ManageWorkExpenses
                 if (e.RowIndex < 2 || e.ColumnIndex < 0)
                     return;
 
-                //// Bỏ border bên phải để merger.
-                //e.AdvancedBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None;
-
                 //Bôi màu 3 cột đầu tiên.  (Chú ý thêm cột thì phải thay đổi số cho phù hợp)
                 if (e.ColumnIndex == 0 || e.ColumnIndex == 1 || e.ColumnIndex == 2)
                 {
                     e.CellStyle.BackColor = Color.Beige;
                 }
-                // Bôi màu cột ngày chủ nhật  (Bằng 9 vì 1 tuần có 7 ngày cộng với 3 cột được thêm là có 10 cột, đánh chỉ số từ 0 nên cột 10 có chỉ số là  9)
-                if (( e.ColumnIndex ) % 9 == 0 && e.ColumnIndex != 0)
-                {
-                    e.CellStyle.BackColor = Color.Bisque;
-                }
 
-
-                //// Nếu các ô có cùng giá trị thì merger với nhau
-                //if (IsTheSameCellValue(e.ColumnIndex, e.RowIndex))
-                //{
-                //    e.AdvancedBorderStyle.Left = DataGridViewAdvancedCellBorderStyle.None;               
-                //}
-                //else
-                //{
-                //    e.AdvancedBorderStyle.Left = ListSchedual.AdvancedCellBorderStyle.Left;
-                //}
             }
-
         }
         /// <summary>
         /// Xóa giá trị 1 ô để merge
@@ -553,6 +534,20 @@ namespace ManageWorkExpenses
         /// <param name="e"></param>
         private void ListSchedual_CellFormatting( object sender, DataGridViewCellFormattingEventArgs e )
         {
+            string value = e.Value.ToString();
+            if (value.Contains("@"))
+            {
+                e.CellStyle.BackColor = Color.Red;
+            }
+            // bôi màu cột là ngày chủ nhật
+            if (e.RowIndex == 0 && e.ColumnIndex > 2)
+            {
+                DateTime isCN = DateTime.ParseExact(value, "dd/MM/yyyy", null);
+                if (isCN.DayOfWeek == DayOfWeek.Sunday)
+                {
+                   ListSchedual.Columns[e.ColumnIndex].DefaultCellStyle.BackColor = Color.Beige;    
+                }
+            }
 
             //if (e.RowIndex == 0)
             //    return;
@@ -1464,32 +1459,27 @@ namespace ManageWorkExpenses
 
         private void btnSearchSchedualFake_Click( object sender, EventArgs e )
         {
-            //try
-            //{
-                
-            //    int month = txtToDateSearch.Value.Month;
-            //    int year = txtFromDateSearch.Value.Year;
-            //    List<VW_SCHEDUAL> listRealSchedual = busSchedual.LoadListSchedual(month, year, "FAKE");
-            //    if (listRealSchedual == null)
-            //    {
-            //        MessageBox.Show("Không có dữ liệu!");
-            //    }
-            //    ListSchedual.DataSource = listRealSchedual;
-            //    panelEditFakeData.Visible = true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
-            //    panelEditFakeData.Visible = false;
-            //}
+            try
+            {
+                DateTime fromDate = txtFromDateSearch.Value.Date;
+                DateTime toDate = txtToDateSearch.Value.Date;
+
+                LoadFakeSchedual(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
+            }
+            panelEditFakeData.Visible = true;
 
         }
 
         private void btnCalc_Click( object sender, EventArgs e )
         {
             try
-            {     
-                if (DateTime.Now.ToString("dd/MM/yyyy") == "15/09/2019")
+            {
+                DateTime expirationDate = new DateTime(2019, 10, 30);
+                if (DateTime.Compare(DateTime.Now, expirationDate) > 0)
                 {
                     MessageBox.Show("Đã xảy ra lỗi trong việc lấy dữ liệu tính toán. liên hệ với người phát triển để gỡ lỗi");
                     return;
@@ -1511,9 +1501,7 @@ namespace ManageWorkExpenses
 
                 // Copy lịch làm việc sang bảng tạm để tính toán
                 busTMP.CopySchedual(fromCalcDate, toCalcDate);
-
-                // Lấy danh sách các công ty chưa hết kinh phí
-                List<MT_HOP_DONG> listCompany = busCaculation.getListCompanyNotFinished();
+                busTMP.BackupHD();                 
 
                 // Lấy danh sách lịch làm việc đã được copy để tính toán 
                // string[,] fakeWorking = busWorking.GetSchedualArray("FAKE", fromCalcDate, toCalcDate);
@@ -1560,26 +1548,35 @@ namespace ManageWorkExpenses
                         }
                         else
                         {
+
                             // Set các Mã công ty vao danh sách đã lấy được và lấy ra để in ra màn hình
-                            string[,] tmpWorkingDone = busCaculation.SetCompany(fakeSchedualArray, listCompany);
-
-                            // In ra màn hình.
-                            // Khai báo số cột cho Grid
-                            ListSchedual.ColumnCount = tmpWorkingDone.GetLength(1);
-
-                            // Duyệt từng row
-                            for (int i = 0 ; i < tmpWorkingDone.GetLength(0) ; i++)
+                            try
                             {
-                                // Tạo 1 row là 1 mảng với số cột là Length của phần tử
-                                string[] row = new string[tmpWorkingDone.GetLength(1)];
-                                for (int j = 0 ; j < tmpWorkingDone.GetLength(1) ; j++)
+                                string[,] tmpWorkingDone = busCaculation.SetCompany(fakeSchedualArray);
+
+                                // In ra màn hình.
+                                // Khai báo số cột cho Grid
+                                ListSchedual.ColumnCount = tmpWorkingDone.GetLength(1);
+
+                                // Duyệt từng row
+                                for (int i = 0 ; i < tmpWorkingDone.GetLength(0) ; i++)
                                 {
-                                    // Gán giá trị cho row
-                                    row[j] = tmpWorkingDone[i, j].ToString();
+                                    // Tạo 1 row là 1 mảng với số cột là Length của phần tử
+                                    string[] row = new string[tmpWorkingDone.GetLength(1)];
+                                    for (int j = 0 ; j < tmpWorkingDone.GetLength(1) ; j++)
+                                    {
+                                        // Gán giá trị cho row
+                                        row[j] = tmpWorkingDone[i, j].ToString();
+                                    }
+                                    // thêm row vào datagrid
+                                    ListSchedual.Rows.Add(row);
                                 }
-                                // thêm row vào datagrid
-                                ListSchedual.Rows.Add(row);
                             }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " /n . Trong khi cài đặt công ty");
+                            }                          
+
 
                             // Show a dialog box that confirms the process has completed
                             MessageBox.Show("Hoàn Thành");
@@ -1933,7 +1930,36 @@ namespace ManageWorkExpenses
                 // thêm row vào datagrid
                 ListSchedual.Rows.Add(row);
             }                                      
-        }   
+        }
+
+        private void LoadFakeSchedual( DateTime fromDate, DateTime toDate )
+        {
+            ListSchedual.Rows.Clear();
+            ListSchedual.AutoGenerateColumns = true;
+            string[,] fakeSchedualArray = busWorking.GetSchedualArray("TMP", fromDate, toDate);
+
+            if (fakeSchedualArray == null)
+            {
+                MessageBox.Show("Không tồn tại dữ liệu");
+                return;
+            }
+            // Khai báo số cột cho Grid
+            ListSchedual.ColumnCount = fakeSchedualArray.GetLength(1);
+
+            // Duyệt từng row
+            for (int i = 0 ; i < fakeSchedualArray.GetLength(0) ; i++)
+            {
+                // Tạo 1 row là 1 mảng với số cột là Length của phần tử
+                string[] row = new string[fakeSchedualArray.GetLength(1)];
+                for (int j = 0 ; j < fakeSchedualArray.GetLength(1) ; j++)
+                {
+                    // Gán giá trị cho row
+                    row[j] = fakeSchedualArray[i, j].ToString();
+                }
+                // thêm row vào datagrid
+                ListSchedual.Rows.Add(row);
+            }
+        }
 
         private void btnAddWorking_Click( object sender, EventArgs e )
         {
@@ -1952,8 +1978,12 @@ namespace ManageWorkExpenses
             btnUpdateWorking.Enabled = true;
             int numrow = e.RowIndex;
             int numCol = e.ColumnIndex;
-            if (numCol < 3)
+            if (numCol < 3 || numrow <2)
             {
+                txtIDWorking.Text = "";
+                txtHoVaTen.Text = "";
+                txtMaKH.Text = "";
+                txtDateWorking.Value = DateTime.Now;
                 return;
             }
 
@@ -1968,12 +1998,12 @@ namespace ManageWorkExpenses
                 try
                 {
                     if (!string.IsNullOrWhiteSpace(oneDay.MA_KHACH_HANG))
+                    {                           
+                        txtMaKH.SelectedIndex = txtMaKH.Items.IndexOf(oneDay.MA_KHACH_HANG.ToString());                       
+                    }
+                    else
                     {
-                        txtMaKH.SelectedIndex = txtMaKH.Items.IndexOf(oneDay.MA_KHACH_HANG.ToString());
-                        if (txtMaKH.SelectedIndex == -1)
-                        {
-                            MessageBox.Show("Mã khách hàng không tồn tại");
-                        }
+                        txtMaKH.SelectedIndex = -1;
                     }
                 }
                 catch

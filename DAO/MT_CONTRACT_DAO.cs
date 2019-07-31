@@ -39,7 +39,7 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                var output = cnn.Query<MT_HOP_DONG>("select * from MT_HOP_DONG where CHI_PHI_THUC_DA_CHI < TONG_CHI_PHI_MUC_TOI_DA", new DynamicParameters());
+                var output = cnn.Query<MT_HOP_DONG>("select * from TMP_HOP_DONG where CHI_PHI_THUC_DA_CHI < TONG_CHI_PHI_MUC_TOI_DA", new DynamicParameters());
                 return output.ToList();
             }
         }

@@ -29,6 +29,14 @@ namespace DAO
             }
         }
 
+        public void BackUpHD()
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                cnn.Execute("INSERT INTO TMP_HOP_DONG SELECT * FROM MT_HOP_DONG;");
+            }
+        }
+
         public MT_WORKING getByID( string id )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
@@ -42,10 +50,50 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING a where a.ID = ID ", new { ID = id1 }).ToList();
+                var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING a  where a.ID = @ID ", new { ID = id1 }).ToList();
                 
                 return output.First().WORKING_DAY;
 
+            }
+        }
+
+        public void UpdateChiPhi( int ID, double ChiPhiPhatSinh )
+        {
+            try
+            {
+                using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+                {
+                    StringBuilder sql = new StringBuilder();
+                    sql.Append("UPDATE TMP_HOP_DONG set ");
+                    sql.Append("CHI_PHI_THUC_DA_CHI=CHI_PHI_THUC_DA_CHI + @CHI_PHI_PHAT_SINH ");  
+                    sql.Append(" WHERE ID = @ID; ");
+
+                    cnn.Execute(sql.ToString(), new { ID = ID , CHI_PHI_PHAT_SINH = ChiPhiPhatSinh });  
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UpdateCompanyToID( int ID, string mA_KHACH_HANG )
+        {
+            try
+            {
+                using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+                {
+                    StringBuilder sql = new StringBuilder();
+                    sql.Append("UPDATE TMP_WORKING set ");
+                    sql.Append("MA_KHACH_HANG= @MA_KHACH_HANG ");
+                    sql.Append(" WHERE ID = @ID; ");
+
+                    cnn.Execute(sql.ToString(), new { ID = ID, MA_KHACH_HANG = mA_KHACH_HANG });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

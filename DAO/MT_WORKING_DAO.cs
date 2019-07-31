@@ -68,6 +68,33 @@ namespace DAO
             }
         }
 
+        public int getColumnFromDateOfREAL( DateTime fromDate, DateTime toDate )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                int output = cnn.ExecuteScalar<int>("select  DATEDIFF(day, min(Working_day), max(Working_day) ) from MT_WORKING where cast (WORKING_DAY as date) between @FROM and @TO ", new { FROM = fromDate, TO = toDate });
+                return output;
+            }
+        }
+
+        public int getColumnFromDateofTMP()
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                int output = cnn.ExecuteScalar<int>("select  DATEDIFF(day, min(Working_day), max(Working_day) ) from TMP_WORKING");
+                return output;
+            }
+        }
+
+        public List<MT_WORKING> GetListTMPSchedual()
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING ");
+                return output.ToList();
+            }
+        }
+
         public string SaveWorking( MT_WORKING working )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
@@ -113,94 +140,7 @@ namespace DAO
                 
                 return output.ToList();     
             }
-        }
-
-        //public List<STAFF> GetListStaff( string maKhachHang, int month, int year )
-        //{
-        //    List<STAFF> listStaffSelect = new List<STAFF>();
-        //    List<VW_SCHEDUAL> listStaff = new List<VW_SCHEDUAL>();
-        //    listStaff = GetSchedual(month, year);
-
-        //    foreach (VW_SCHEDUAL staff in listStaff)
-        //    {
-        //        List<int> list_ngay_cong_tac = new List<int>();
-        //        STAFF staff_select = new STAFF();
-        //        int count_ngay = 0;
-
-        //        if (staff.TUAN1_THU2 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(0); }
-        //        if (staff.TUAN1_THU3 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(1); }
-        //        if (staff.TUAN1_THU4 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(2); }
-        //        if (staff.TUAN1_THU5 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(3); }
-        //        if (staff.TUAN1_THU6 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(4); }
-        //        if (staff.TUAN1_THU7 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(5); }
-        //        if (staff.TUAN1_CN == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(6); }
-        //        if (staff.TUAN2_THU2 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(7); }
-        //        if (staff.TUAN2_THU3 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(8); }
-        //        if (staff.TUAN2_THU4 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(9); }
-        //        if (staff.TUAN2_THU5 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(10); }
-        //        if (staff.TUAN2_THU6 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(11); }
-        //        if (staff.TUAN2_THU7 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(12); }
-        //        if (staff.TUAN2_CN == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(13); }
-        //        if (staff.TUAN3_THU2 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(14); }
-        //        if (staff.TUAN3_THU3 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(15); }
-        //        if (staff.TUAN3_THU4 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(16); }
-        //        if (staff.TUAN3_THU5 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(17); }
-        //        if (staff.TUAN3_THU6 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(18); }
-        //        if (staff.TUAN3_THU7 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(19); }
-        //        if (staff.TUAN3_CN == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(20); }
-        //        if (staff.TUAN4_THU2 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(21); }
-        //        if (staff.TUAN4_THU3 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(22); }
-        //        if (staff.TUAN4_THU4 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(23); }
-        //        if (staff.TUAN4_THU5 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(24); }
-        //        if (staff.TUAN4_THU6 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(25); }
-        //        if (staff.TUAN4_THU7 == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(26); }
-        //        if (staff.TUAN4_CN == maKhachHang) { count_ngay++; list_ngay_cong_tac.Add(27); }
-
-        //        if (count_ngay > 0)
-        //        {
-        //            if (
-        //                 staff.TUAN1_CN == maKhachHang
-        //               || staff.TUAN1_THU2 == maKhachHang
-        //               || staff.TUAN1_THU3 == maKhachHang
-        //               || staff.TUAN1_THU4 == maKhachHang
-        //               || staff.TUAN1_THU5 == maKhachHang
-        //               || staff.TUAN1_THU6 == maKhachHang
-        //               || staff.TUAN1_THU7 == maKhachHang
-        //               || staff.TUAN1_CN == maKhachHang
-        //               || staff.TUAN2_THU2 == maKhachHang
-        //               || staff.TUAN2_THU3 == maKhachHang
-        //               || staff.TUAN2_THU4 == maKhachHang
-        //               || staff.TUAN2_THU5 == maKhachHang
-        //               || staff.TUAN2_THU6 == maKhachHang
-        //               || staff.TUAN2_THU7 == maKhachHang
-        //               || staff.TUAN2_CN == maKhachHang
-        //               || staff.TUAN3_THU2 == maKhachHang
-        //               || staff.TUAN3_THU3 == maKhachHang
-        //               || staff.TUAN3_THU4 == maKhachHang
-        //               || staff.TUAN3_THU5 == maKhachHang
-        //               || staff.TUAN3_THU6 == maKhachHang
-        //               || staff.TUAN3_THU7 == maKhachHang
-        //               || staff.TUAN3_CN == maKhachHang
-        //               || staff.TUAN4_THU2 == maKhachHang
-        //               || staff.TUAN4_THU3 == maKhachHang
-        //               || staff.TUAN4_THU4 == maKhachHang
-        //               || staff.TUAN4_THU5 == maKhachHang
-        //               || staff.TUAN4_THU6 == maKhachHang
-        //               || staff.TUAN4_THU7 == maKhachHang
-        //               || staff.TUAN4_CN == maKhachHang)
-        //            {
-        //                staff_select.HO_TEN = staff.HO_TEN;
-        //                //staff_select.MA_NHAN_VIEN = staff.MA_NHAN_VIEN;
-        //                staff_select.SO_NGAY_CONG_TAC = count_ngay;
-        //                staff_select.NGAY_CONG_TAC = list_ngay_cong_tac;
-        //                listStaffSelect.Add(staff_select);
-        //            }
-        //        }
-        //    }
-        //    return listStaffSelect;
-        //}
-
-
+        }                                      
 
         public List<MT_WORKING> GetListRealSchedual( DateTime fromDate, DateTime toDate )
         {
@@ -211,11 +151,11 @@ namespace DAO
             }
         }
 
-        public int getColumnFromDate( DateTime fromDate, DateTime toDate )
+        public int getColumnFromDateOfFake( DateTime fromDate, DateTime toDate )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                int output = cnn.ExecuteScalar<int>("select  DATEDIFF(day, min(Working_day), max(Working_day) ) from MT_WORKING where cast (WORKING_DAY as date) between @FROM and @TO ", new { FROM = fromDate, TO = toDate });
+                int output = cnn.ExecuteScalar<int>("select  DATEDIFF(day, min(Working_day), max(Working_day) ) from HIS_WORKING where cast (WORKING_DAY as date) between @FROM and @TO ", new { FROM = fromDate, TO = toDate });
                 return output;
             }
         }
@@ -224,7 +164,7 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING where cast (WORKING_DAY as date) between @FROM and @TO order by MA_NHAN_VIEN ", new { FROM = fromDate, TO = toDate });
+                var output = cnn.Query<MT_WORKING>("select * from HIS_WORKING where cast (WORKING_DAY as date) between @FROM and @TO order by MA_NHAN_VIEN ", new { FROM = fromDate, TO = toDate });
                 return output.ToList();
             }
         }

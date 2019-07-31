@@ -26,16 +26,15 @@ namespace BUS
         }
 
         // lấy đơn giá thanh toán công tác phí theo địa điểm
-        public int GetDonGia( string diadiem )
+        public double GetDonGia( string diadiem )
         {
             List<MT_DON_GIA> listDonGia = new List<MT_DON_GIA>();
             listDonGia = getDongia(diadiem);
             if (listDonGia == null)
             {
                 return 0;
-            }
-            int gia = listDonGia[0].DON_GIA;
-            return gia;
+            }            
+            return listDonGia[0].DON_GIA;
         }
 
         public List<MT_DON_GIA> getAllDongia()

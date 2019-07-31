@@ -6,13 +6,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using DTO;
 using DAO;
+using System.Text.RegularExpressions;
 
 namespace BUS
 {
     public class CACULATION_BUS
-    {                                                     
+    {
         MT_CONTRACT_DAO daoContract = new MT_CONTRACT_DAO();
-        TMP_WORKING_DAO daoTMP = new TMP_WORKING_DAO(); 
+        TMP_WORKING_DAO daoTMP = new TMP_WORKING_DAO();
+        MT_DON_GIA_BUS busDonGia = new MT_DON_GIA_BUS();
+        MT_WORKING_BUS busWorking = new MT_WORKING_BUS();
 
         public List<MT_HOP_DONG> getListCompanyNotFinished()
         {
@@ -62,13 +65,13 @@ namespace BUS
         //    throw new NotImplementedException();
         //}
 
-        public List<List<string>> CALC( List<OBJ_CALC> DanhSachNgayLamViecConTrong)
+        public List<List<string>> CALC( List<OBJ_CALC> DanhSachNgayLamViecConTrong )
         {
             List<List<string>> ListDayMatch = new List<List<string>>();
             try
             {
                 List<OBJ_CALC> ListCalc = new List<OBJ_CALC>(DanhSachNgayLamViecConTrong);
-               
+
                 // Chạy lần lượt danh sách
                 foreach (var item in DanhSachNgayLamViecConTrong)
                 {   // Xóa phần tử đầu tiên
@@ -95,39 +98,98 @@ namespace BUS
 
                     }
                 }
-               
+
             }
             catch (Exception ex)
-            {  
+            {
                 throw ex;
             }
             return ListDayMatch;
 
         }
 
-        public List<string> ComparesWorkDay( List<int> listInput1 , List<int> listInput2 )
+        public List<string> ComparesWorkDay( List<int> listInput1, List<int> listInput2 )
         {
             List<string> dayMatch = new List<string>();
             foreach (var Id1 in listInput1)
             {
+                string day = Id1.ToString();
                 DateTime day1 = daoTMP.getDayByID(Id1);
                 foreach (var Id2 in listInput2)
                 {
                     DateTime day2 = daoTMP.getDayByID(Id2);
-                    if (DateTime.Compare(day1, day2)==0)
+                    if (DateTime.Compare(day1, day2) == 0)
                     {
-                        dayMatch.Add(Id1+";"+Id2);
+                        day += ";" + Id2;
                     }
                 }
+                if (day.Contains(";"))
+                {
+                    dayMatch.Add(day);
+                }
+                else
+                {
+                    day = string.Empty;
+                }
+
             }
             return dayMatch;
         }
-
-        public string[,] SetCompany( List<List<string>> fakeSchedualArray, List<MT_HOP_DONG> listCompany )
+        /// <summary>
+        /// Set Company and return result
+        /// </summary>
+        /// <param name="fakeSchedualArray"></param>
+        /// <param name="listCompany"></param>
+        /// <returns></returns>
+        public string[,] SetCompany( List<List<string>> fakeSchedualArray )
         {
+            try
+            {
+                foreach (var item in fakeSchedualArray)
+                {
+                    // Số hàng cần set giống nhau
+                    int a = Regex.Split(item.First(), ";").Length;
+                    // Tính số ngày trống
+                    int numDayNull = a * item.Count;                     
 
+                    // Lấy danh sách các công ty chưa hết kinh phí từ bảng tạm
+                    List<MT_HOP_DONG> listCompany = getListCompanyNotFinished();                    
+                    foreach (var company in listCompany)
+                    {
+                        // Chạy danh sách các công ty có thể sử dụng 
+                        double dongia = busDonGia.GetDonGia(company.TINH);
+                        double giaTriCan = dongia * numDayNull;
+                        double giaTriKhaDung = company.GIA_TRI_HOP_DONG - company.TONG_CHI_PHI_MUC_TOI_DA;
 
-            throw new NotImplementedException();
+                        // Nếu giá trị khả dụng lớn hơn giá trị cần.
+                        if (giaTriKhaDung >= giaTriCan)
+                        {
+                            foreach (var groupID in item)
+                            {
+                                // Cắt chuỗi lấy ra danh sách các ID để Update công ty                                                
+                                string[] arrID = Regex.Split(groupID, ";");   
+                            
+                                // Set công ty vào các chỗ trống trong bảng tạm
+                                foreach (var id in arrID)
+                                {
+                                    daoTMP.UpdateCompanyToID(Int32.Parse(id), company.MA_KHACH_HANG);
+                                }                                  
+                            }
+                            // Update bảng chi phí
+                            daoTMP.UpdateChiPhi(company.ID, giaTriCan);
+                            break;
+                        } 
+                    }
+                }
+                // Lấy danh sách sau khi đã set ra màn hình
+                string[,] tmpSchedualArray = busWorking.GetSchedualArray("TMP", DateTime.Now, DateTime.Now);
+                return tmpSchedualArray;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

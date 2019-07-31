@@ -31,5 +31,16 @@ namespace BUS
             }
         }
 
+        public void BackupHD()
+        {
+            try
+            {
+                dao.BackUpHD();  
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
