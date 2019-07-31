@@ -90,7 +90,7 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING ");
+                var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING order by ID");
                 return output.ToList();
             }
         }
