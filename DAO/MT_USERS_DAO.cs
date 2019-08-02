@@ -113,5 +113,22 @@ namespace DAO
                 throw ex;
             }  
         }
+
+        public MT_NHAN_VIEN GetUserByID( int id )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_NHAN_VIEN>("select * from MT_NHAN_VIEN a where a.ID = @ID ", new { ID = id });
+                if (output.Count() > 0)
+                {
+                    return output.First();
+                }
+                else
+                {
+                    return null;
+                }   
+
+            }
+        }
     }
 }

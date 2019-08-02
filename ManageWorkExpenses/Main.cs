@@ -534,11 +534,8 @@ namespace ManageWorkExpenses
         /// <param name="e"></param>
         private void ListSchedual_CellFormatting( object sender, DataGridViewCellFormattingEventArgs e )
         {
-            string value = e.Value.ToString();
-            if (value.Contains("@"))
-            {
-                e.CellStyle.BackColor = Color.Red;
-            }
+            string value = e.Value.ToString();           
+            
             // bôi màu cột là ngày chủ nhật
             if (e.RowIndex == 0 && e.ColumnIndex > 2)
             {
@@ -548,7 +545,26 @@ namespace ManageWorkExpenses
                    ListSchedual.Columns[e.ColumnIndex].DefaultCellStyle.BackColor = Color.Beige;    
                 }
             }
-
+            if (e.RowIndex > 1 && e.ColumnIndex > 2)
+            {
+                string[] arrayValue = Regex.Split(value, "\n");
+                int index = Int32.Parse(arrayValue[2]);
+                if (value.Contains("FAKE"))
+                {
+                    e.CellStyle.BackColor = Color.Red;
+                }
+                else
+                {
+                    if (index== 99999999)
+                    {
+                        e.CellStyle.BackColor = Color.FromName("White");
+                    }
+                    else
+                    {
+                        e.CellStyle.BackColor = Color.FromName(ConfigurationManager.AppSettings["COLOR" + index + ""]);
+                    }   
+                }
+            }
             //if (e.RowIndex == 0)
             //    return;
             //// Nếu ô 2 ô có cùng giá trị thì xóa 1 ô đi để merge
@@ -561,11 +577,12 @@ namespace ManageWorkExpenses
 
         private void btnImportSchedual_Click( object sender, EventArgs e )
         {
-            panelEditFakeData.Visible = true;
+            panelEditFakeData.Visible = false;
             var fileContent = string.Empty;
             var filePath = string.Empty;
             DateTime fromDate = DateTime.Now;
             DateTime toDate = DateTime.Now;
+            List<MT_HOP_DONG> listHD = busContract.GetListContract();
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 string messeger = string.Empty;
@@ -643,20 +660,35 @@ namespace ManageWorkExpenses
                                         working.HO_VA_TEN       = Regex.Replace(xlRange.Cells[i, 2].Text.ToString(), @"\r\n?|\n", "");
                                         working.MA_NHAN_VIEN    = Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
                                         working.PHONG_BAN       = Regex.Replace(xlRange.Cells[i, 4].Text.ToString(), @"\r\n?|\n", "");
-                                        string maKhachHang      = Regex.Replace(xlRange.Cells[i, j].Text.ToString(), @"\r\n?|\n", "");
-                                        //if (string.IsNullOrEmpty(maKhachHang) || string.IsNullOrWhiteSpace(maKhachHang))
-                                        //{
-                                        //    continue;
-                                        //}
-                                        //else
-                                        //{
-                                            working.MA_KHACH_HANG = maKhachHang;
-                                        //}
+
+                                        string maKhachHang      = Regex.Replace(xlRange.Cells[i, j].Text.ToString(), @"\r\n?|\n", "");                                         
+                                        working.MA_KHACH_HANG = maKhachHang; 
 
                                         working.WORKING_DAY = COMMON_BUS.ConverToDateTime(xlRange.Cells[4, j].Value2);
                                         working.IMPORT_DATE = DateTime.Now;
+                                        if (!string.IsNullOrWhiteSpace(maKhachHang))
+                                        {
+                                            try
+                                            {
+                                                MT_HOP_DONG contract = listHD.Where(s => s.MA_KHACH_HANG == maKhachHang).ToList().First();
+                                                working.MARK = contract.ID.ToString();
+                                            }
+                                            catch 
+                                            {
+                                                working.MARK = "99999999";
+                                            }
+                                            
+                                        }
+                                        else
+                                        {
+                                            working.MARK = "99999999";
+                                        }
+                                       
                                         try
                                         {
+                                            // save transaction (sẽ làm sau)
+
+                                            // Insert lịch làm việc
                                             string result = busWorking.SaveWorking(working);
                                             if (result.Equals("NOT_OK"))
                                             {
@@ -1447,7 +1479,8 @@ namespace ManageWorkExpenses
                 DateTime fromDate = txtFromDateSearch.Value.Date;
                 DateTime toDate   = txtToDateSearch.Value.Date;                                               
 
-                LoadRealSchedual(fromDate, toDate);                  
+                LoadRealSchedual(fromDate, toDate);
+                panelEditFakeData.Visible = false;
             }             
             catch (Exception ex)
             {
@@ -1465,6 +1498,7 @@ namespace ManageWorkExpenses
                 DateTime toDate = txtToDateSearch.Value.Date;
 
                 LoadFakeSchedual(fromDate, toDate);
+                panelEditFakeData.Visible = true;
             }
             catch (Exception ex)
             {
@@ -1475,7 +1509,7 @@ namespace ManageWorkExpenses
         }
 
         private void btnCalc_Click( object sender, EventArgs e )
-        {
+        {                                     
             try
             {
                 DateTime expirationDate = new DateTime(2019, 10, 30);
@@ -1507,21 +1541,13 @@ namespace ManageWorkExpenses
                // string[,] fakeWorking = busWorking.GetSchedualArray("FAKE", fromCalcDate, toCalcDate);
 
                 // Lấy danh sách những ngày làm việc còn trống có thể tính toán
-                List<OBJ_CALC> ListTmpWorkingIsNull = busWorking.GetWorkingEmpty(fromCalcDate, toCalcDate);
+                List<OBJ_CALC> ListTmpWorkingIsNull = busWorking.GetWorkingEmpty(fromCalcDate, toCalcDate, isCN);
                 if (ListTmpWorkingIsNull == null)
                 {
                     MessageBox.Show("Không tồn tại dữ liệu còn trống trong khoảng thời gian cần tính toán");
                     isProcessRunning = false;
                     return;
-                }
-
-
-                //if (fakeWorking == null)
-                //{
-                //    MessageBox.Show("Không tồn tại dữ liệu trong khoảng thời gian cần tính toán");
-                //    isProcessRunning = false;
-                //    return;
-                //}
+                }                      
 
                 // Initialize the thread that will handle the background process
                 Thread backgroundThread = new Thread(
@@ -1538,57 +1564,23 @@ namespace ManageWorkExpenses
 
                         if (fakeSchedualArray.Count <= 0)
                         {
-                            MessageBox.Show("Không có dữ liệu khả dụng để tính toán");
-                            // Close the dialog if it hasn't been already
-                            if (progressDialog.InvokeRequired)
-                                progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
-
-                            // Reset the flag that indicates if a process is currently running
-                            isProcessRunning = false;
+                            MessageBox.Show("Không có dữ liệu khả dụng để tính toán");   
                         }
                         else
-                        {
-
-                            // Set các Mã công ty vao danh sách đã lấy được và lấy ra để in ra màn hình
-                            try
-                            {
-                                string[,] tmpWorkingDone = busCaculation.SetCompany(fakeSchedualArray);
-
-                                // In ra màn hình.
-                                // Khai báo số cột cho Grid
-                                ListSchedual.ColumnCount = tmpWorkingDone.GetLength(1);
-
-                                // Duyệt từng row
-                                for (int i = 0 ; i < tmpWorkingDone.GetLength(0) ; i++)
-                                {
-                                    // Tạo 1 row là 1 mảng với số cột là Length của phần tử
-                                    string[] row = new string[tmpWorkingDone.GetLength(1)];
-                                    for (int j = 0 ; j < tmpWorkingDone.GetLength(1) ; j++)
-                                    {
-                                        // Gán giá trị cho row
-                                        row[j] = tmpWorkingDone[i, j].ToString();
-                                    }
-                                    // thêm row vào datagrid
-                                    ListSchedual.Rows.Add(row);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " /n . Trong khi cài đặt công ty");
-                            }                          
-
-
-                            // Show a dialog box that confirms the process has completed
-                            MessageBox.Show("Hoàn Thành");
-                            // Close the dialog if it hasn't been already
-                            if (progressDialog.InvokeRequired)
-                                progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
-
-                            // Reset the flag that indicates if a process is currently running
-                            isProcessRunning = false;
+                        {     
+                            // Set các Mã công ty vao danh sách đã lấy được và lấy ra để in ra màn hình                            
+                            busCaculation.SetCompany(fakeSchedualArray);                            
                         }
+                        // Show a dialog box that confirms the process has completed
+                        // MessageBox.Show("Hoàn Thành");
 
-                        
+                        // Close the dialog if it hasn't been already
+                        if (progressDialog.InvokeRequired)
+                            progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+
+                        // Reset the flag that indicates if a process is currently running
+                        isProcessRunning = false;
+
                     }
                 ));
 
@@ -1596,12 +1588,18 @@ namespace ManageWorkExpenses
                 backgroundThread.Start();
 
                 // Open the dialog
-                progressDialog.ShowDialog();                 
+                progressDialog.ShowDialog();
+
+                // Tải ra màn hình
+                string[,] tmpSchedualArray = busWorking.GetSchedualArray("TMP", DateTime.Now, DateTime.Now);                 
+                ViewToDatagrid(tmpSchedualArray);
+                // Lấy danh sách sau khi đã set ra màn hình     
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " /n Hãy kiểm tra lại thông tin nhập vào hoặc chuẩn hóa dữ liệu đầu vào");
             }
+
 
         }
 
@@ -1687,7 +1685,7 @@ namespace ManageWorkExpenses
 
         private void btnSave_Click( object sender, EventArgs e )
         {
-            panelEditFakeData.Visible = true;
+            panelEditFakeData.Visible = false;
             //try
             //{   
 
@@ -1904,77 +1902,50 @@ namespace ManageWorkExpenses
         }
 
         private void  LoadRealSchedual( DateTime fromDate, DateTime toDate )
-        {
-            ListSchedual.Rows.Clear();
-            ListSchedual.AutoGenerateColumns = true;
+        {   
             string[,] realSchedualArray = busWorking.GetSchedualArray("REAL", fromDate, toDate);
-
-            if (realSchedualArray == null)
-            {
-                MessageBox.Show("Không tồn tại dữ liệu");
-                return;
-            }
-            // Khai báo số cột cho Grid
-            ListSchedual.ColumnCount = realSchedualArray.GetLength(1);
-
-            // Duyệt từng row
-            for (int i = 0 ; i < realSchedualArray.GetLength(0) ; i++)
-            {
-                // Tạo 1 row là 1 mảng với số cột là Length của phần tử
-                string[] row = new string[realSchedualArray.GetLength(1)];
-                for (int j = 0 ; j < realSchedualArray.GetLength(1) ; j++)
-                {
-                    // Gán giá trị cho row
-                    row[j] = realSchedualArray[i, j].ToString();
-                }
-                // thêm row vào datagrid
-                ListSchedual.Rows.Add(row);
-            }                                      
+            ViewToDatagrid(realSchedualArray);
         }
 
         private void LoadFakeSchedual( DateTime fromDate, DateTime toDate )
         {
+            
+            string[,] fakeSchedualArray = busWorking.GetSchedualArray("FAKE", fromDate, toDate);
+            ViewToDatagrid(fakeSchedualArray);
+        }
+
+        private void ViewToDatagrid( string[,] SchedualArray )
+        {
             ListSchedual.Rows.Clear();
             ListSchedual.AutoGenerateColumns = true;
-            string[,] fakeSchedualArray = busWorking.GetSchedualArray("TMP", fromDate, toDate);
 
-            if (fakeSchedualArray == null)
+            if (SchedualArray == null)
             {
                 MessageBox.Show("Không tồn tại dữ liệu");
                 return;
             }
             // Khai báo số cột cho Grid
-            ListSchedual.ColumnCount = fakeSchedualArray.GetLength(1);
+            ListSchedual.ColumnCount = SchedualArray.GetLength(1);
 
             // Duyệt từng row
-            for (int i = 0 ; i < fakeSchedualArray.GetLength(0) ; i++)
+            for (int i = 0 ; i < SchedualArray.GetLength(0) ; i++)
             {
                 // Tạo 1 row là 1 mảng với số cột là Length của phần tử
-                string[] row = new string[fakeSchedualArray.GetLength(1)];
-                for (int j = 0 ; j < fakeSchedualArray.GetLength(1) ; j++)
+                string[] row = new string[SchedualArray.GetLength(1)];
+                for (int j = 0 ; j < SchedualArray.GetLength(1) ; j++)
                 {
                     // Gán giá trị cho row
-                    row[j] = fakeSchedualArray[i, j].ToString();
+                    row[j] = SchedualArray[i, j].ToString();
                 }
                 // thêm row vào datagrid
                 ListSchedual.Rows.Add(row);
             }
         }
 
-        private void btnAddWorking_Click( object sender, EventArgs e )
-        {
-            MT_WORKING newWorking = new MT_WORKING();
-            newWorking = busWorking.GetByID(txtIDWorking.Text);
-            newWorking.MA_KHACH_HANG = txtMaKH.SelectedText;
-
-            bool isUpdate = busWorking.UpdateWorking(newWorking);
-            btnAddWorking.Enabled = false; 
-            btnUpdateWorking.Enabled = false;
-        }
 
         private void ListSchedual_CellClick( object sender, DataGridViewCellEventArgs e )
         {
-            btnAddWorking.Enabled = true;
+            panelEditFakeData.Visible = true;   
             btnUpdateWorking.Enabled = true;
             int numrow = e.RowIndex;
             int numCol = e.ColumnIndex;
@@ -1988,7 +1959,9 @@ namespace ManageWorkExpenses
             }
 
             string data = ListSchedual.Rows[numrow].Cells[numCol].Value.ToString();
-            string id = data.Substring(data.IndexOf('\n') + 1);
+            string[] arrayData = Regex.Split(data,"\n");
+            string id = arrayData[1];
+            //string id = data.Substring(data.IndexOf('\n') + 1);
 
             try
             {
@@ -2034,14 +2007,26 @@ namespace ManageWorkExpenses
 
         private void btnUpdateWorking_Click( object sender, EventArgs e )
         {
-            btnAddWorking.Enabled = false;
+            panelEditFakeData.Visible = false;   
             btnUpdateWorking.Enabled = false;
             btnDeleteWorking.Enabled = false;
+
+            MT_WORKING newWorking = busWorking.GetByID(txtIDWorking.Text);
+            newWorking.MA_KHACH_HANG = txtMaKH.SelectedText; 
+            bool isUpdate = busWorking.UpdateWorking(newWorking);
+            if (!isUpdate)
+            {
+                MessageBox.Show("Không thể thêm Mã khách hàng này vì đã hết chi phí!");
+            }
+            else
+            {
+                MessageBox.Show("Thành Công!");
+            }
         }
 
         private void btnDeleteWorking_Click( object sender, EventArgs e )
         {
-            btnAddWorking.Enabled = false;
+            panelEditFakeData.Visible = false;   
             btnUpdateWorking.Enabled = false;
             btnDeleteWorking.Enabled = false;
         }

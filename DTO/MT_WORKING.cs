@@ -15,7 +15,7 @@ namespace DTO
         public string PHONG_BAN { get; set; }
         public string MA_KHACH_HANG { get; set; }
         public DateTime WORKING_DAY { get; set; }
-        public DateTime IMPORT_DATE { get; set; }
-
+        public DateTime IMPORT_DATE { get; set; }    
+        public string MARK { get; set; }
     }
 }

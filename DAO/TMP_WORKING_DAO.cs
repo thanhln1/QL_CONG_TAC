@@ -18,7 +18,8 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
-                cnn.Execute("DELETE FROM TMP_WORKING");
+                cnn.Execute("TRUNCATE TABLE TMP_WORKING");
+                cnn.Execute("TRUNCATE TABLE TMP_HOP_DONG");
             }
         }
         public void CopySchedual( DateTime fromCalcDate, DateTime toCalcDate )
@@ -52,8 +53,7 @@ namespace DAO
             {
                 var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING a  where a.ID = @ID ", new { ID = id1 }).ToList();
                 
-                return output.First().WORKING_DAY;
-
+                return output.First().WORKING_DAY;  
             }
         }
 
@@ -94,6 +94,17 @@ namespace DAO
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public MT_NHAN_VIEN GetUserByIdOfTMP( string id )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_NHAN_VIEN>("SELECT * from MT_NHAN_VIEN where MA_NHAN_VIEN = (select MA_NHAN_VIEN from TMP_WORKING where ID = @ID)", new { ID = id }).ToList();
+
+                return output.First();
+
             }
         }
     }

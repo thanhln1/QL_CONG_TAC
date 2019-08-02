@@ -29,41 +29,7 @@ namespace BUS
                 throw ex;
             }
             return listContract;
-        }
-
-        //public string[,] CALC( string[,] SchedualArray, DateTime fromCalcDate, DateTime toCalcDate )
-        //{
-        //    List<OBJ_CALC> ListCalc = new List<OBJ_CALC>();
-        //    // Duyệt từng row
-        //    for (int i = 2 ; i < SchedualArray.GetLength(0) ; i++)
-        //    {
-        //        OBJ_CALC calc = new OBJ_CALC();
-        //        List<string> listEmpty = new List<string>();
-        //        calc.MA_NHAN_VIEN = SchedualArray[i, 1].ToString();
-        //        // Tạo 1 row là 1 mảng với số cột là Length của phần tử
-        //        string[] row = new string[SchedualArray.GetLength(1)];
-        //        for (int j = 3 ; j < SchedualArray.GetLength(1) ; j++)
-        //        {
-        //            // bool isNull = false;
-        //            string data = SchedualArray[i,j].ToString();
-        //            string id = data.Substring(data.IndexOf('\n') + 1);
-
-        //            // Tìm kiếm ngày làm việc để tính toán
-        //            MT_WORKING oneDay = daoTMP.getByID(id);
-        //            if (oneDay.MA_KHACH_HANG.Equals("") || string.IsNullOrWhiteSpace(oneDay.MA_KHACH_HANG))
-        //            {
-        //                listEmpty.Add(id);
-        //            }  
-        //        }
-        //       // calc.LIST_DAY_NOT_WORKING = listEmpty;
-        //        ListCalc.Add(calc);                      
-
-        //    }
-
-
-        //    // trả về mảng dữ liệu
-        //    throw new NotImplementedException();
-        //}
+        }                                                                                                   
 
         public List<List<string>> CALC( List<OBJ_CALC> DanhSachNgayLamViecConTrong )
         {
@@ -118,7 +84,7 @@ namespace BUS
                 foreach (var Id2 in listInput2)
                 {
                     DateTime day2 = daoTMP.getDayByID(Id2);
-                    if (DateTime.Compare(day1, day2) == 0)
+                    if (DateTime.Compare(day1, day2) == 0 && checkUserSameGroup(Id1, Id2) ==true)
                     {
                         day += ";" + Id2;
                     }
@@ -135,20 +101,36 @@ namespace BUS
             }
             return dayMatch;
         }
+
+        private bool checkUserSameGroup( int id1, int id2 )
+        {                                              
+            MT_NHAN_VIEN user1 = daoTMP.GetUserByIdOfTMP(id1.ToString());
+            MT_NHAN_VIEN user2 = daoTMP.GetUserByIdOfTMP(id2.ToString());
+            if (user1 !=null &&user2 !=null && user1.PHONG_BAN.Equals(user2.PHONG_BAN))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }           
+        }
+
         /// <summary>
         /// Set Company and return result
         /// </summary>
         /// <param name="fakeSchedualArray"></param>
         /// <param name="listCompany"></param>
         /// <returns></returns>
-        public string[,] SetCompany( List<List<string>> fakeSchedualArray )
+        public void SetCompany( List<List<string>> fakeSchedualArray )
         {
             try
             {
                 foreach (var item in fakeSchedualArray)
                 {
+                    string[] itemFirst = Regex.Split(item.First(), ";");
                     // Số hàng cần set giống nhau
-                    int a = Regex.Split(item.First(), ";").Length;
+                    int a = itemFirst.Length;
                     // Tính số ngày trống
                     int numDayNull = a * item.Count;                     
 
@@ -161,35 +143,53 @@ namespace BUS
                         double giaTriCan = dongia * numDayNull;
                         double giaTriKhaDung = company.GIA_TRI_HOP_DONG - company.TONG_CHI_PHI_MUC_TOI_DA;
 
-                        // Nếu giá trị khả dụng lớn hơn giá trị cần.
-                        if (giaTriKhaDung >= giaTriCan)
-                        {
-                            foreach (var groupID in item)
+                        // Check cùng là 1 nhóm thì mới set giá trị
+                        if (CheckSameGroup(itemFirst[0], company.NHOM_KHACH_HANG))
+                        { 
+                            // Nếu giá trị khả dụng lớn hơn giá trị cần.
+                            if (giaTriKhaDung >= giaTriCan)
                             {
-                                // Cắt chuỗi lấy ra danh sách các ID để Update công ty                                                
-                                string[] arrID = Regex.Split(groupID, ";");   
-                            
-                                // Set công ty vào các chỗ trống trong bảng tạm
-                                foreach (var id in arrID)
+                                foreach (var groupID in item)
                                 {
-                                    daoTMP.UpdateCompanyToID(Int32.Parse(id), company.MA_KHACH_HANG);
-                                }                                  
+                                    // Cắt chuỗi lấy ra danh sách các ID để Update công ty                                                
+                                    string[] arrID = Regex.Split(groupID, ";");
+
+                                    // Set công ty vào các chỗ trống trong bảng tạm
+                                    foreach (var id in arrID)
+                                    {
+                                        daoTMP.UpdateCompanyToID(Int32.Parse(id), company.MA_KHACH_HANG);
+                                    }
+                                }
+                                // Update bảng chi phí
+                                daoTMP.UpdateChiPhi(company.ID, giaTriCan);
+                                break;
                             }
-                            // Update bảng chi phí
-                            daoTMP.UpdateChiPhi(company.ID, giaTriCan);
-                            break;
-                        } 
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
-                }
-                // Lấy danh sách sau khi đã set ra màn hình
-                string[,] tmpSchedualArray = busWorking.GetSchedualArray("TMP", DateTime.Now, DateTime.Now);
-                return tmpSchedualArray;
+                }               
 
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+        }
+
+        private bool CheckSameGroup( string id, string nhomKH )
+        {
+            MT_NHAN_VIEN user = daoTMP.GetUserByIdOfTMP(id);
+            if (user.PHONG_BAN.Equals(nhomKH))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }                                     
         }
     }
 }

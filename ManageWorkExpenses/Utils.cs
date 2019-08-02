@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -16,20 +18,20 @@ namespace ManageWorkExpenses
         //public static string LogFilePath = LogDirectory + "Log_" + DateTime.Now.ToString("dd_MM_yyyy__HHmmss") + ".log";
 
         private static byte[] _salt = Encoding.ASCII.GetBytes("QLCTP_NguyenDangThe");
-        public static string EncryptString( string plainText, string sharedSecret )
+        public static string EncryptString( string plainText, string shaRedSecret )
         {
             if (string.IsNullOrEmpty(plainText))
                 throw new ArgumentNullException("plainText");
-            if (string.IsNullOrEmpty(sharedSecret))
-                throw new ArgumentNullException("sharedSecret");
+            if (string.IsNullOrEmpty(shaRedSecret))
+                throw new ArgumentNullException("shaRedSecret");
 
             string outStr = null;                       // Encrypted string to return
             RijndaelManaged aesAlg = null;              // RijndaelManaged object used to encrypt the data.
 
             try
             {
-                // generate the key from the shared secret and the salt
-                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(sharedSecret, _salt);
+                // generate the key from the shaRed secret and the salt
+                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(shaRedSecret, _salt);
 
                 // Create a RijndaelManaged object
                 // with the specified key and IV.
@@ -69,12 +71,12 @@ namespace ManageWorkExpenses
             // Return the encrypted bytes from the memory stream.
             return outStr;
         }
-        public static string DecryptString( string cipherText, string sharedSecret )
+        public static string DecryptString( string cipherText, string shaRedSecret )
         {
             if (string.IsNullOrEmpty(cipherText))
                 throw new ArgumentNullException("cipherText");
-            if (string.IsNullOrEmpty(sharedSecret))
-                throw new ArgumentNullException("sharedSecret");
+            if (string.IsNullOrEmpty(shaRedSecret))
+                throw new ArgumentNullException("shaRedSecret");
 
             // Declare the RijndaelManaged object
             // used to decrypt the data.
@@ -86,8 +88,8 @@ namespace ManageWorkExpenses
 
             try
             {
-                // generate the key from the shared secret and the salt
-                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(sharedSecret, _salt);
+                // generate the key from the shaRed secret and the salt
+                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(shaRedSecret, _salt);
 
                 // Create a RijndaelManaged object
                 // with the specified key and IV.
@@ -106,12 +108,12 @@ namespace ManageWorkExpenses
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
 
                             // Read the decrypted bytes from the decrypting stream
-                            // and place them in a string.
+                            // and pLace them in a string.
                             plaintext = srDecrypt.ReadToEnd();
                     }
                 }
             }
-            catch  (Exception ex)
+            catch (Exception ex)
             {
                 plaintext = "";
             }
@@ -152,6 +154,7 @@ namespace ManageWorkExpenses
             }
             return cnt.Values.All(c => c == 0);
         }
+                                                                                                     
     }
 
 }

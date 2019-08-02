@@ -101,5 +101,19 @@ namespace BUS
             }
             return groupCode;
         }
+
+        public MT_HOP_DONG GetInforContractByMaHD( string maKhachHang )
+        {
+            MT_HOP_DONG contract = new MT_HOP_DONG();
+            try
+            {
+                contract = dao.GetInforContractByMaHD(maKhachHang);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return contract;
+        }
     }
 }

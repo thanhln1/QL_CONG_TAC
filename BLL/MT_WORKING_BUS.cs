@@ -49,7 +49,7 @@ namespace BUS
         {
             try
             {
-                return dao.updateWorking(newWorking);
+                return dao.updateWorkingAndContract(newWorking);
             }
             catch (Exception ex)
             {
@@ -133,13 +133,13 @@ namespace BUS
                         RsArray[indexContinue, 0] = listWorking[j].HO_VA_TEN;
                         RsArray[indexContinue, 1] = listWorking[j].MA_NHAN_VIEN;
                         RsArray[indexContinue, 2] = listWorking[j].PHONG_BAN;
-                        string data = listWorking[j].MA_KHACH_HANG + newLine + listWorking[j].ID;
+                        string data = listWorking[j].MA_KHACH_HANG + newLine + listWorking[j].ID + newLine + listWorking[j].MARK;
                         RsArray[indexContinue, 3] = data;
                         indexColumn = 3;
                     }
                     else
                     {
-                        string data = listWorking[j].MA_KHACH_HANG + newLine + listWorking[j].ID;
+                        string data = listWorking[j].MA_KHACH_HANG + newLine + listWorking[j].ID + newLine + listWorking[j].MARK;
                         RsArray[indexContinue, indexColumn] = data;
                     }
                     indexColumn++;
@@ -158,7 +158,7 @@ namespace BUS
             }
         }
 
-        public List<OBJ_CALC> GetWorkingEmpty( DateTime fromCalcDate, DateTime toCalcDate )
+        public List<OBJ_CALC> GetWorkingEmpty( DateTime fromCalcDate, DateTime toCalcDate , bool isCN )
         {
             try
             {
@@ -166,7 +166,7 @@ namespace BUS
                 List<OBJ_CALC> ListAvailabe = new List<OBJ_CALC>();
 
                 // Lấy danh sách các nhân viên có ngày làm việc là trống trong bảng TMP_WORRKING
-                List<MT_WORKING> listWorking = dao.GetWorkingEmpty(fromCalcDate, toCalcDate);
+                List<MT_WORKING> listWorking = dao.GetWorkingEmpty(fromCalcDate, toCalcDate, isCN);
 
                 // Tạo đối tượng để thêm vào danh sách 
                 
