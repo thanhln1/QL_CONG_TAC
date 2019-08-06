@@ -34,7 +34,9 @@ namespace ManageWorkExpenses
         COMMON_BUS common = new COMMON_BUS();
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
-        const string FONT_SIZE_11 = "11";   
+        const string FONT_SIZE_11 = "11";
+
+        string OldMaKH = string.Empty;
         // Khởi tạo đối tượng lấy số ngẫu nhiên
         Random random = new Random();
 
@@ -450,14 +452,12 @@ namespace ManageWorkExpenses
                 ListContract.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
                 List<string> listMaKH = listContract.Select(s => (string)s.MA_KHACH_HANG).ToList();
-                txtMaKH.DataSource = listMaKH; 
-                // txtMaKH.DisplayMember = "MA_KHACH_HANG";
-                // txtMaKH.ValueMember = "MA_KHACH_HANG";
+                listMaKH.Add(" ");
+                txtMaKH.DataSource = listMaKH;            
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi lấy danh sách HĐ tại : " + ex.Message);
-                //  logger.log("Có lỗi khi lấy danh sách cán bộ tại : " + ex.Message);    
+                MessageBox.Show("Có lỗi khi lấy danh sách HĐ tại : " + ex.Message);   
             }
         }
 
@@ -1479,14 +1479,13 @@ namespace ManageWorkExpenses
                 DateTime fromDate = txtFromDateSearch.Value.Date;
                 DateTime toDate   = txtToDateSearch.Value.Date;                                               
 
-                LoadRealSchedual(fromDate, toDate);
-                panelEditFakeData.Visible = false;
+                LoadRealSchedual(fromDate, toDate);  
             }             
             catch (Exception ex)
             {
                 MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
             }
-            panelEditFakeData.Visible = true;
+            panelEditFakeData.Visible = false;
 
         }
 
@@ -1497,19 +1496,19 @@ namespace ManageWorkExpenses
                 DateTime fromDate = txtFromDateSearch.Value.Date;
                 DateTime toDate = txtToDateSearch.Value.Date;
 
-                LoadFakeSchedual(fromDate, toDate);
-                panelEditFakeData.Visible = true;
+                LoadFakeSchedual(fromDate, toDate);  
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
             }
-            panelEditFakeData.Visible = true;
+            panelEditFakeData.Visible = false;
 
         }
 
         private void btnCalc_Click( object sender, EventArgs e )
-        {                                     
+        {
+            panelEditFakeData.Visible = false;
             try
             {
                 DateTime expirationDate = new DateTime(2019, 10, 30);
@@ -1940,8 +1939,7 @@ namespace ManageWorkExpenses
                 // thêm row vào datagrid
                 ListSchedual.Rows.Add(row);
             }
-        }
-
+        }      
 
         private void ListSchedual_CellClick( object sender, DataGridViewCellEventArgs e )
         {
@@ -1972,7 +1970,8 @@ namespace ManageWorkExpenses
                 {
                     if (!string.IsNullOrWhiteSpace(oneDay.MA_KHACH_HANG))
                     {                           
-                        txtMaKH.SelectedIndex = txtMaKH.Items.IndexOf(oneDay.MA_KHACH_HANG.ToString());                       
+                        txtMaKH.SelectedIndex = txtMaKH.Items.IndexOf(oneDay.MA_KHACH_HANG.ToString().Trim());
+                        OldMaKH = oneDay.MA_KHACH_HANG.ToString().Trim();
                     }
                     else
                     {
@@ -2008,27 +2007,54 @@ namespace ManageWorkExpenses
         private void btnUpdateWorking_Click( object sender, EventArgs e )
         {
             panelEditFakeData.Visible = false;   
-            btnUpdateWorking.Enabled = false;
-            btnDeleteWorking.Enabled = false;
-
+            btnUpdateWorking.Enabled = false;   
             MT_WORKING newWorking = busWorking.GetByID(txtIDWorking.Text);
-            newWorking.MA_KHACH_HANG = txtMaKH.SelectedText; 
-            bool isUpdate = busWorking.UpdateWorking(newWorking);
+            if (txtMaKH.SelectedItem.ToString().Equals(" ") || txtMaKH.SelectedItem.ToString().Equals(""))
+            {
+                newWorking.MA_KHACH_HANG = "";
+            }
+            else
+            {
+                newWorking.MA_KHACH_HANG = txtMaKH.SelectedItem.ToString().Trim();
+            }
+            
+            bool isUpdate = false;
+            try
+            {
+                isUpdate = busWorking.UpdateWorking(newWorking, OldMaKH);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xảy ra  khi cập nhật tại: "+ ex.Message);
+            }
+            
             if (!isUpdate)
             {
-                MessageBox.Show("Không thể thêm Mã khách hàng này vì đã hết chi phí!");
+                MessageBox.Show("Không thể cập nhật!");
             }
             else
             {
                 MessageBox.Show("Thành Công!");
             }
+            OldMaKH = string.Empty;
+            string[,] fakeSchedualArray = busWorking.GetSchedualArray("TMP", DateTime.Now, DateTime.Now);
+            ViewToDatagrid(fakeSchedualArray);
         }
 
-        private void btnDeleteWorking_Click( object sender, EventArgs e )
+        private void groupBox5_Enter( object sender, EventArgs e )
         {
-            panelEditFakeData.Visible = false;   
-            btnUpdateWorking.Enabled = false;
-            btnDeleteWorking.Enabled = false;
+            panelEditFakeData.Visible = false;
+        }
+
+        private void groupBox6_Enter( object sender, EventArgs e )
+        {
+            panelEditFakeData.Visible = false;
+        }        
+
+        private void btn_SearchAgain_Click( object sender, EventArgs e )
+        {
+            string[,] fakeSchedualArray = busWorking.GetSchedualArray("TMP",DateTime.Now, DateTime.Now);
+            ViewToDatagrid(fakeSchedualArray);
         }
     }
 }

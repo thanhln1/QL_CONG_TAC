@@ -37,7 +37,7 @@ namespace DAO
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {   
-                var output = cnn.Query<MT_WORKING>("select * from MT_WORKING a where a.ID = @ID ", new { ID = id});
+                var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING a where a.ID = @ID ", new { ID = id});
                 if (output!=null || output.Count()>0)
                 {
                     return output.First();
@@ -49,7 +49,7 @@ namespace DAO
             }
         }
 
-        public bool updateWorkingAndContract( MT_WORKING newWorking )
+        public bool updateWorkingAndContract( MT_WORKING newWorking , string OldMaKH )
         {
             try
             {
@@ -57,22 +57,53 @@ namespace DAO
                 {
                     // Check Công ty có còn sử dụng được không?
                     double chiphiconlai = cnn.ExecuteScalar<int>("select (TONG_CHI_PHI_MUC_TOI_DA-CHI_PHI_THUC_DA_CHI) from TMP_HOP_DONG where MA_KHACH_HANG=@MA_KHACH_HANG", new { MA_KHACH_HANG = newWorking.MA_KHACH_HANG });
-                    double donGia = cnn.ExecuteScalar<int>("SELECT DON_GIA FROM MT_DON_GIA WHERE DIA_CHI = (SELECT TINH FROM MT_HOP_DONG WHERE MA_KHACH_HANG=@MA_KHACH_HANG);", new { MA_KHACH_HANG = newWorking.MA_KHACH_HANG });
-                    if (chiphiconlai >= donGia)
+                    double donGiaNew = cnn.ExecuteScalar<int>("SELECT DON_GIA FROM MT_DON_GIA WHERE DIA_CHI = (SELECT TINH FROM MT_HOP_DONG WHERE MA_KHACH_HANG=@MA_KHACH_HANG);", new { MA_KHACH_HANG = newWorking.MA_KHACH_HANG });
+                    double donGiaOld = cnn.ExecuteScalar<int>("SELECT DON_GIA FROM MT_DON_GIA WHERE DIA_CHI = (SELECT TINH FROM MT_HOP_DONG WHERE MA_KHACH_HANG=@MA_KHACH_HANG);", new { MA_KHACH_HANG =OldMaKH });
+                    int idNew = cnn.ExecuteScalar<int>("SELECT ID FROM TMP_HOP_DONG WHERE MA_KHACH_HANG = @MA_KHACH_HANG ", new { MA_KHACH_HANG = newWorking.MA_KHACH_HANG });
+                    int idOld = cnn.ExecuteScalar<int>("SELECT ID FROM TMP_HOP_DONG WHERE MA_KHACH_HANG = @MA_KHACH_HANG ", new { MA_KHACH_HANG = OldMaKH });
+
+                    if (chiphiconlai >= donGiaNew)
                     {
                         // Update Working
                         StringBuilder sql = new StringBuilder();
                         sql.Append("UPDATE TMP_WORKING set ");
-                        sql.Append("MA_KHACH_HANG=@MA_KHACH_HANG, ");
+                        sql.Append("MA_KHACH_HANG=@MA_KHACH_HANG ");
                         sql.Append(" WHERE ID = @ID; ");
-                        cnn.Execute(sql.ToString(), newWorking);
+                        cnn.Execute(sql.ToString(), new { MA_KHACH_HANG = newWorking.MA_KHACH_HANG , ID = newWorking.ID});
 
                         // Update Contract
                         StringBuilder sql1 = new StringBuilder();
-                        sql.Append("UPDATE TMP_HOP_DONG set ");
-                        sql.Append("CHI_PHI_THUC_DA_CHI=CHI_PHI_THUC_DA_CHI+@DON_GIA, ");
-                        sql.Append(" WHERE DON_GIA = @DON_GIA; ");
-                        // cnn.Execute(sql1.ToString(), new { DON_GIA = dongia });
+                        // Nếu thay đổi từ null sang có mã KH thì cộng thêm chi phí
+                        if (string.IsNullOrWhiteSpace(OldMaKH) && !string.IsNullOrWhiteSpace(newWorking.MA_KHACH_HANG))
+                        {
+                            sql1.Append("UPDATE TMP_HOP_DONG set ");
+                            sql1.Append("CHI_PHI_THUC_DA_CHI=CHI_PHI_THUC_DA_CHI+@DON_GIA ");
+                            sql1.Append(" WHERE ID = @ID; ");
+                            cnn.Execute(sql1.ToString(), new { DON_GIA = donGiaNew, ID = idNew });
+                        }
+                        // Nếu thay đổi từ Có mã KH sang null thì trừ chi phí
+                        if (!string.IsNullOrWhiteSpace(OldMaKH) && string.IsNullOrWhiteSpace(newWorking.MA_KHACH_HANG))
+                        {
+                            sql1.Append("UPDATE TMP_HOP_DONG set ");
+                            sql1.Append("CHI_PHI_THUC_DA_CHI=CHI_PHI_THUC_DA_CHI-@DON_GIA ");
+                            sql1.Append(" WHERE ID =@ID; ");
+                            cnn.Execute(sql1.ToString(), new { DON_GIA = donGiaOld, ID = idOld });
+                        }
+                        // Nếu  chuyển từ mã này sang mã khác thì cập nhật cả hai
+                        if (!string.IsNullOrWhiteSpace(OldMaKH) && !string.IsNullOrWhiteSpace(newWorking.MA_KHACH_HANG) && !OldMaKH.Equals(newWorking.MA_KHACH_HANG))
+                        {
+                            // Trừ tiền công ty cũ
+                            sql1.Append("UPDATE TMP_HOP_DONG set ");
+                            sql1.Append("CHI_PHI_THUC_DA_CHI=CHI_PHI_THUC_DA_CHI-@DON_GIA_OLD ");
+                            sql1.Append(" WHERE ID = @ID_OLD; ");
+
+                            // Cộng tiền công ty mới
+                            sql1.Append("UPDATE TMP_HOP_DONG set ");
+                            sql1.Append("CHI_PHI_THUC_DA_CHI=CHI_PHI_THUC_DA_CHI+@DON_GIA_NEW ");
+                            sql1.Append(" WHERE ID =@ID_NEW; ");
+
+                            cnn.Execute(sql1.ToString(), new { DON_GIA_OLD = donGiaOld, DON_GIA_NEW = donGiaNew, ID_OLD = idOld, ID_NEW= idNew });
+                        } 
                         return true;
                     }
                     else

@@ -45,11 +45,11 @@ namespace BUS
             }
         }
 
-        public bool UpdateWorking( MT_WORKING newWorking )
+        public bool UpdateWorking( MT_WORKING newWorking , string OldMaKH)
         {
             try
             {
-                return dao.updateWorkingAndContract(newWorking);
+                return dao.updateWorkingAndContract(newWorking, OldMaKH);
             }
             catch (Exception ex)
             {
