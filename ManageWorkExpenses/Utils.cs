@@ -57,7 +57,7 @@ namespace ManageWorkExpenses
                     outStr = Convert.ToBase64String(msEncrypt.ToArray());
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 outStr = plainText;
             }
@@ -113,7 +113,7 @@ namespace ManageWorkExpenses
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 plaintext = "";
             }

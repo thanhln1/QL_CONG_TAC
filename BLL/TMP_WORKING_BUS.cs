@@ -42,5 +42,57 @@ namespace BUS
                 throw ex;
             }
         }
+
+        public bool CheckRunedCalc()
+        {
+            try
+            {
+                bool hasRecord = dao.CheckRunedCalc(); 
+                return hasRecord;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool saveCalc()
+        {
+            try
+            {
+                dao.SaveSchedual();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool CheckReRunCALC()
+        {
+            try
+            {
+                bool IsReRun = dao.CheckIsReRun();
+                return IsReRun;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool OverWrite()
+        {
+            try
+            {
+                dao.OverWrite();
+                return true;
+            }
+            catch (Exception ex)
+            {                  
+                throw ex;
+            }
+        }
     }
 }

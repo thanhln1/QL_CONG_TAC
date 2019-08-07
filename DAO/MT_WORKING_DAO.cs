@@ -5,9 +5,7 @@ using Dapper;
 using System.Linq;
 using DAO;
 using System.Text;
-using System.Collections.Generic;  
-using System.Data.SqlClient;
-using Dapper;
+using System.Collections.Generic;     
 
 namespace DAO
 {

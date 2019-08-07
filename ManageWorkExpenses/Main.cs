@@ -1,6 +1,5 @@
 ﻿using BUS;
-using DTO;
-using Log;
+using DTO;   
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -59,55 +58,10 @@ namespace ManageWorkExpenses
                 loadAllUser();
                 LoadContract();
                 LoadListCustomer();
-                GetAllDonGia();
-                // LoadRealSchedual("","");
-            }
-
-            //string logMode = config.AppSettings.Settings["DEBUGMODE"].Value;
-            //if (logMode.Equals("ON"))
-            //{
-            //    debugOn.Checked = true;
-            //    debugOff.Checked = false;
-            //}
-            //else if (logMode.Equals("OFF") || string.IsNullOrEmpty(logMode))
-            //{
-            //    debugOn.Checked = false;
-            //    debugOff.Checked = true;
-            //    config.AppSettings.Settings["DEBUGMODE"].Value = "OFF";
-            //}
-
-            //logger = new Logger(Utils.LogFilePath);
-            //logger.log("Mo chuong trinh : Main");
+                GetAllDonGia();             
+            }  
 
         }
-
-
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private void debugOn_Click( object sender, EventArgs e )
-        {
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.File = "App.config";
-            config.AppSettings.Settings["DEBUGMODE"].Value = "ON";
-            config.Save();
-            ConfigurationManager.RefreshSection("appSettings");
-            debugOn.Checked = true;
-            debugOff.Checked = false;
-            // logger.log("Bắt đầu ghi log : Main");
-        }
-
-        private void debugOff_Click( object sender, EventArgs e )
-        {
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.File = "App.config";
-            config.AppSettings.Settings["DEBUGMODE"].Value = "OFF";
-            config.Save();
-            ConfigurationManager.RefreshSection("appSettings");
-            debugOn.Checked = false;
-            debugOff.Checked = true;
-            //logger.log("Tắt log tại : Main");
-        }
-
         private void btnAddUser_Click( object sender, EventArgs e )
         {
             if (String.IsNullOrEmpty(tbUserCode.Text.Trim()) || string.IsNullOrEmpty(tbName.Text.Trim()))
@@ -548,13 +502,14 @@ namespace ManageWorkExpenses
             if (e.RowIndex > 1 && e.ColumnIndex > 2)
             {
                 string[] arrayValue = Regex.Split(value, "\n");
-                int index = Int32.Parse(arrayValue[2]);
+                
                 if (value.Contains("FAKE"))
                 {
                     e.CellStyle.BackColor = Color.Red;
                 }
                 else
                 {
+                    int index = Int32.Parse(arrayValue[2]);
                     if (index== 99999999)
                     {
                         e.CellStyle.BackColor = Color.FromName("White");
@@ -1592,7 +1547,12 @@ namespace ManageWorkExpenses
                 // Tải ra màn hình
                 string[,] tmpSchedualArray = busWorking.GetSchedualArray("TMP", DateTime.Now, DateTime.Now);                 
                 ViewToDatagrid(tmpSchedualArray);
-                // Lấy danh sách sau khi đã set ra màn hình     
+                // Hiển thị nút  Save
+                if (tmpSchedualArray != null)
+                {
+                    btnSave.Enabled = true;
+                }
+                    
             }
             catch (Exception ex)
             {
@@ -1685,31 +1645,46 @@ namespace ManageWorkExpenses
         private void btnSave_Click( object sender, EventArgs e )
         {
             panelEditFakeData.Visible = false;
-            //try
-            //{   
+            try
+            {
+                // Kiểm tra xem dữ liệu đã tính toán chưa
+                bool isExits = busTMP.CheckRunedCalc();
+                if (!isExits)
+                {
+                    MessageBox.Show("Chưa có dữ liệu tính toán");                    
+                }
+                else
+                {
+                    bool isCheckReRunCALC = busTMP.CheckReRunCALC();
+                    if (isCheckReRunCALC)
+                    {
+                        // Phát thông báo ghi đè
+                        DialogResult result = MessageBox.Show("Các ngày làm việc đã tồn tại dữ liệu đã tính toán. Bạn muốn ghi đè không? \n Nếu ghi đè thì dữ liệu có thể sẽ không chính xác nữa!", "Đã tồn tại dữ liệu", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        // Ghi đè các ngày đã được làm (Không lưu lại giá trị tiền đã tính toán)
+                        if (result == DialogResult.Yes)
+                        {
+                            // Cập nhật bảng Xóa các record trong bảng HIS và insert từ bảng TMP
+                            bool isOverWrite = busTMP.OverWrite();
+                            MessageBox.Show(( isOverWrite == true ) ? "Ghi đè thành công!" : "Có lỗi khi Ghi đè!");
 
-            //    bool isExits = busTMP.CheckRunedCalc(cbToDate.Value.Month, cbFromDate.Value.Year);
-            //    if (isExits)
-            //    {
-            //        DialogResult dialogResult = MessageBox.Show("Tháng được chọn đã được tính toán. Bạn có muốn ghi đè lên dữ liệu đã có sẵn? \n Chú ý: Nếu chọn ghi đè thì dữ liệu sẽ không còn chính xác nữa!", "Đã tồn tại dữ liệu", MessageBoxButtons.YesNo);
-            //        if (dialogResult == DialogResult.Yes)
-            //        {
-            //            bool IsOverWrite = busTMP.OverwriteCalc(cbToDate.Value.Month, cbFromDate.Value.Year);
-            //          //  bool isOverWriteHopDong = busTMP.OverWriteHD(listTmpHopDong);
-            //            MessageBox.Show(( IsOverWrite == true ) ? "Đã ghi đè lên dữ liệu cũ!" : "Không ghi đè được");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        bool isSave = busTMP.saveCalc();
-            //      //  bool isOverWriteHopDong = busTMP.OverWriteHD(listTmpHopDong);
-            //        MessageBox.Show(( isSave == true ) ? "Lưu thành công!" : "Có lỗi khi lưu!");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: " + ex.Message);
-            //}
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        bool isSave = busTMP.saveCalc();
+                        MessageBox.Show(( isSave == true ) ? "Lưu thành công!" : "Có lỗi khi lưu!");
+                    }
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: " + ex.Message);
+            }
             btnSave.Enabled = false;
         }
 

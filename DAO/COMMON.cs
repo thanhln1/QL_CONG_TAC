@@ -46,9 +46,10 @@ namespace DAO
                 cnn.Execute("TRUNCATE TABLE MT_DINH_MUC_CT;"); 
                 cnn.Execute("TRUNCATE TABLE MT_HOP_DONG;"); 
                 cnn.Execute("TRUNCATE TABLE MT_LICH_CT;"); 
-                cnn.Execute("TRUNCATE TABLE MT_NHAN_VIEN;"); 
-                cnn.Execute("TRUNCATE TABLE MT_WORKING;"); 
-                cnn.Execute("TRUNCATE TABLE TMP_WORKING;"); 
+                cnn.Execute("TRUNCATE TABLE MT_NHAN_VIEN;");
+                cnn.Execute("TRUNCATE TABLE MT_WORKING;");
+                cnn.Execute("TRUNCATE TABLE TMP_HOP_DONG;"); 
+                cnn.Execute("TRUNCATE TABLE TMP_WORKING;");     
                 return true;
             }
         }
