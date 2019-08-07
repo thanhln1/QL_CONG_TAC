@@ -46,9 +46,9 @@ namespace DTO
 
     public class STAFF
     {
-        //public string MA_NHAN_VIEN { get; set; }
+        public string MA_NHAN_VIEN { get; set; }
         public string HO_TEN { get; set; }
         public int SO_NGAY_CONG_TAC { get; set; }
-        public List<int> NGAY_CONG_TAC { get; set; }
+        public List<DateTime> NGAY_CONG_TAC { get; set; }
     }
 }

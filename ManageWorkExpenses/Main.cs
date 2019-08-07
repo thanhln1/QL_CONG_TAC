@@ -964,20 +964,77 @@ namespace ManageWorkExpenses
         private void btnExportexcelKQ2_Click( object sender, EventArgs e )
         {
             try
-            {                     
-                // Lấy thông tin toàn bộ lịch công tác trong khoảng thời gian
+            {
+                DateTime strDateFrom = cbFromDateExport.Value.Date;
+                DateTime strDateTo = cbToDateExport.Value.Date;
+                string strMaCongTy = cbCompany.SelectedValue.ToString();
+
+
+                // danh sách các nhân viên đi làm trong khoảng thời gian theo mã công ty
+                List<MT_WORKING> rowCalenda = busWorking.getCalenda(strDateFrom, strDateTo, strMaCongTy);
+                List<STAFF> listStaff = new List<STAFF>();
+
+                foreach (MT_WORKING hisWorking in rowCalenda)
+                {
+                    STAFF staff_select = new STAFF();
+                    List<DateTime> list_ngay_cong_tac = new List<DateTime>();
+
+                    if (listStaff.Count() == 0)
+                    {
+                        staff_select.HO_TEN = hisWorking.HO_VA_TEN;
+                        staff_select.MA_NHAN_VIEN = hisWorking.MA_NHAN_VIEN;
+                        staff_select.SO_NGAY_CONG_TAC = list_ngay_cong_tac.Count + 1;
+                        list_ngay_cong_tac.Add(hisWorking.WORKING_DAY);
+                        staff_select.NGAY_CONG_TAC = list_ngay_cong_tac;
+                        listStaff.Add(staff_select);
+                    }
+                    else
+                    { // kiểm tra nhân viên này đã có trong list Staff hay chưa
+                        for (int i = 0 ; i < listStaff.Count() ; i++)
+                        {
+                            // bool next = true;
+                            // nếu đã tồn tại
+                            if (listStaff[i].MA_NHAN_VIEN == hisWorking.MA_NHAN_VIEN)
+                            {
+                                listStaff[i].SO_NGAY_CONG_TAC = listStaff[i].SO_NGAY_CONG_TAC + 1;
+                                //int count = listStaff[i].NGAY_CONG_TAC.Count();
+                                //listStaff[i].NGAY_CONG_TAC.Add(hisWorking.WORKING_DAY);
+                                //next = false;
+                            }
+                        }
+                        //if (next==true)
+                        //{
+                        //    staff_select.HO_TEN = hisWorking.HO_VA_TEN;
+                        //    staff_select.MA_NHAN_VIEN = hisWorking.MA_NHAN_VIEN;
+                        //    staff_select.SO_NGAY_CONG_TAC = list_ngay_cong_tac.Count + 1;
+                        //    //list_ngay_cong_tac.Add(hisWorking.WORKING_DAY);
+                        //    //staff_select.NGAY_CONG_TAC = list_ngay_cong_tac;
+                        //    listStaff.Add(staff_select);
+                        //    break;
+                        //}
+                    }
+                }
+
+
+                if (rowCalenda == null)
+                {
+                    //MessageBox.Show("Chưa có lịch công tác");
+                    MessageBox.Show("Chưa có lịch công tác !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                //get thông tin nơi công tác
                 List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
                 MT_HOP_DONG info = new MT_HOP_DONG();
-                inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
+                inForContract = busContract.GetInforContract(strMaCongTy);
                 string soHopDong = inForContract[0].SO_HOP_DONG;
                 string ngayKyHopDong = inForContract[0].NGAY_HOP_DONG.ToShortDateString();
                 string diachi = inForContract[0].DIA_CHI;
-                                                               
 
                 Excel.Application xlApp = new Excel.Application();
                 if (xlApp == null)
                 {
-                    MessageBox.Show("Máy tính chưa được cài đặt Excell đúng!");
+                    MessageBox.Show("Excel is not properly installed!!");
                     return;
                 }
                 Excel.Workbooks oBooks;
@@ -993,8 +1050,7 @@ namespace ManageWorkExpenses
                 oSheets = oBook.Worksheets;
                 oSheet = (Microsoft.Office.Interop.Excel.Worksheet)oSheets.get_Item(1);
                 oSheet.Name = "QĐ";
-
-                #region Tạo template cho File
+                #region header
                 Excel.Range head = oSheet.get_Range("A2", "M12");
                 head.Font.Size = FONT_SIZE_BODY;
                 head.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
@@ -1063,17 +1119,24 @@ namespace ManageWorkExpenses
                 dieu1_1.Font.Underline = true;
                 Excel.Range dieu1_2 = oSheet.Cells[13, 4];
                 dieu1_2.Value = "'Quyết định cử các nhân viên sau đi công tác:";
-                #endregion
+#endregion
 
                 //DateTime ngaybatdau = rowCalenda.FROM_DATE;
                 //DateTime ngayketthuc = rowCalenda.TO_DATE;
-                List<DateTime> liststartdate = new List<DateTime>();
-                List<DateTime> listenddate = new List<DateTime>();
+                //List<DateTime> liststartdate = new List<DateTime>();
+                //List<DateTime> listenddate = new List<DateTime>();
                 DateTime DATE_START;
                 DateTime DATE_END;
 
                 // danh sach cán bộ đi công tác
-                List<STAFF> listStaff = busWorking.GetListStaff(cbbCustomer.SelectedValue.ToString(), cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+
+
+                //List<STAFF> listStaff = busWorking.GetListStaff(cbbCustomer.SelectedValue.ToString(), cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+                //List<STAFF> listStaff = null;
+
+
+
+
                 int countList = listStaff.Count;
                 for (int i = 0 ; i < countList ; i++)
                 {
@@ -1083,30 +1146,25 @@ namespace ManageWorkExpenses
 
                     //lấy thời gian công tác: 
                     int count = item.NGAY_CONG_TAC.Count;
-                    int day_from = item.NGAY_CONG_TAC[0];
-                    int day_to = item.NGAY_CONG_TAC[( count - 1 )];
-
-                    //DateTime date_start = ngaybatdau.AddDays(day_from);
-                    //liststartdate.Add(date_start);
-                    // DateTime date_end = ngaybatdau.AddDays(day_to);
-                    // listenddate.Add(date_end);
+                    int day_from = 1;//item.NGAY_CONG_TAC[0];
+                    int day_to = 1;//item.NGAY_CONG_TAC[(count - 1)];
                 }
                 if (countList > 0)
                 {
-                    DATE_START = liststartdate.Min(p => p);
-                    DATE_END = listenddate.Max(p => p);
+                    //DATE_START = liststartdate.Min(p => p);
+                    //DATE_END = listenddate.Max(p => p);
                 }
                 else
                 {
-                    DATE_START = DateTime.Now;
-                    DATE_END = DateTime.Now;
+                    //DATE_START = DateTime.Now;
+                    //DATE_END = DateTime.Now;
                 }
 
                 oSheet.Columns[1].ColumnWidth = 02.00;
                 oSheet.Columns[2].ColumnWidth = 02.00;
                 oSheet.Columns[3].ColumnWidth = 04.00;
                 oSheet.Columns[4].ColumnWidth = 02.00;
-
+                #region generate Exell
                 // điều 2 [A14 - M14]
                 Excel.Range dieu2_1 = oSheet.Cells[countList + 15, 1];
                 dieu2_1.Value = "'- Điều 2: ";
@@ -1127,9 +1185,8 @@ namespace ManageWorkExpenses
                 Excel.Range thoigianCT = oSheet.Cells[countList + 19, 2];
                 thoigianCT.Value = "- Thời gian công tác:";
                 Excel.Range thoigianCT_1 = oSheet.Cells[countList + 19, 7];  // khoảng thời gian công tác.
-                thoigianCT_1.Value = ( DATE_END - DATE_START ).TotalDays.ToString() + " ngày (từ ngày " + DATE_START.ToString("dd/MM/yyyy") + " đến ngày " + DATE_END.ToString("dd/MM/yyyy") + ")";
-                                                        
-                #region Điều khoản
+                thoigianCT_1.Value = /*(DATE_END - DATE_START).TotalDays.ToString() + */" ngày (từ ngày " + strDateFrom + " đến ngày " + strDateTo + ")";
+
                 // điều 3
                 Excel.Range dieu3_1 = oSheet.Cells[countList + 21, 1];
                 dieu3_1.Value = "'- Điều 3: ";
@@ -1170,7 +1227,6 @@ namespace ManageWorkExpenses
                 giamdocky.Value = "GIÁM ĐỐC";
                 giamdocky.Font.Bold = true;
                 giamdocky.Font.Size = FONT_SIZE_BODY;
-
 #endregion
 
                 oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[1, 1] ), (Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[countList + 30, 15] )).Font.Name = "Times New Roman";
@@ -2033,9 +2089,25 @@ namespace ManageWorkExpenses
         {
             try
             {
-                cbCompany.DataSource = busWorking.GetListCompany(fromDate.Date, toDate.Date);
-                cbCompany.DisplayMember = "KHACH_HANG" + "MA_KHACH_HANG";
-                cbCompany.ValueMember = "MA_KHACH_HANG";
+                List<MT_HOP_DONG>   listCompany = busWorking.GetListCompany(fromDate.Date, toDate.Date);
+                if (listCompany.Count >0)
+                {
+                    cbCompany.DataSource = listCompany;
+                    cbCompany.DisplayMember = "KHACH_HANG";
+                    cbCompany.ValueMember = "MA_KHACH_HANG";
+                    btnExportexcelBangKe.Enabled = true;
+                    btnExportexcelKQ2.Enabled = true;
+                    cbCompany.Enabled = true;
+                }
+                else
+                {
+                    cbCompany.DataSource = null;
+                    cbCompany.Items.Clear();
+                    btnExportexcelBangKe.Enabled = false;
+                    btnExportexcelKQ2.Enabled = false;   
+                    cbCompany.Enabled = false;
+                }
+
             }
             catch (Exception ex)
             {
@@ -2052,5 +2124,6 @@ namespace ManageWorkExpenses
         {
             loadCompanyToExportData(cbFromDateExport.Value, cbToDateExport.Value);
         }
+                                  
     }
 }

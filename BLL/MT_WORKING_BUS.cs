@@ -9,7 +9,7 @@ namespace BUS
 {
     public class MT_WORKING_BUS
     {
-        MT_WORKING_DAO dao = new MT_WORKING_DAO();         
+        MT_WORKING_DAO dao = new MT_WORKING_DAO();
         public MT_WORKING_BUS()
         {
         }
@@ -45,7 +45,7 @@ namespace BUS
             }
         }
 
-        public bool UpdateWorking( MT_WORKING newWorking , string OldMaKH)
+        public bool UpdateWorking( MT_WORKING newWorking, string OldMaKH )
         {
             try
             {
@@ -80,11 +80,11 @@ namespace BUS
                 {
                     listWorking = dao.GetListTMPSchedual();
                     Columns = dao.getColumnFromDateofTMP() + 4;
-                }  
+                }
                 if (listWorking.Count == 0)
                 {
                     return null;
-                }       
+                }
 
                 Rows = ( from ld in listWorking select new { id = ld.MA_NHAN_VIEN } ).ToList().Distinct().Count() + 2;
 
@@ -147,7 +147,7 @@ namespace BUS
                 return RsArray;
             }
             catch (Exception ex)
-            {                     
+            {
                 // Get stack trace for the exception with source file information
                 var st = new StackTrace(ex, true);
                 // Get the top stack frame
@@ -158,7 +158,7 @@ namespace BUS
             }
         }
 
-        public List<OBJ_CALC> GetWorkingEmpty( DateTime fromCalcDate, DateTime toCalcDate , bool isCN )
+        public List<OBJ_CALC> GetWorkingEmpty( DateTime fromCalcDate, DateTime toCalcDate, bool isCN )
         {
             try
             {
@@ -169,16 +169,16 @@ namespace BUS
                 List<MT_WORKING> listWorking = dao.GetWorkingEmpty(fromCalcDate, toCalcDate, isCN);
 
                 // Tạo đối tượng để thêm vào danh sách 
-                
+
                 string MA_NHAN_VIEN = string.Empty;
                 List<List<int>> LIST_DAY_NOT_WORKING = new List<List<int>>();
-                List<int> SPACE_DAY = new List<int>();   
-                DateTime OldDate = new DateTime();   
+                List<int> SPACE_DAY = new List<int>();
+                DateTime OldDate = new DateTime();
 
                 // Bắt đầu duyệt từng phần tử để tạo danh sách còn trống
                 for (int i = 0 ; i < listWorking.Count ; i++)
                 {
-                    
+
                     // Nếu là phần tử đầu tiên thì set Mã Nhân Viên               
                     if (i == 0)
                     {
@@ -186,9 +186,9 @@ namespace BUS
                         OldDate = listWorking[i].WORKING_DAY;
                         // Thêm Id vào danh sách đã tạo
                         SPACE_DAY.Add(listWorking[i].ID);
-                    }                                                                          
+                    }
                     else
-                    {                          
+                    {
                         // Nếu phần tử tiếp theo vẫn  là nhân viên đó thì cài đặt các thông số
                         if (MA_NHAN_VIEN.Equals(listWorking[i].MA_NHAN_VIEN))
                         {
@@ -196,12 +196,12 @@ namespace BUS
                             TimeSpan diff1 = listWorking[i].WORKING_DAY.Subtract(listWorking[i - 1].WORKING_DAY);
                             // Nếu liên tục thì thêm Id vào danh sách đã tạo
                             if (diff1.TotalDays == 1)
-                            {                                
+                            {
                                 SPACE_DAY.Add(listWorking[i].ID);
                             }
                             // Nếu không liên tục thì kiểm tra và chèn khoảng ngày làm việc đã tạo vào và thêm khoảng mới
                             else
-                            {                                  
+                            {
                                 // Kiểm tra nếu nhiều hơn Số ngày đã cài đặt thì thêm vào danh sách  
                                 if (SPACE_DAY.Count >= COMMON_BUS.DAY_OF_WORKING)
                                 {
@@ -210,14 +210,14 @@ namespace BUS
                                 }
                                 SPACE_DAY.Clear();
                                 SPACE_DAY.Add(listWorking[i].ID);
-                                                               
+
                             }
                             OldDate = listWorking[i].WORKING_DAY;
                         }
                         // Nếu là nhân viên khác thì tạo đối tượng và thêm vào danh sách
                         else
                         {
-                            if (LIST_DAY_NOT_WORKING.Count >0)
+                            if (LIST_DAY_NOT_WORKING.Count > 0)
                             {
                                 // Tạo đối tượng mới và chèn vào danh sách  
                                 OBJ_CALC newObject = new OBJ_CALC();
@@ -228,8 +228,8 @@ namespace BUS
                                 ListAvailabe.Add(newObject);
 
                                 LIST_DAY_NOT_WORKING.Clear();
-                            }                      
-                            
+                            }
+
 
                             // Sau khi chèn danh sách thì tạo mới đối tượng cho nhân viên tiếp theo
                             MA_NHAN_VIEN = listWorking[i].MA_NHAN_VIEN;
@@ -239,10 +239,10 @@ namespace BUS
                             // Thêm Id vào danh sách đã tạo
                             SPACE_DAY.Add(listWorking[i].ID);
 
-                        }   
+                        }
                     }
-                    if (i== (listWorking.Count-1))
-                    {                                         
+                    if (i == ( listWorking.Count - 1 ))
+                    {
                         // Kiểm tra nếu nhiều hơn Số ngày đã cài đặt thì thêm vào danh sách  
                         if (SPACE_DAY.Count >= COMMON_BUS.DAY_OF_WORKING)
                         {
@@ -253,8 +253,8 @@ namespace BUS
                             newObject.MA_NHAN_VIEN = MA_NHAN_VIEN;
                             newObject.LIST_DAY_NOT_WORKING = LIST_DAY_NOT_WORKING.ToList();
                             ListAvailabe.Add(newObject);
-                                                            
-                        } 
+
+                        }
                     }
                 }
 
@@ -278,7 +278,22 @@ namespace BUS
 
                 throw ex;
             }
-                            
+
+        }
+
+        public List<MT_WORKING> getCalenda( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            List<MT_WORKING> lichCT = new List<MT_WORKING>();
+            try
+            {
+                lichCT = dao.getLichCT(strDateFrom, strDateTo, strMaCongTy);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return lichCT;
+
         }
     }
 }

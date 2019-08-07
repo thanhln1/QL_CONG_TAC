@@ -235,6 +235,30 @@ namespace DAO
             }
         }
 
+        public List<MT_WORKING> getLichCT( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.AppendLine(" select * from HIS_WORKING a ");
+                sql.AppendLine(" where  cast (a.WORKING_DAY as date) BETWEEN ");
+                sql.AppendLine("  @FROM_DATE ");
+                sql.AppendLine(" AND  @TO_DATE ");
+                sql.AppendLine(" and a.MA_KHACH_HANG = @MA_CONG_TY ");
+
+                var output = cnn.Query<MT_WORKING>(sql.ToString(), new { FROM_DATE = strDateFrom, TO_DATE = strDateTo, MA_CONG_TY = strMaCongTy }).ToList();
+
+                if (output.Count > 0)
+                {
+                    return output.ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public List<MT_HOP_DONG> GetListCompany( DateTime fromDate, DateTime toDate )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
