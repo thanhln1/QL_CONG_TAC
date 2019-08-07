@@ -949,9 +949,9 @@ namespace ManageWorkExpenses
         {
             try
             {
-                cbbCustomer.DataSource = busContract.GetListContract();
-                cbbCustomer.DisplayMember = "KHACH_HANG";
-                cbbCustomer.ValueMember = "MA_KHACH_HANG";
+                cbCompany.DataSource = busContract.GetListContract();
+                cbCompany.DisplayMember = "KHACH_HANG";
+                cbCompany.ValueMember = "MA_KHACH_HANG";
             }
             catch (Exception ex)
             {
@@ -963,229 +963,225 @@ namespace ManageWorkExpenses
         // xuất quyết định Chưa làm xong
         private void btnExportexcelKQ2_Click( object sender, EventArgs e )
         {
-        //    try
-        //    {
-        //       //  MT_LICH_CT rowCalenda = busCalenda.getCalenda(cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+            try
+            {                     
+                // Lấy thông tin toàn bộ lịch công tác trong khoảng thời gian
+                List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
+                MT_HOP_DONG info = new MT_HOP_DONG();
+                inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
+                string soHopDong = inForContract[0].SO_HOP_DONG;
+                string ngayKyHopDong = inForContract[0].NGAY_HOP_DONG.ToShortDateString();
+                string diachi = inForContract[0].DIA_CHI;
+                                                               
+
+                Excel.Application xlApp = new Excel.Application();
+                if (xlApp == null)
+                {
+                    MessageBox.Show("Máy tính chưa được cài đặt Excell đúng!");
+                    return;
+                }
+                Excel.Workbooks oBooks;
+                Excel.Sheets oSheets;
+                Excel.Workbook oBook;
+                Excel.Worksheet oSheet;
+                //Tạo mới một Excel WorkBook 
+                xlApp.Visible = true;
+                xlApp.DisplayAlerts = false;
+                xlApp.Application.SheetsInNewWorkbook = 1;
+                oBooks = xlApp.Workbooks;
+                oBook = (Microsoft.Office.Interop.Excel.Workbook)( xlApp.Workbooks.Add(Type.Missing) );
+                oSheets = oBook.Worksheets;
+                oSheet = (Microsoft.Office.Interop.Excel.Worksheet)oSheets.get_Item(1);
+                oSheet.Name = "QĐ";
+
+                #region Tạo template cho File
+                Excel.Range head = oSheet.get_Range("A2", "M12");
+                head.Font.Size = FONT_SIZE_BODY;
+                head.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+                // CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+                Excel.Range head1 = oSheet.get_Range("A1", "M1");
+                head1.MergeCells = true;
+                head1.Value2 = "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM";
+                head1.Font.Bold = false;
+                head1.Font.Size = FONT_SIZE_BODY;
+                head1.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+                //Độc lập – Tự do – Hạnh phúc
+                Excel.Range head2 = oSheet.get_Range("A2", "M2");
+                head2.MergeCells = true;
+                head2.Value2 = "Độc lập – Tự do – Hạnh phúc";
+                head2.Font.Bold = true;
+                head2.Font.Italic = true;
+                head2.Font.Underline = true;
+
+                Excel.Range head3 = oSheet.get_Range("A3", "M3");
+                head3.MergeCells = true;
+                head3.Value2 = "Hà Nội, ngày .... tháng .... năm ....";
+                head3.Font.Italic = true;
+                head3.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+
+                Excel.Range head5 = oSheet.get_Range("A5", "M5");
+                head5.MergeCells = true;
+                head5.Value2 = "QUYẾT ĐỊNH";
+                head5.Font.Bold = true;
+
+                Excel.Range head6 = oSheet.get_Range("A6", "M6");
+                head6.MergeCells = true;
+                head6.Value2 = "Về việc cử cán bộ đi công tác";
+                head6.Font.Bold = true;
+
+                Excel.Range head07 = oSheet.get_Range("A7", "M7");
+                head07.MergeCells = true;
+                head07.Value2 = "GIÁM ĐỐC";
+                head07.Font.Bold = true;
+
+                Excel.Range head08 = oSheet.get_Range("A8", "M8");
+                head08.MergeCells = true;
+                head08.Value2 = "Công ty ........";
+                head08.Font.Bold = true;
+
+                Excel.Range head10 = oSheet.get_Range("A10", "M10");
+                head10.MergeCells = true;
+                head10.Value2 = "'- Căn cứ theo Điều lệ tổ chức và hoạt động của Công ty TNHH NVC";
+                head10.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+
+                Excel.Range head11 = oSheet.get_Range("A11", "M11");
+                head11.MergeCells = true;
+                head11.Value2 = "- Căn cứ vào hợp đồng số: " + soHopDong + " ngày: " + ngayKyHopDong + "";
+                head11.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+
+                Excel.Range head12 = oSheet.get_Range("A12", "M12");
+                head12.MergeCells = true;
+                head12.Value2 = "'- Chức năng quyền hạn của Giám đốc.";
+                head12.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+
+                // điều 1
+                Excel.Range dieu1_1 = oSheet.Cells[13, 1];
+                dieu1_1.Value = "'- Điều 1:";
+                dieu1_1.Font.Bold = true;
+                dieu1_1.Font.Underline = true;
+                Excel.Range dieu1_2 = oSheet.Cells[13, 4];
+                dieu1_2.Value = "'Quyết định cử các nhân viên sau đi công tác:";
+                #endregion
+
+                //DateTime ngaybatdau = rowCalenda.FROM_DATE;
+                //DateTime ngayketthuc = rowCalenda.TO_DATE;
+                List<DateTime> liststartdate = new List<DateTime>();
+                List<DateTime> listenddate = new List<DateTime>();
+                DateTime DATE_START;
+                DateTime DATE_END;
+
+                // danh sach cán bộ đi công tác
+                List<STAFF> listStaff = busWorking.GetListStaff(cbbCustomer.SelectedValue.ToString(), cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+                int countList = listStaff.Count;
+                for (int i = 0 ; i < countList ; i++)
+                {
+                    Excel.Range hoTen = oSheet.Cells[i + 14, 2];
+                    var item = listStaff[i];
+                    hoTen.Value = item.HO_TEN;
+
+                    //lấy thời gian công tác: 
+                    int count = item.NGAY_CONG_TAC.Count;
+                    int day_from = item.NGAY_CONG_TAC[0];
+                    int day_to = item.NGAY_CONG_TAC[( count - 1 )];
+
+                    //DateTime date_start = ngaybatdau.AddDays(day_from);
+                    //liststartdate.Add(date_start);
+                    // DateTime date_end = ngaybatdau.AddDays(day_to);
+                    // listenddate.Add(date_end);
+                }
+                if (countList > 0)
+                {
+                    DATE_START = liststartdate.Min(p => p);
+                    DATE_END = listenddate.Max(p => p);
+                }
+                else
+                {
+                    DATE_START = DateTime.Now;
+                    DATE_END = DateTime.Now;
+                }
+
+                oSheet.Columns[1].ColumnWidth = 02.00;
+                oSheet.Columns[2].ColumnWidth = 02.00;
+                oSheet.Columns[3].ColumnWidth = 04.00;
+                oSheet.Columns[4].ColumnWidth = 02.00;
+
+                // điều 2 [A14 - M14]
+                Excel.Range dieu2_1 = oSheet.Cells[countList + 15, 1];
+                dieu2_1.Value = "'- Điều 2: ";
+                dieu2_1.Font.Bold = true;
+                dieu2_1.Font.Underline = true;
+                Excel.Range dieu2_2 = oSheet.Cells[countList + 15, 4];
+                dieu2_2.Value = "'Thông tin nơi Công tác:";
+                Excel.Range donviCT = oSheet.Cells[countList + 17, 2];
+                donviCT.Value = "- Đơn vị đến công tác :";
+                Excel.Range donviCT_1 = oSheet.Cells[countList + 17, 7];    // tên đơn vị công tác
+                donviCT_1.Value = inForContract[0].KHACH_HANG;
+
+                Excel.Range diadiemCT = oSheet.Cells[countList + 18, 2];
+                diadiemCT.Value = "- Địa điểm đến công tác :";
+                Excel.Range diadiemCT_1 = oSheet.Cells[countList + 18, 7];  // địa điểm công tác
+                diadiemCT_1.Value = inForContract[0].DIA_CHI;
+
+                Excel.Range thoigianCT = oSheet.Cells[countList + 19, 2];
+                thoigianCT.Value = "- Thời gian công tác:";
+                Excel.Range thoigianCT_1 = oSheet.Cells[countList + 19, 7];  // khoảng thời gian công tác.
+                thoigianCT_1.Value = ( DATE_END - DATE_START ).TotalDays.ToString() + " ngày (từ ngày " + DATE_START.ToString("dd/MM/yyyy") + " đến ngày " + DATE_END.ToString("dd/MM/yyyy") + ")";
+                                                        
+                #region Điều khoản
+                // điều 3
+                Excel.Range dieu3_1 = oSheet.Cells[countList + 21, 1];
+                dieu3_1.Value = "'- Điều 3: ";
+                dieu3_1.Font.Bold = true;
+                dieu3_1.Font.Underline = true;
+                Excel.Range dieu3_2 = oSheet.Cells[countList + 21, 4];
+                dieu3_2.Value = "'Các Ông, Bà có tên nêu tại Điều 1 được hưởng đầy đủ chính sách công tác phí theo quy chế tài chính của Công ty ";
+                Excel.Range muccongtac = oSheet.Cells[countList + 22, 2];
+                string gia = busDongia.GetDonGia(inForContract[0].TINH).ToString();
+                muccongtac.Value = "'- Mức công tác phí khoán là " + gia + " đồng/người/ngày";
 
 
-        //        //if (rowCalenda == null)
-        //        //{
-        //        //    //MessageBox.Show("Chưa có lịch công tác");
-        //        //    MessageBox.Show("Chưa có lịch công tác !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //        //    return;
-        //        //}
-        //        // get thông tin nơi công tác
-        //        List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
-        //        MT_HOP_DONG info = new MT_HOP_DONG();
-        //        inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
-        //        string soHopDong = inForContract[0].SO_HOP_DONG;
-        //        string ngayKyHopDong = inForContract[0].NGAY_HOP_DONG.ToShortDateString();
-        //        string diachi = inForContract[0].DIA_CHI;
+                // điều 4
+                Excel.Range dieu4 = oSheet.Cells[countList + 24, 1];
+                dieu4.Value = "'-Điều 4: ";
+                dieu4.Font.Bold = true;
+                dieu4.Font.Underline = true;
+                Excel.Range dieu4_2 = oSheet.Cells[countList + 24, 4];
+                dieu4_2.Value = "'Quyết định này có hiệu lực thi hành kể từ ngày ký. Các Ông, Bà và bộ phận liên quan chịu trách nhiệm thi hành ";
 
-        //        Excel.Application xlApp = new Excel.Application();
-        //        if (xlApp == null)
-        //        {
-        //            MessageBox.Show("Excel is not properly installed!!");
-        //            return;
-        //        }
-        //        Excel.Workbooks oBooks;
-        //        Excel.Sheets oSheets;
-        //        Excel.Workbook oBook;
-        //        Excel.Worksheet oSheet;
-        //        //Tạo mới một Excel WorkBook 
-        //        xlApp.Visible = true;
-        //        xlApp.DisplayAlerts = false;
-        //        xlApp.Application.SheetsInNewWorkbook = 1;
-        //        oBooks = xlApp.Workbooks;
-        //        oBook = (Microsoft.Office.Interop.Excel.Workbook)( xlApp.Workbooks.Add(Type.Missing) );
-        //        oSheets = oBook.Worksheets;
-        //        oSheet = (Microsoft.Office.Interop.Excel.Worksheet)oSheets.get_Item(1);
-        //        oSheet.Name = "QĐ";
+                Excel.Range noinhan = oSheet.Cells[countList + 26, 4];
+                noinhan.Value = "Nơi nhận:";
+                noinhan.Font.Italic = true;
+                noinhan.Font.Underline = true;
+                noinhan.Font.Size = FONT_SIZE_11;
 
-        //        Excel.Range head = oSheet.get_Range("A2", "M12");
-        //        head.Font.Size = FONT_SIZE_BODY;
-        //        head.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                Excel.Range nhudieu4 = oSheet.Cells[countList + 27, 4];
+                nhudieu4.Value = "Như điều 4;";
+                nhudieu4.Font.Italic = true;
+                nhudieu4.Font.Size = FONT_SIZE_09;
 
-        //        // CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-        //        Excel.Range head1 = oSheet.get_Range("A1", "M1");
-        //        head1.MergeCells = true;
-        //        head1.Value2 = "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM";
-        //        head1.Font.Bold = false;
-        //        head1.Font.Size = FONT_SIZE_BODY;
-        //        head1.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                Excel.Range luuVP = oSheet.Cells[countList + 28, 4];
+                luuVP.Value = "Lưu VP.";
+                luuVP.Font.Italic = true;
+                luuVP.Font.Size = FONT_SIZE_09;
 
-        //        //Độc lập – Tự do – Hạnh phúc
-        //        Excel.Range head2 = oSheet.get_Range("A2", "M2");
-        //        head2.MergeCells = true;
-        //        head2.Value2 = "Độc lập – Tự do – Hạnh phúc";
-        //        head2.Font.Bold = true;
-        //        head2.Font.Italic = true;
-        //        head2.Font.Underline = true;
+                Excel.Range giamdocky = oSheet.Cells[countList + 26, 12];
+                giamdocky.Value = "GIÁM ĐỐC";
+                giamdocky.Font.Bold = true;
+                giamdocky.Font.Size = FONT_SIZE_BODY;
 
-        //        Excel.Range head3 = oSheet.get_Range("A3", "M3");
-        //        head3.MergeCells = true;
-        //        head3.Value2 = "Hà Nội, ngày .... tháng .... năm ....";
-        //        head3.Font.Italic = true;
-        //        head3.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+#endregion
 
-        //        Excel.Range head5 = oSheet.get_Range("A5", "M5");
-        //        head5.MergeCells = true;
-        //        head5.Value2 = "QUYẾT ĐỊNH";
-        //        head5.Font.Bold = true;
+                oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[1, 1] ), (Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[countList + 30, 15] )).Font.Name = "Times New Roman";
+                oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[10, 1] ), (Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[countList + 25, 15] )).Font.Size = FONT_SIZE_BODY;
+                oSheet.Rows["13"].Insert();
 
-        //        Excel.Range head6 = oSheet.get_Range("A6", "M6");
-        //        head6.MergeCells = true;
-        //        head6.Value2 = "Về việc cử cán bộ đi công tác";
-        //        head6.Font.Bold = true;
-
-        //        Excel.Range head07 = oSheet.get_Range("A7", "M7");
-        //        head07.MergeCells = true;
-        //        head07.Value2 = "GIÁM ĐỐC";
-        //        head07.Font.Bold = true;
-
-        //        Excel.Range head08 = oSheet.get_Range("A8", "M8");
-        //        head08.MergeCells = true;
-        //        head08.Value2 = "Công ty ........";
-        //        head08.Font.Bold = true;
-
-        //        Excel.Range head10 = oSheet.get_Range("A10", "M10");
-        //        head10.MergeCells = true;
-        //        head10.Value2 = "'- Căn cứ theo Điều lệ tổ chức và hoạt động của Công ty TNHH NVC";
-        //        head10.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
-
-        //        Excel.Range head11 = oSheet.get_Range("A11", "M11");
-        //        head11.MergeCells = true;
-        //        head11.Value2 = "- Căn cứ vào hợp đồng số: " + soHopDong + " ngày: " + ngayKyHopDong + "";
-        //        head11.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
-
-        //        Excel.Range head12 = oSheet.get_Range("A12", "M12");
-        //        head12.MergeCells = true;
-        //        head12.Value2 = "'- Chức năng quyền hạn của Giám đốc.";
-        //        head12.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
-
-        //        // điều 1
-        //        Excel.Range dieu1_1 = oSheet.Cells[13, 1];
-        //        dieu1_1.Value = "'- Điều 1:";
-        //        dieu1_1.Font.Bold = true;
-        //        dieu1_1.Font.Underline = true;
-        //        Excel.Range dieu1_2 = oSheet.Cells[13, 4];
-        //        dieu1_2.Value = "'Quyết định cử các nhân viên sau đi công tác:";
-
-
-        //        //DateTime ngaybatdau = rowCalenda.FROM_DATE;
-        //        //DateTime ngayketthuc = rowCalenda.TO_DATE;
-        //        List<DateTime> liststartdate = new List<DateTime>();
-        //        List<DateTime> listenddate = new List<DateTime>();
-        //        DateTime DATE_START;
-        //        DateTime DATE_END;
-
-        //        // danh sach cán bộ đi công tác
-        //        List<STAFF> listStaff = busWorking.GetListStaff(cbbCustomer.SelectedValue.ToString(), cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
-        //        int countList = listStaff.Count;
-        //        for (int i = 0 ; i < countList ; i++)
-        //        {
-        //            Excel.Range hoTen = oSheet.Cells[i + 14, 2];
-        //            var item = listStaff[i];
-        //            hoTen.Value = item.HO_TEN;
-
-        //            //lấy thời gian công tác: 
-        //            int count = item.NGAY_CONG_TAC.Count;
-        //            int day_from = item.NGAY_CONG_TAC[0];
-        //            int day_to = item.NGAY_CONG_TAC[( count - 1 )];
-
-        //            //DateTime date_start = ngaybatdau.AddDays(day_from);
-        //            //liststartdate.Add(date_start);
-        //           // DateTime date_end = ngaybatdau.AddDays(day_to);
-        //           // listenddate.Add(date_end);
-        //        }
-        //        if (countList > 0)
-        //        {
-        //            DATE_START = liststartdate.Min(p => p);
-        //            DATE_END = listenddate.Max(p => p);
-        //        }
-        //        else
-        //        {
-        //            DATE_START = DateTime.Now;
-        //            DATE_END = DateTime.Now;
-        //        }
-
-        //        oSheet.Columns[1].ColumnWidth = 02.00;
-        //        oSheet.Columns[2].ColumnWidth = 02.00;
-        //        oSheet.Columns[3].ColumnWidth = 04.00;
-        //        oSheet.Columns[4].ColumnWidth = 02.00;
-
-        //        // điều 2 [A14 - M14]
-        //        Excel.Range dieu2_1 = oSheet.Cells[countList + 15, 1];
-        //        dieu2_1.Value = "'- Điều 2: ";
-        //        dieu2_1.Font.Bold = true;
-        //        dieu2_1.Font.Underline = true;
-        //        Excel.Range dieu2_2 = oSheet.Cells[countList + 15, 4];
-        //        dieu2_2.Value = "'Thông tin nơi Công tác:";
-        //        Excel.Range donviCT = oSheet.Cells[countList + 17, 2];
-        //        donviCT.Value = "- Đơn vị đến công tác :";
-        //        Excel.Range donviCT_1 = oSheet.Cells[countList + 17, 7];    // tên đơn vị công tác
-        //        donviCT_1.Value = inForContract[0].KHACH_HANG;
-
-        //        Excel.Range diadiemCT = oSheet.Cells[countList + 18, 2];
-        //        diadiemCT.Value = "- Địa điểm đến công tác :";
-        //        Excel.Range diadiemCT_1 = oSheet.Cells[countList + 18, 7];  // địa điểm công tác
-        //        diadiemCT_1.Value = inForContract[0].DIA_CHI;
-
-        //        Excel.Range thoigianCT = oSheet.Cells[countList + 19, 2];
-        //        thoigianCT.Value = "- Thời gian công tác:";
-        //        Excel.Range thoigianCT_1 = oSheet.Cells[countList + 19, 7];  // khoảng thời gian công tác.
-        //        thoigianCT_1.Value = ( DATE_END - DATE_START ).TotalDays.ToString() + " ngày (từ ngày " + DATE_START.ToString("dd/MM/yyyy") + " đến ngày " + DATE_END.ToString("dd/MM/yyyy") + ")";
-
-        //        // điều 3
-        //        Excel.Range dieu3_1 = oSheet.Cells[countList + 21, 1];
-        //        dieu3_1.Value = "'- Điều 3: ";
-        //        dieu3_1.Font.Bold = true;
-        //        dieu3_1.Font.Underline = true;
-        //        Excel.Range dieu3_2 = oSheet.Cells[countList + 21, 4];
-        //        dieu3_2.Value = "'Các Ông, Bà có tên nêu tại Điều 1 được hưởng đầy đủ chính sách công tác phí theo quy chế tài chính của Công ty ";
-        //        Excel.Range muccongtac = oSheet.Cells[countList + 22, 2];
-        //        string gia = busDongia.GetDonGia(inForContract[0].TINH).ToString();
-        //        muccongtac.Value = "'- Mức công tác phí khoán là " + gia + " đồng/người/ngày";
-
-
-        //        // điều 4
-        //        Excel.Range dieu4 = oSheet.Cells[countList + 24, 1];
-        //        dieu4.Value = "'-Điều 4: ";
-        //        dieu4.Font.Bold = true;
-        //        dieu4.Font.Underline = true;
-        //        Excel.Range dieu4_2 = oSheet.Cells[countList + 24, 4];
-        //        dieu4_2.Value = "'Quyết định này có hiệu lực thi hành kể từ ngày ký. Các Ông, Bà và bộ phận liên quan chịu trách nhiệm thi hành ";
-
-        //        Excel.Range noinhan = oSheet.Cells[countList + 26, 4];
-        //        noinhan.Value = "Nơi nhận:";
-        //        noinhan.Font.Italic = true;
-        //        noinhan.Font.Underline = true;
-        //        noinhan.Font.Size = FONT_SIZE_11;
-
-        //        Excel.Range nhudieu4 = oSheet.Cells[countList + 27, 4];
-        //        nhudieu4.Value = "Như điều 4;";
-        //        nhudieu4.Font.Italic = true;
-        //        nhudieu4.Font.Size = FONT_SIZE_09;
-
-        //        Excel.Range luuVP = oSheet.Cells[countList + 28, 4];
-        //        luuVP.Value = "Lưu VP.";
-        //        luuVP.Font.Italic = true;
-        //        luuVP.Font.Size = FONT_SIZE_09;
-
-        //        Excel.Range giamdocky = oSheet.Cells[countList + 26, 12];
-        //        giamdocky.Value = "GIÁM ĐỐC";
-        //        giamdocky.Font.Bold = true;
-        //        giamdocky.Font.Size = FONT_SIZE_BODY;
-
-        //        oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[1, 1] ), (Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[countList + 30, 15] )).Font.Name = "Times New Roman";
-        //        oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[10, 1] ), (Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[countList + 25, 15] )).Font.Size = FONT_SIZE_BODY;
-        //        oSheet.Rows["13"].Insert();
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
-        //    }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
+            }
         }
 
         // xuất bảng kê
@@ -2030,6 +2026,31 @@ namespace ManageWorkExpenses
         {
             string[,] fakeSchedualArray = busWorking.GetSchedualArray("TMP",DateTime.Now, DateTime.Now);
             ViewToDatagrid(fakeSchedualArray);
+        }
+
+    
+        private void loadCompanyToExportData( DateTime fromDate, DateTime toDate )
+        {
+            try
+            {
+                cbCompany.DataSource = busWorking.GetListCompany(fromDate.Date, toDate.Date);
+                cbCompany.DisplayMember = "KHACH_HANG" + "MA_KHACH_HANG";
+                cbCompany.ValueMember = "MA_KHACH_HANG";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi khi lấy danh sách khách hàng : " + ex.Message);
+            }
+        }
+
+        private void cbFromDateExport_ValueChanged( object sender, EventArgs e )
+        {
+            loadCompanyToExportData(cbFromDateExport.Value, cbToDateExport.Value);
+        }
+
+        private void cbToDateExport_ValueChanged( object sender, EventArgs e )
+        {
+            loadCompanyToExportData(cbFromDateExport.Value, cbToDateExport.Value);
         }
     }
 }

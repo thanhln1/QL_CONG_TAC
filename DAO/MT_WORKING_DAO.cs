@@ -235,6 +235,15 @@ namespace DAO
             }
         }
 
+        public List<MT_HOP_DONG> GetListCompany( DateTime fromDate, DateTime toDate )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_HOP_DONG>("select * from MT_HOP_DONG a where a.MA_KHACH_HANG In (select distinct MA_KHACH_HANG from HIS_WORKING where MA_KHACH_HANG !='' and cast (WORKING_DAY as date) between @FROM and @TO) ", new { FROM = fromDate, TO = toDate });
+                return output.ToList();
+            }
+        }
+
         public List<MT_WORKING> GetWorkingEmpty( DateTime fromCalcDate, DateTime toCalcDate , bool isCN)
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))

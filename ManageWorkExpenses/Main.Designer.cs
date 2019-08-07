@@ -68,13 +68,14 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel7 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cbbCustomer = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cbCompany = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnExportexcelKQ2 = new System.Windows.Forms.Button();
-            this.cbbYear_tinhtoan = new System.Windows.Forms.DateTimePicker();
+            this.cbToDateExport = new System.Windows.Forms.DateTimePicker();
             this.btnExportexcelBangKe = new System.Windows.Forms.Button();
-            this.cbbMonth_tinhtoan = new System.Windows.Forms.DateTimePicker();
+            this.cbFromDateExport = new System.Windows.Forms.DateTimePicker();
             this.tabKeHoachKiemToan = new System.Windows.Forms.TabPage();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
@@ -218,7 +219,7 @@
             this.tabConfig.Location = new System.Drawing.Point(4, 22);
             this.tabConfig.Name = "tabConfig";
             this.tabConfig.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConfig.Size = new System.Drawing.Size(1297, 683);
+            this.tabConfig.Size = new System.Drawing.Size(1297, 707);
             this.tabConfig.TabIndex = 4;
             this.tabConfig.Text = "Cấu hình";
             this.tabConfig.UseVisualStyleBackColor = true;
@@ -499,7 +500,7 @@
             this.tabExport.Location = new System.Drawing.Point(4, 22);
             this.tabExport.Name = "tabExport";
             this.tabExport.Padding = new System.Windows.Forms.Padding(3);
-            this.tabExport.Size = new System.Drawing.Size(1297, 683);
+            this.tabExport.Size = new System.Drawing.Size(1297, 707);
             this.tabExport.TabIndex = 3;
             this.tabExport.Text = "Xuất báo cáo";
             this.tabExport.UseVisualStyleBackColor = true;
@@ -513,7 +514,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(308, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(986, 677);
+            this.dataGridView1.Size = new System.Drawing.Size(986, 701);
             this.dataGridView1.TabIndex = 2;
             // 
             // panel7
@@ -522,98 +523,110 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel7.Location = new System.Drawing.Point(3, 3);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(305, 677);
+            this.panel7.Size = new System.Drawing.Size(305, 701);
             this.panel7.TabIndex = 1;
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.cbbCustomer);
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.cbCompany);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.btnExportexcelKQ2);
-            this.groupBox3.Controls.Add(this.cbbYear_tinhtoan);
+            this.groupBox3.Controls.Add(this.cbToDateExport);
             this.groupBox3.Controls.Add(this.btnExportexcelBangKe);
-            this.groupBox3.Controls.Add(this.cbbMonth_tinhtoan);
+            this.groupBox3.Controls.Add(this.cbFromDateExport);
             this.groupBox3.Location = new System.Drawing.Point(14, 9);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(277, 181);
+            this.groupBox3.Size = new System.Drawing.Size(277, 248);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Chọn thông tin khách hàng";
             // 
-            // cbbCustomer
+            // label9
             // 
-            this.cbbCustomer.FormattingEnabled = true;
-            this.cbbCustomer.Location = new System.Drawing.Point(12, 28);
-            this.cbbCustomer.Name = "cbbCustomer";
-            this.cbbCustomer.Size = new System.Drawing.Size(250, 21);
-            this.cbbCustomer.TabIndex = 43;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 88);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(149, 13);
+            this.label9.TabIndex = 48;
+            this.label9.Text = "Chọn Công ty cần xuất dữ liệu";
+            // 
+            // cbCompany
+            // 
+            this.cbCompany.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbCompany.FormattingEnabled = true;
+            this.cbCompany.Location = new System.Drawing.Point(12, 107);
+            this.cbCompany.Name = "cbCompany";
+            this.cbCompany.Size = new System.Drawing.Size(259, 28);
+            this.cbCompany.TabIndex = 43;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 63);
+            this.label3.Location = new System.Drawing.Point(9, 27);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.Size = new System.Drawing.Size(46, 13);
             this.label3.TabIndex = 21;
-            this.label3.Text = "Tháng";
+            this.label3.Text = "Từ ngày";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(150, 63);
+            this.label2.Location = new System.Drawing.Point(9, 53);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 20;
-            this.label2.Text = "Năm";
+            this.label2.Text = "Đến ngày";
             // 
             // btnExportexcelKQ2
             // 
             this.btnExportexcelKQ2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExportexcelKQ2.Image = ((System.Drawing.Image)(resources.GetObject("btnExportexcelKQ2.Image")));
             this.btnExportexcelKQ2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportexcelKQ2.Location = new System.Drawing.Point(12, 109);
+            this.btnExportexcelKQ2.Location = new System.Drawing.Point(103, 141);
             this.btnExportexcelKQ2.Name = "btnExportexcelKQ2";
-            this.btnExportexcelKQ2.Size = new System.Drawing.Size(123, 44);
+            this.btnExportexcelKQ2.Size = new System.Drawing.Size(168, 44);
             this.btnExportexcelKQ2.TabIndex = 46;
-            this.btnExportexcelKQ2.Text = "Quyêt định   ";
+            this.btnExportexcelKQ2.Text = "Xuất File Quyết định   ";
             this.btnExportexcelKQ2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnExportexcelKQ2.UseVisualStyleBackColor = true;
             this.btnExportexcelKQ2.Click += new System.EventHandler(this.btnExportexcelKQ2_Click);
             // 
-            // cbbYear_tinhtoan
+            // cbToDateExport
             // 
-            this.cbbYear_tinhtoan.CustomFormat = "yyyy";
-            this.cbbYear_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbbYear_tinhtoan.Location = new System.Drawing.Point(194, 60);
-            this.cbbYear_tinhtoan.Name = "cbbYear_tinhtoan";
-            this.cbbYear_tinhtoan.ShowUpDown = true;
-            this.cbbYear_tinhtoan.Size = new System.Drawing.Size(68, 20);
-            this.cbbYear_tinhtoan.TabIndex = 45;
+            this.cbToDateExport.CustomFormat = "dd/MM/yyyy";
+            this.cbToDateExport.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbToDateExport.Location = new System.Drawing.Point(82, 53);
+            this.cbToDateExport.Name = "cbToDateExport";
+            this.cbToDateExport.ShowUpDown = true;
+            this.cbToDateExport.Size = new System.Drawing.Size(121, 20);
+            this.cbToDateExport.TabIndex = 45;
             // 
             // btnExportexcelBangKe
             // 
             this.btnExportexcelBangKe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExportexcelBangKe.Image = ((System.Drawing.Image)(resources.GetObject("btnExportexcelBangKe.Image")));
             this.btnExportexcelBangKe.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportexcelBangKe.Location = new System.Drawing.Point(141, 109);
+            this.btnExportexcelBangKe.Location = new System.Drawing.Point(103, 191);
             this.btnExportexcelBangKe.Name = "btnExportexcelBangKe";
-            this.btnExportexcelBangKe.Size = new System.Drawing.Size(121, 44);
+            this.btnExportexcelBangKe.Size = new System.Drawing.Size(168, 44);
             this.btnExportexcelBangKe.TabIndex = 47;
-            this.btnExportexcelBangKe.Text = "Bảng kê     ";
+            this.btnExportexcelBangKe.Text = "Xuất File Bảng kê     ";
             this.btnExportexcelBangKe.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnExportexcelBangKe.UseVisualStyleBackColor = true;
             this.btnExportexcelBangKe.Click += new System.EventHandler(this.btnExportexcelBangKe_Click);
             // 
-            // cbbMonth_tinhtoan
+            // cbFromDateExport
             // 
-            this.cbbMonth_tinhtoan.CustomFormat = "MM";
-            this.cbbMonth_tinhtoan.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.cbbMonth_tinhtoan.Location = new System.Drawing.Point(58, 60);
-            this.cbbMonth_tinhtoan.Name = "cbbMonth_tinhtoan";
-            this.cbbMonth_tinhtoan.ShowUpDown = true;
-            this.cbbMonth_tinhtoan.Size = new System.Drawing.Size(53, 20);
-            this.cbbMonth_tinhtoan.TabIndex = 44;
+            this.cbFromDateExport.CustomFormat = "dd/MM/yyyy";
+            this.cbFromDateExport.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.cbFromDateExport.Location = new System.Drawing.Point(82, 27);
+            this.cbFromDateExport.Name = "cbFromDateExport";
+            this.cbFromDateExport.ShowUpDown = true;
+            this.cbFromDateExport.Size = new System.Drawing.Size(121, 20);
+            this.cbFromDateExport.TabIndex = 44;
+            this.cbFromDateExport.ValueChanged += new System.EventHandler(this.cbFromDateExport_ValueChanged);
             // 
             // tabKeHoachKiemToan
             // 
@@ -983,7 +996,7 @@
             this.TabHopDong.Location = new System.Drawing.Point(4, 22);
             this.TabHopDong.Name = "TabHopDong";
             this.TabHopDong.Padding = new System.Windows.Forms.Padding(3);
-            this.TabHopDong.Size = new System.Drawing.Size(1297, 683);
+            this.TabHopDong.Size = new System.Drawing.Size(1297, 707);
             this.TabHopDong.TabIndex = 1;
             this.TabHopDong.Text = "Hợp Đồng";
             this.TabHopDong.UseVisualStyleBackColor = true;
@@ -994,7 +1007,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(353, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(941, 677);
+            this.panel4.Size = new System.Drawing.Size(941, 701);
             this.panel4.TabIndex = 3;
             // 
             // ListContract
@@ -1043,7 +1056,7 @@
             dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ListContract.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
-            this.ListContract.Size = new System.Drawing.Size(941, 677);
+            this.ListContract.Size = new System.Drawing.Size(941, 701);
             this.ListContract.TabIndex = 7;
             this.ListContract.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListContract_CellDoubleClick);
             // 
@@ -1163,7 +1176,7 @@
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.MinimumSize = new System.Drawing.Size(350, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(350, 677);
+            this.panel3.Size = new System.Drawing.Size(350, 701);
             this.panel3.TabIndex = 2;
             // 
             // cbNgayThanhLy
@@ -1451,7 +1464,7 @@
             this.TabNhanVien.Location = new System.Drawing.Point(4, 22);
             this.TabNhanVien.Name = "TabNhanVien";
             this.TabNhanVien.Padding = new System.Windows.Forms.Padding(3);
-            this.TabNhanVien.Size = new System.Drawing.Size(1297, 683);
+            this.TabNhanVien.Size = new System.Drawing.Size(1297, 707);
             this.TabNhanVien.TabIndex = 0;
             this.TabNhanVien.Text = "Nhân Viên";
             this.TabNhanVien.UseVisualStyleBackColor = true;
@@ -1462,7 +1475,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(353, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(941, 677);
+            this.panel2.Size = new System.Drawing.Size(941, 701);
             this.panel2.TabIndex = 1;
             // 
             // ListUser
@@ -1506,7 +1519,7 @@
             dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ListUser.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
-            this.ListUser.Size = new System.Drawing.Size(941, 677);
+            this.ListUser.Size = new System.Drawing.Size(941, 701);
             this.ListUser.TabIndex = 6;
             this.ListUser.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListUser_CellDoubleClick);
             // 
@@ -1570,7 +1583,7 @@
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.MinimumSize = new System.Drawing.Size(350, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(350, 677);
+            this.panel1.Size = new System.Drawing.Size(350, 701);
             this.panel1.TabIndex = 0;
             // 
             // cbPhongBan
@@ -1833,13 +1846,13 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.ComboBox cbbCustomer;
+        private System.Windows.Forms.ComboBox cbCompany;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnExportexcelKQ2;
-        private System.Windows.Forms.DateTimePicker cbbYear_tinhtoan;
+        private System.Windows.Forms.DateTimePicker cbToDateExport;
         private System.Windows.Forms.Button btnExportexcelBangKe;
-        private System.Windows.Forms.DateTimePicker cbbMonth_tinhtoan;
+        private System.Windows.Forms.DateTimePicker cbFromDateExport;
         private System.Windows.Forms.TabPage tabKeHoachKiemToan;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Panel panel8;
@@ -1947,6 +1960,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox txtMaKH;
         private System.Windows.Forms.Button btn_SearchAgain;
+        private System.Windows.Forms.Label label9;
     }
 }
 

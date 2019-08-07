@@ -265,5 +265,20 @@ namespace BUS
                 throw ex;
             }
         }
+
+        public List<MT_HOP_DONG> GetListCompany( DateTime fromDate, DateTime toDate )
+        {
+            try
+            {
+                List<MT_HOP_DONG> listCompany = dao.GetListCompany(fromDate, toDate);
+                return listCompany;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+                            
+        }
     }
 }
