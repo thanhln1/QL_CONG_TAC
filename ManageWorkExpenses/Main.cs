@@ -969,57 +969,17 @@ namespace ManageWorkExpenses
                 DateTime strDateTo = cbToDateExport.Value.Date;
                 string strMaCongTy = cbCompany.SelectedValue.ToString();
 
+                // Select số nhân viên đi trong khoảng thời gian
+                List<MT_NHAN_VIEN> listNhanVien = busWorking.getListEmployeeByCompany(strDateFrom, strDateTo, strMaCongTy);
 
                 // danh sách các nhân viên đi làm trong khoảng thời gian theo mã công ty
                 List<MT_WORKING> rowCalenda = busWorking.getCalenda(strDateFrom, strDateTo, strMaCongTy);
                 List<STAFF> listStaff = new List<STAFF>();
+                
 
-                foreach (MT_WORKING hisWorking in rowCalenda)
-                {
-                    STAFF staff_select = new STAFF();
-                    List<DateTime> list_ngay_cong_tac = new List<DateTime>();
-
-                    if (listStaff.Count() == 0)
-                    {
-                        staff_select.HO_TEN = hisWorking.HO_VA_TEN;
-                        staff_select.MA_NHAN_VIEN = hisWorking.MA_NHAN_VIEN;
-                        staff_select.SO_NGAY_CONG_TAC = list_ngay_cong_tac.Count + 1;
-                        list_ngay_cong_tac.Add(hisWorking.WORKING_DAY);
-                        staff_select.NGAY_CONG_TAC = list_ngay_cong_tac;
-                        listStaff.Add(staff_select);
-                    }
-                    else
-                    { // kiểm tra nhân viên này đã có trong list Staff hay chưa
-                        for (int i = 0 ; i < listStaff.Count() ; i++)
-                        {
-                            // bool next = true;
-                            // nếu đã tồn tại
-                            if (listStaff[i].MA_NHAN_VIEN == hisWorking.MA_NHAN_VIEN)
-                            {
-                                listStaff[i].SO_NGAY_CONG_TAC = listStaff[i].SO_NGAY_CONG_TAC + 1;
-                                //int count = listStaff[i].NGAY_CONG_TAC.Count();
-                                //listStaff[i].NGAY_CONG_TAC.Add(hisWorking.WORKING_DAY);
-                                //next = false;
-                            }
-                        }
-                        //if (next==true)
-                        //{
-                        //    staff_select.HO_TEN = hisWorking.HO_VA_TEN;
-                        //    staff_select.MA_NHAN_VIEN = hisWorking.MA_NHAN_VIEN;
-                        //    staff_select.SO_NGAY_CONG_TAC = list_ngay_cong_tac.Count + 1;
-                        //    //list_ngay_cong_tac.Add(hisWorking.WORKING_DAY);
-                        //    //staff_select.NGAY_CONG_TAC = list_ngay_cong_tac;
-                        //    listStaff.Add(staff_select);
-                        //    break;
-                        //}
-                    }
-                }
-
-
-                if (rowCalenda == null)
-                {
-                    //MessageBox.Show("Chưa có lịch công tác");
-                    MessageBox.Show("Chưa có lịch công tác !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (listNhanVien == null)
+                {                                               
+                    MessageBox.Show("Trong khoảng thời gian này không có Cán bộ nào đi công tác !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -1119,45 +1079,16 @@ namespace ManageWorkExpenses
                 dieu1_1.Font.Underline = true;
                 Excel.Range dieu1_2 = oSheet.Cells[13, 4];
                 dieu1_2.Value = "'Quyết định cử các nhân viên sau đi công tác:";
-#endregion
+                #endregion
 
-                //DateTime ngaybatdau = rowCalenda.FROM_DATE;
-                //DateTime ngayketthuc = rowCalenda.TO_DATE;
-                //List<DateTime> liststartdate = new List<DateTime>();
-                //List<DateTime> listenddate = new List<DateTime>();
-                DateTime DATE_START;
-                DateTime DATE_END;
+                string DATE_START = busWorking.getStartDateExport(strDateFrom, strDateTo, strMaCongTy) ;
+                string DATE_END   = busWorking.getToDateExport(strDateFrom, strDateTo, strMaCongTy);      
 
-                // danh sach cán bộ đi công tác
-
-
-                //List<STAFF> listStaff = busWorking.GetListStaff(cbbCustomer.SelectedValue.ToString(), cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
-                //List<STAFF> listStaff = null;
-
-
-
-
-                int countList = listStaff.Count;
+                int countList = listNhanVien.Count;
                 for (int i = 0 ; i < countList ; i++)
                 {
-                    Excel.Range hoTen = oSheet.Cells[i + 14, 2];
-                    var item = listStaff[i];
-                    hoTen.Value = item.HO_TEN;
-
-                    //lấy thời gian công tác: 
-                    int count = item.NGAY_CONG_TAC.Count;
-                    int day_from = 1;//item.NGAY_CONG_TAC[0];
-                    int day_to = 1;//item.NGAY_CONG_TAC[(count - 1)];
-                }
-                if (countList > 0)
-                {
-                    //DATE_START = liststartdate.Min(p => p);
-                    //DATE_END = listenddate.Max(p => p);
-                }
-                else
-                {
-                    //DATE_START = DateTime.Now;
-                    //DATE_END = DateTime.Now;
+                    Excel.Range hoTen = oSheet.Cells[i + 14, 2];                      
+                    hoTen.Value = listNhanVien[i].HO_TEN;               
                 }
 
                 oSheet.Columns[1].ColumnWidth = 02.00;
@@ -1185,7 +1116,7 @@ namespace ManageWorkExpenses
                 Excel.Range thoigianCT = oSheet.Cells[countList + 19, 2];
                 thoigianCT.Value = "- Thời gian công tác:";
                 Excel.Range thoigianCT_1 = oSheet.Cells[countList + 19, 7];  // khoảng thời gian công tác.
-                thoigianCT_1.Value = /*(DATE_END - DATE_START).TotalDays.ToString() + */" ngày (từ ngày " + strDateFrom + " đến ngày " + strDateTo + ")";
+                thoigianCT_1.Value = /*(DATE_END - DATE_START).TotalDays.ToString() + */" ngày (từ ngày " + DATE_START + " đến ngày " + DATE_END + ")";
 
                 // điều 3
                 Excel.Range dieu3_1 = oSheet.Cells[countList + 21, 1];

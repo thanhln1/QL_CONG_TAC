@@ -295,5 +295,43 @@ namespace BUS
             return lichCT;
 
         }
+
+        public List<MT_NHAN_VIEN> getListEmployeeByCompany( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            List<MT_NHAN_VIEN> ListEmployee = new List<MT_NHAN_VIEN>();
+            try
+            {
+                ListEmployee = dao.getListEmployeeByCompany(strDateFrom, strDateTo, strMaCongTy);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return ListEmployee;
+        }
+
+        public string getStartDateExport( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            try
+            {
+                return dao.getStartDateExport(strDateFrom, strDateTo, strMaCongTy);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }                      
+        }
+
+        public string getToDateExport( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            try
+            {
+                return dao.getToDateExport(strDateFrom, strDateTo, strMaCongTy);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

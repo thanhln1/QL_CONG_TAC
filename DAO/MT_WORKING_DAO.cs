@@ -259,6 +259,33 @@ namespace DAO
             }
         }
 
+        public string getStartDateExport( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<string>("SELECT  cast(min(a. WORKING_DAY) as Date)   from HIS_WORKING a where  cast (a.WORKING_DAY as date) BETWEEN  @FROM and @TO  and a.MA_KHACH_HANG = @MA_KHACH_HANG ", new { FROM = strDateFrom, TO = strDateTo, MA_KHACH_HANG = strMaCongTy });
+                return Convert.ToDateTime(output.First()).ToString("dd/MM/yyyy");
+            }
+        }
+
+        public string getToDateExport( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<string>("SELECT  cast(max(a. WORKING_DAY) as Date)   from HIS_WORKING a where  cast (a.WORKING_DAY as date) BETWEEN  @FROM and @TO  and a.MA_KHACH_HANG = @MA_KHACH_HANG ", new { FROM = strDateFrom, TO = strDateTo, MA_KHACH_HANG = strMaCongTy });
+                return Convert.ToDateTime(output.First()).ToString("dd/MM/yyyy");
+            }
+        }
+
+        public List<MT_NHAN_VIEN> getListEmployeeByCompany( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_NHAN_VIEN>("select * from MT_NHAN_VIEN where MA_NHAN_VIEN in(select distinct a.MA_NHAN_VIEN from HIS_WORKING a where  cast (a.WORKING_DAY as date) BETWEEN  @FROM and @TO  and a.MA_KHACH_HANG = @MA_KHACH_HANG) ", new { FROM = strDateFrom, TO = strDateTo , MA_KHACH_HANG  = strMaCongTy});
+                return output.ToList();
+            }
+        }
+
         public List<MT_HOP_DONG> GetListCompany( DateTime fromDate, DateTime toDate )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
