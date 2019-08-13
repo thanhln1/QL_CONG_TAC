@@ -333,5 +333,17 @@ namespace BUS
                 throw ex;
             }
         }
+
+        public string getMaxWorkDay( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            try
+            {
+                return dao.getMaxWorkDay(strDateFrom, strDateTo, strMaCongTy);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

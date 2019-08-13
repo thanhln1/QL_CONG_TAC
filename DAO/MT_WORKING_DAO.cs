@@ -268,6 +268,15 @@ namespace DAO
             }
         }
 
+        public string getMaxWorkDay( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<string>("select max(c.COUNT_DAY) from (select count(*) as COUNT_DAY, MA_NHAN_VIEN from HIS_WORKING a where  cast (a.WORKING_DAY as date) BETWEEN  @FROM and @TO  and a.MA_KHACH_HANG = @MA_KHACH_HANG group by MA_NHAN_VIEN) as C ", new { FROM = strDateFrom, TO = strDateTo, MA_KHACH_HANG = strMaCongTy });
+                return output.First().ToString();
+            }
+        }
+
         public string getToDateExport( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))

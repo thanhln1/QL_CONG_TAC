@@ -268,6 +268,7 @@ namespace ManageWorkExpenses
             var fileContent = string.Empty;
             var filePath = string.Empty;
 
+            List<MT_HOP_DONG> listContract = new List<MT_HOP_DONG>();
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 string messeger = "";
@@ -303,61 +304,152 @@ namespace ManageWorkExpenses
                             //excel is not zero based!!
                             for (int i = 3 ; i <= rowCount ; i++)
                             {
-                                MT_HOP_DONG contract = new MT_HOP_DONG();
-
-                                //write the value to the console 
-                                //SO_HOP_DONG
-                                if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "")))
-                                {
-                                    continue;
-                                }
-                                contract.SO_HOP_DONG = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
-
-                                //NGAY_HOP_DONG    
-                                DateTimeFormatInfo DateInfo = CultureInfo.CurrentCulture.DateTimeFormat;
-
-                                contract.NGAY_HOP_DONG = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 2].Text.ToString().Trim()), CultureInfo.CurrentCulture);
-
-                                //NGAY_THANH_LY
-                                contract.NGAY_THANH_LY = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 3].Text.ToString().Trim()), CultureInfo.CurrentCulture);
-
-                                //KHACH_HANG
-                                contract.KHACH_HANG = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //MA_KHACH_HANG
-                                contract.MA_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //NHOM_KHACH_HANG
-                                contract.NHOM_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 6].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //DIA_CHI
-                                contract.DIA_CHI = Regex.Replace(xlRange.Cells[i, 7].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //TINH
-                                contract.TINH = Regex.Replace(xlRange.Cells[i, 8].Value2.ToString(), @"\r\n?|\n", "");
-
-                                //GIA_TRI_HOP_DONG
-                                contract.GIA_TRI_HOP_DONG = xlRange.Cells[i, 9].Value2;
-
-                                //TONG_CHI_PHI_MUC_TOI_DA
-                                contract.TONG_CHI_PHI_MUC_TOI_DA = xlRange.Cells[i, 10].Value2;
-
-                                //CHI_PHI_THUC_DA_CHI
-                                contract.CHI_PHI_THUC_DA_CHI = xlRange.Cells[i, 11].Value2;
-
-                                //GHI_CHU
-                                contract.GHI_CHU = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
-
                                 try
                                 {
-                                    bool result = busContract.SaveContract(contract);
-                                    messeger += ( result == true ) ? "Ghi Thành công HĐ số : " + contract.SO_HOP_DONG + "\n" : "Không ghi được HĐ số : " + contract.SO_HOP_DONG + " Lý do: Bản ghi bị trùng số HĐ \n";
+                                    #region Tạo đối tượng Hợp đồng để tạo danh sách hợp đồng
+                                    MT_HOP_DONG contract = new MT_HOP_DONG(); 
+                                    //write the value to the console 
+                                    //SO_HOP_DONG
+                                    if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "")))
+                                    {
+                                        continue;
+                                    }
+                                    if (xlRange.Cells[i, 1].Value2 != null)
+                                    {
+                                        contract.SO_HOP_DONG = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Số hợp đồng không được để trống.");
+                                        return;
+                                    }                                   
+
+                                    //NGAY_HOP_DONG    
+                                    DateTimeFormatInfo DateInfo = CultureInfo.CurrentCulture.DateTimeFormat;
+
+                                    contract.NGAY_HOP_DONG = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 2].Text.ToString().Trim()), CultureInfo.CurrentCulture);
+
+                                    //NGAY_THANH_LY
+                                    contract.NGAY_THANH_LY = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 3].Text.ToString().Trim()), CultureInfo.CurrentCulture);
+
+                                    //KHACH_HANG
+                                    contract.KHACH_HANG = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
+
+                                    //MA_KHACH_HANG
+                                    if (xlRange.Cells[i, 5].Value2 !=null)
+                                    {
+                                        contract.MA_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Mã Khách hàng không được để trống.\nXem lại hợp đồng: "+ contract.SO_HOP_DONG);
+                                        return;
+                                    }
+                                    //NHOM_KHACH_HANG
+                                    if (xlRange.Cells[i, 6].Value2 != null)
+                                    {
+                                        contract.NHOM_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 6].Value2.ToString(), @"\r\n?|\n", "");
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Nhóm Khách hàng không được để trống.\nXem lại hợp đồng: " + contract.SO_HOP_DONG);
+                                        return;
+                                    }
+                                   
+
+                                    //DIA_CHI
+                                    contract.DIA_CHI = Regex.Replace(xlRange.Cells[i, 7].Value2.ToString(), @"\r\n?|\n", "");
+
+                                    //TINH
+                                    if (xlRange.Cells[i, 8].Value2 != null)
+                                    {
+                                        contract.TINH = Regex.Replace(xlRange.Cells[i, 8].Value2.ToString(), @"\r\n?|\n", "");
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Thông tin tỉnh thành công tác không được để trống.\nXem lại hợp đồng: " + contract.SO_HOP_DONG);
+                                        return;
+                                    }                                    
+
+                                    //GIA_TRI_HOP_DONG
+                                    if (xlRange.Cells[i, 9].Value2 != null)
+                                    {
+                                        contract.GIA_TRI_HOP_DONG = xlRange.Cells[i, 9].Value2;
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Giá trị hợp đồng của hợp đồng số: "+contract.SO_HOP_DONG + " không được để trống.");
+                                        return;
+                                    } 
+                                    //TONG_CHI_PHI_MUC_TOI_DA
+                                    if (xlRange.Cells[i, 10].Value2 != null)
+                                    {
+                                        contract.TONG_CHI_PHI_MUC_TOI_DA = xlRange.Cells[i, 10].Value2;
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Tổng chi phí mức tối đa của hợp đồng số: " + contract.SO_HOP_DONG + " không được để trống.");
+                                        return;
+                                    }
+
+                                    //CHI_PHI_THUC_DA_CHI
+                                    if (xlRange.Cells[i, 11].Value2 !=null)
+                                    {
+                                        contract.CHI_PHI_THUC_DA_CHI = xlRange.Cells[i, 11].Value2;
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Chi phí thực đã chi của hợp đồng số: " + contract.SO_HOP_DONG + " không được để trống.");
+                                        return;
+                                    }                                    
+
+                                    //GHI_CHU
+                                    contract.GHI_CHU = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
+                                    #endregion
+                                    
+                                    //  add vào danh sách để kiểm tra và chèn vào DB
+                                    listContract.Add(contract);
                                 }
                                 catch (Exception ex)
                                 {
-                                    messeger += "Lỗi ghi HĐ số : " + contract.SO_HOP_DONG + " Lý do: " + ex.Message;
-                                }
+                                    MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
+                                }   
                             }
+                            try
+                            {
+                                // Kiểm tra xem có bị trùng không
+                                List<MT_HOP_DONG> ListDuplicate = busContract.checkListContractDuplicate(listContract);
+                                if (ListDuplicate.Count < 1)
+                                {
+                                    try
+                                    {
+                                        // Insert vào DB
+                                        int result = busContract.SaveListContract(listContract);
+                                        messeger = "Ghi thành công "+ result+" hợp đồng";
+                                        MessageBox.Show(messeger, "Ghi Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        messeger += "Đã xảy ra lỗi vì: " + ex.Message;
+                                        MessageBox.Show(messeger, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                                else
+                                {
+                                    // In ra danh sách HD bị trùng
+                                    messeger += "Hợp đồng đã bị trùng: \nKiểm tra lại thông tin của các hợp đồng sau:\n";
+                                    foreach (var item in ListDuplicate)
+                                    {
+                                        messeger += item.SO_HOP_DONG +" | ";
+                                    }
+                                    MessageBox.Show(messeger, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                } 
+                            }
+                            catch (Exception ex)
+                            {
+                                messeger += "Đã xảy ra lỗi tại: " + ex.Message;
+                                MessageBox.Show(messeger, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }                            
 
                             //cleanup
                             GC.Collect();
@@ -377,15 +469,13 @@ namespace ManageWorkExpenses
 
                             //quit and release
                             xlApp.Quit();
-                            Marshal.ReleaseComObject(xlApp);
-
-                            MessageBox.Show(messeger);
+                            Marshal.ReleaseComObject(xlApp);                                                  
                             LoadContract();
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
+                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message , "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -983,13 +1073,12 @@ namespace ManageWorkExpenses
                     return;
                 }
 
-                //get thông tin nơi công tác
-                List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
-                MT_HOP_DONG info = new MT_HOP_DONG();
+                //get thông tin nơi công tác                                  
+                MT_HOP_DONG inForContract = new MT_HOP_DONG();
                 inForContract = busContract.GetInforContract(strMaCongTy);
-                string soHopDong = inForContract[0].SO_HOP_DONG;
-                string ngayKyHopDong = inForContract[0].NGAY_HOP_DONG.ToShortDateString();
-                string diachi = inForContract[0].DIA_CHI;
+                string soHopDong = inForContract.SO_HOP_DONG;
+                string ngayKyHopDong = inForContract.NGAY_HOP_DONG.ToShortDateString();
+                string diachi = inForContract.DIA_CHI;
 
                 Excel.Application xlApp = new Excel.Application();
                 if (xlApp == null)
@@ -1106,17 +1195,18 @@ namespace ManageWorkExpenses
                 Excel.Range donviCT = oSheet.Cells[countList + 17, 2];
                 donviCT.Value = "- Đơn vị đến công tác :";
                 Excel.Range donviCT_1 = oSheet.Cells[countList + 17, 7];    // tên đơn vị công tác
-                donviCT_1.Value = inForContract[0].KHACH_HANG;
+                donviCT_1.Value = inForContract.KHACH_HANG;
 
                 Excel.Range diadiemCT = oSheet.Cells[countList + 18, 2];
                 diadiemCT.Value = "- Địa điểm đến công tác :";
                 Excel.Range diadiemCT_1 = oSheet.Cells[countList + 18, 7];  // địa điểm công tác
-                diadiemCT_1.Value = inForContract[0].DIA_CHI;
+                diadiemCT_1.Value = inForContract.DIA_CHI;
 
                 Excel.Range thoigianCT = oSheet.Cells[countList + 19, 2];
                 thoigianCT.Value = "- Thời gian công tác:";
                 Excel.Range thoigianCT_1 = oSheet.Cells[countList + 19, 7];  // khoảng thời gian công tác.
-                thoigianCT_1.Value = /*(DATE_END - DATE_START).TotalDays.ToString() + */" ngày (từ ngày " + DATE_START + " đến ngày " + DATE_END + ")";
+                string soNgayCongTac = busWorking.getMaxWorkDay(strDateFrom, strDateTo, strMaCongTy);
+                thoigianCT_1.Value = soNgayCongTac+ " ngày (từ ngày " + DATE_START + " đến ngày " + DATE_END + ")";
 
                 // điều 3
                 Excel.Range dieu3_1 = oSheet.Cells[countList + 21, 1];
@@ -1126,7 +1216,7 @@ namespace ManageWorkExpenses
                 Excel.Range dieu3_2 = oSheet.Cells[countList + 21, 4];
                 dieu3_2.Value = "'Các Ông, Bà có tên nêu tại Điều 1 được hưởng đầy đủ chính sách công tác phí theo quy chế tài chính của Công ty ";
                 Excel.Range muccongtac = oSheet.Cells[countList + 22, 2];
-                string gia = busDongia.GetDonGia(inForContract[0].TINH).ToString();
+                string gia = busDongia.GetDonGia(inForContract.TINH).ToString();
                 muccongtac.Value = "'- Mức công tác phí khoán là " + gia + " đồng/người/ngày";
 
 
@@ -1209,7 +1299,7 @@ namespace ManageWorkExpenses
 
             //    Excel.Range head_khachhang = oSheet.get_Range("A3", "I3");
             //    head_khachhang.MergeCells = true;
-            //    head_khachhang.Value2 = "Khách hàng:" + cbbCustomer.Text.ToString() + " - mã:" + cbbCustomer.SelectedValue.ToString();
+            //   // head_khachhang.Value2 = "Khách hàng:" + cbbCustomer.Text.ToString() + " - mã:" + cbbCustomer.SelectedValue.ToString();
             //    head_khachhang.Font.Size = "11";
 
             //    Excel.Range head2 = oSheet.get_Range("A5", "A6");
@@ -1254,12 +1344,12 @@ namespace ManageWorkExpenses
             //    //
             //    List<MT_HOP_DONG> inForContract = new List<MT_HOP_DONG>();
             //    MT_HOP_DONG info = new MT_HOP_DONG();
-            //    inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
+            //   // inForContract = busContract.GetInforContract(cbbCustomer.SelectedValue.ToString());
             //    string diachi = inForContract[0].DIA_CHI;
             //    string gia = busDongia.GetDonGia(inForContract[0].TINH).ToString();
 
             //    // danh sách nhân viên đi công tác
-            //    List<STAFF> listStaff = busSchedual.GetListStaff(cbbCustomer.SelectedValue.ToString(), cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
+            //   // List<STAFF> listStaff = busSchedual.GetListStaff(cbbCustomer.SelectedValue.ToString(), cbbMonth_tinhtoan.Value.Month, cbbYear_tinhtoan.Value.Year);
             //    int countList = listStaff.Count;
             //    for (int i = 0 ; i < countList ; i++)
             //    {

@@ -74,18 +74,16 @@ namespace BUS
         }
 
         // xuất quyết định, bảng kê - danh sách nhân viên - Thanh
-        public List<MT_HOP_DONG> GetInforContract(string maKhachHang)
-        {
-            List<MT_HOP_DONG> listUser = new List<MT_HOP_DONG>();
+        public MT_HOP_DONG GetInforContract(string maKhachHang)
+        {                                              
             try
             {
-                listUser = dao.GetInforContract(maKhachHang);
+                return dao.GetInforContract(maKhachHang);
             }
             catch (Exception ex)
             {
                 throw ex;
-            }
-            return listUser;
+            }                 
         }
 
         public string getGroupCompany( string maKhachHang )
@@ -114,6 +112,31 @@ namespace BUS
                 throw ex;
             }
             return contract;
+        }
+
+        public List<MT_HOP_DONG> checkListContractDuplicate( List<MT_HOP_DONG> listContract )
+        {
+            List<MT_HOP_DONG> listContractDuplicate = new List<MT_HOP_DONG>();
+            foreach (var contract in listContract)
+            {  
+                if (dao.checkContractDuplicate(contract))
+                {
+                    listContractDuplicate.Add(contract);
+                }                
+            }
+            return listContractDuplicate;
+        }
+        public int SaveListContract(List<MT_HOP_DONG> listContract)
+        {
+            try
+            {   
+                return dao.SaveListContract(listContract);
+              
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }              
         }
     }
 }

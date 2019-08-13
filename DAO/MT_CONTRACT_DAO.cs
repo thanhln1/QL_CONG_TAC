@@ -3,6 +3,7 @@ using DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,28 @@ namespace DAO
                 sql.Append("(@SO_HOP_DONG, @NGAY_HOP_DONG , @NGAY_THANH_LY, @KHACH_HANG , @MA_KHACH_HANG, @NHOM_KHACH_HANG, @DIA_CHI, @TINH, @GIA_TRI_HOP_DONG, @TONG_CHI_PHI_MUC_TOI_DA, @CHI_PHI_THUC_DA_CHI, @GHI_CHU )");
                 cnn.Execute(sql.ToString(), contract);
             }
+        }
+        public int SaveListContract( List<MT_HOP_DONG> listContract )
+        {
+            int affectedRows = 0;
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                connection.Open();
+
+                using (var transaction = connection.BeginTransaction())
+                {                    
+                    
+                    StringBuilder sql = new StringBuilder();
+                    sql.Append("insert into MT_HOP_DONG ");
+                    sql.Append("(SO_HOP_DONG,  NGAY_HOP_DONG ,  NGAY_THANH_LY,  KHACH_HANG  , MA_KHACH_HANG,  NHOM_KHACH_HANG,  DIA_CHI,  TINH,  GIA_TRI_HOP_DONG,  TONG_CHI_PHI_MUC_TOI_DA,  CHI_PHI_THUC_DA_CHI,  GHI_CHU) ");
+                    sql.Append(" values ");
+                    sql.Append("(@SO_HOP_DONG, @NGAY_HOP_DONG , @NGAY_THANH_LY, @KHACH_HANG , @MA_KHACH_HANG, @NHOM_KHACH_HANG, @DIA_CHI, @TINH, @GIA_TRI_HOP_DONG, @TONG_CHI_PHI_MUC_TOI_DA, @CHI_PHI_THUC_DA_CHI, @GHI_CHU )");
+                    affectedRows = connection.Execute(sql.ToString(), listContract, transaction: transaction);
+                    
+                    transaction.Commit();                                                         
+                }
+            }
+            return affectedRows;
         }
 
         public List<MT_HOP_DONG> getListCompanyNotFinished()
@@ -104,6 +127,8 @@ namespace DAO
             }
         }
 
+        
+
         public bool checkContractDuplicate(MT_HOP_DONG contract)
         {
             bool isDuplicate = false;
@@ -129,12 +154,12 @@ namespace DAO
         }
 
         // xuất quyết định, bảng kê - danh sách nhân viên - Thanh
-        public List<MT_HOP_DONG> GetInforContract(string hopdong)
+        public MT_HOP_DONG GetInforContract(string hopdong)
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
                 var output = cnn.Query<MT_HOP_DONG>("select * from MT_HOP_DONG a where a.MA_KHACH_HANG = @MA_KHACH_HANG", new { @MA_KHACH_HANG = hopdong });
-                return output.ToList();
+                return output.ToList().First();
             }
         }
 
