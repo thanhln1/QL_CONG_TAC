@@ -68,7 +68,7 @@ namespace BUS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw ex;     
             }
             return ListDayMatch;
 
@@ -76,37 +76,49 @@ namespace BUS
 
         public List<string> ComparesWorkDay( List<int> listInput1, List<int> listInput2 )
         {
-            List<string> dayMatch = new List<string>();
-            foreach (var Id1 in listInput1)
+            try
             {
-                string day = Id1.ToString();
-                DateTime day1 = daoTMP.getDayByID(Id1);
-                foreach (var Id2 in listInput2)
+                List<string> dayMatch = new List<string>();
+                foreach (var Id1 in listInput1)
                 {
-                    DateTime day2 = daoTMP.getDayByID(Id2);
-                    if (DateTime.Compare(day1, day2) == 0 && checkUserSameGroup(Id1, Id2) ==true)
+                    string day = Id1.ToString();
+                    DateTime day1 = daoTMP.getDayByID(Id1);
+                    foreach (var Id2 in listInput2)
                     {
-                        day += ";" + Id2;
+                        DateTime day2 = daoTMP.getDayByID(Id2);
+                        if (DateTime.Compare(day1, day2) == 0 && checkUserSameGroup(Id1, Id2) == true)
+                        {
+                            day += ";" + Id2;
+                        }
                     }
-                }
-                if (day.Contains(";"))
-                {
-                    dayMatch.Add(day);
-                }
-                else
-                {
-                    day = string.Empty;
-                }
+                    if (day.Contains(";"))
+                    {
+                        dayMatch.Add(day);
+                    }
+                    else
+                    {
+                        day = string.Empty;
+                    }
 
+                }
+                return dayMatch;
             }
-            return dayMatch;
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }    
         }
 
         private bool checkUserSameGroup( int id1, int id2 )
         {                                              
             MT_NHAN_VIEN user1 = daoTMP.GetUserByIdOfTMP(id1.ToString());
             MT_NHAN_VIEN user2 = daoTMP.GetUserByIdOfTMP(id2.ToString());
-            if (user1 !=null &&user2 !=null && user1.PHONG_BAN.Equals(user2.PHONG_BAN))
+            if (user1 == null && user2 == null)
+            {
+                return false;
+            }
+            else if (user1 !=null &&user2 !=null && user1.PHONG_BAN.Equals(user2.PHONG_BAN))
             {
                 return true;
             }

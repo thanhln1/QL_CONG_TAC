@@ -32,6 +32,24 @@ namespace BUS
                 throw ex;
             }
         }
+        public string CheckWorkingDuplicate( MT_WORKING working )
+        {
+            try
+            {
+                if (dao.checkWorkingDuplicate(working))
+                {
+                    return "DUPLICATE";
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public MT_WORKING GetByID( string id )
         {
@@ -339,6 +357,18 @@ namespace BUS
             try
             {
                 return dao.getMaxWorkDay(strDateFrom, strDateTo, strMaCongTy);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int SaveListWorking( List<MT_WORKING> listWorking )
+        {
+            try
+            {   
+                return dao.SaveListWorking(listWorking);                
             }
             catch (Exception ex)
             {

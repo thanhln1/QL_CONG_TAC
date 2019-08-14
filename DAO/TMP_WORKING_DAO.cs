@@ -172,9 +172,14 @@ namespace DAO
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
                 var output = cnn.Query<MT_NHAN_VIEN>("SELECT * from MT_NHAN_VIEN where MA_NHAN_VIEN = (select MA_NHAN_VIEN from TMP_WORKING where ID = @ID)", new { ID = id }).ToList();
-
-                return output.First();
-
+                if (output.Count > 0)
+                {
+                    return output.First();
+                }
+                else
+                {
+                    return null;
+                } 
             }
         }
     }

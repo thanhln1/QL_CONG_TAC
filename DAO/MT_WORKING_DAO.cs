@@ -165,61 +165,7 @@ namespace DAO
 
                 
             }
-        }
-
-        //public string SaveListWorking( List<MT_WORKING> working )
-        //{
-        //    using (var cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
-        //    {
-        //        cnn.Open();
-
-        //        // create the transaction
-        //        // You could use `var` instead of `SqlTransaction`
-        //        using (SqlTransaction tran = cnn.BeginTransaction())
-        //        {
-        //            try
-        //            {
-        //                foreach (var item in working)
-        //                {
-        //                    // Check nhóm có đúng không
-        //                    var output = cnn.Query<MT_WORKING>("select * from MT_NHAN_VIEN a where a.MA_NHAN_VIEN = @MA_NHAN_VIEN and a.PHONG_BAN = @PHONG_BAN ", new { MA_NHAN_VIEN = working.MA_NHAN_VIEN, PHONG_BAN = working.PHONG_BAN }).ToList();
-        //                    if (output.Count < 0)
-        //                    {
-        //                        // roll the transaction back
-        //                        tran.Rollback();
-
-        //                        // handle the error however you need to.
-        //                        throw new System.ArgumentException ("NOT_OK");
-        //                    } 
-        //                    StringBuilder sql = new StringBuilder();
-        //                    sql.Append("insert into MT_WORKING ");
-        //                    sql.Append("(HO_VA_TEN, MA_NHAN_VIEN, PHONG_BAN, MA_KHACH_HANG, WORKING_DAY, IMPORT_DATE, MARK)");
-        //                    sql.Append(" values ");
-        //                    sql.Append("(@HO_VA_TEN, @MA_NHAN_VIEN,@PHONG_BAN, @MA_KHACH_HANG, @WORKING_DAY, @IMPORT_DATE, @MARK)");
-
-        //                    // pass the transaction along to the Query, Execute, or the related Async methods. 
-        //                    cnn.Execute(sql.ToString(), working,tran);                              
-                            
-        //                } 
-        //                // if it was successful, commit the transaction
-        //                tran.Commit();
-        //                return "DONE";
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                // roll the transaction back
-        //                tran.Rollback();
-
-        //                // handle the error however you need to.
-        //                throw ex;
-        //            }
-        //        }
-        //    }
-
-        //}
-
-
-
+        }  
         public void delAllTMP()
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
@@ -275,6 +221,27 @@ namespace DAO
                 var output = cnn.Query<string>("select max(c.COUNT_DAY) from (select count(*) as COUNT_DAY, MA_NHAN_VIEN from HIS_WORKING a where  cast (a.WORKING_DAY as date) BETWEEN  @FROM and @TO  and a.MA_KHACH_HANG = @MA_KHACH_HANG group by MA_NHAN_VIEN) as C ", new { FROM = strDateFrom, TO = strDateTo, MA_KHACH_HANG = strMaCongTy });
                 return output.First().ToString();
             }
+        }
+
+        public int SaveListWorking( List<MT_WORKING> listWorking )
+        {
+            int affectedRows = 0;
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                connection.Open();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    StringBuilder sql = new StringBuilder();
+                    sql.Append("insert into MT_WORKING ");
+                    sql.Append("(HO_VA_TEN, MA_NHAN_VIEN, PHONG_BAN, MA_KHACH_HANG, WORKING_DAY, IMPORT_DATE, MARK)");
+                    sql.Append(" values ");
+                    sql.Append("(@HO_VA_TEN, @MA_NHAN_VIEN,@PHONG_BAN, @MA_KHACH_HANG, @WORKING_DAY, @IMPORT_DATE, @MARK)");
+                    affectedRows = connection.Execute(sql.ToString(), listWorking, transaction: transaction); 
+                    transaction.Commit();
+                }
+            }
+            return affectedRows;
         }
 
         public string getToDateExport( DateTime strDateFrom, DateTime strDateTo, string strMaCongTy )

@@ -1,5 +1,5 @@
 ﻿using BUS;
-using DTO;   
+using DTO;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -25,11 +25,11 @@ namespace ManageWorkExpenses
     {
         //private Logger logger;
         MT_USER_BUS busUser = new MT_USER_BUS();
-        MT_CONTRACT_BUS busContract = new MT_CONTRACT_BUS(); 
+        MT_CONTRACT_BUS busContract = new MT_CONTRACT_BUS();
         CACULATION_BUS busCaculation = new CACULATION_BUS();
         MT_DON_GIA_BUS busDongia = new MT_DON_GIA_BUS();
         TMP_WORKING_BUS busTMP = new TMP_WORKING_BUS();
-        MT_WORKING_BUS busWorking = new MT_WORKING_BUS();            
+        MT_WORKING_BUS busWorking = new MT_WORKING_BUS();
         COMMON_BUS common = new COMMON_BUS();
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
@@ -43,9 +43,9 @@ namespace ManageWorkExpenses
         ProgressForm progressDialog = new ProgressForm();
 
         // Flag that indcates if a process is running
-        private bool isProcessRunning = false; 
-        
-          
+        private bool isProcessRunning = false;
+
+
 
         public Main()
         {
@@ -58,15 +58,15 @@ namespace ManageWorkExpenses
                 loadAllUser();
                 LoadContract();
                 LoadListCustomer();
-                GetAllDonGia();             
-            }  
+                GetAllDonGia();
+            }
 
         }
         private void btnAddUser_Click( object sender, EventArgs e )
         {
             if (String.IsNullOrEmpty(tbUserCode.Text.Trim()) || string.IsNullOrEmpty(tbName.Text.Trim()))
             {
-                MessageBox.Show("Các trường không được trống");
+                MessageBox.Show("Các trường không được trống", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             try
@@ -80,7 +80,7 @@ namespace ManageWorkExpenses
 
                 if (string.IsNullOrEmpty(cbPhongBan.SelectedItem.ToString()))
                 {
-                    MessageBox.Show("Bạn phải chọn phòng ban");
+                    MessageBox.Show("Bạn phải chọn phòng ban", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -95,7 +95,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi Lưu nhân viên : " + ex.Message);
+                MessageBox.Show("Có lỗi khi Lưu nhân viên : " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 // logger.log("Có lỗi khi Lưu nhân viên : " + ex.Message);
             }
 
@@ -110,8 +110,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi lấy danh sách cán bộ tại : " + ex.Message);
-                //  logger.log("Có lỗi khi lấy danh sách cán bộ tại : " + ex.Message);    
+                MessageBox.Show("Có lỗi khi lấy danh sách cán bộ tại : " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -255,7 +254,7 @@ namespace ManageWorkExpenses
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
+                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
                 }
@@ -300,156 +299,188 @@ namespace ManageWorkExpenses
                             int rowCount = xlRange.Rows.Count;
                             // int colCount = xlRange.Columns.Count;
 
-                            //iterate over the rows and columns and print to the console as it appears in the file
-                            //excel is not zero based!!
-                            for (int i = 3 ; i <= rowCount ; i++)
+                            //iterate over the rows and columns and print to the console as it appears in the file excel is not zero based!!
+                            // If a process is already running, warn the user and cancel the operation
+                            if (isProcessRunning)
                             {
-                                try
-                                {
-                                    #region Tạo đối tượng Hợp đồng để tạo danh sách hợp đồng
-                                    MT_HOP_DONG contract = new MT_HOP_DONG(); 
-                                    //write the value to the console 
-                                    //SO_HOP_DONG
-                                    if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "")))
-                                    {
-                                        continue;
-                                    }
-                                    if (xlRange.Cells[i, 1].Value2 != null)
-                                    {
-                                        contract.SO_HOP_DONG = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Số hợp đồng không được để trống.");
-                                        return;
-                                    }                                   
-
-                                    //NGAY_HOP_DONG    
-                                    DateTimeFormatInfo DateInfo = CultureInfo.CurrentCulture.DateTimeFormat;
-
-                                    contract.NGAY_HOP_DONG = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 2].Text.ToString().Trim()), CultureInfo.CurrentCulture);
-
-                                    //NGAY_THANH_LY
-                                    contract.NGAY_THANH_LY = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 3].Text.ToString().Trim()), CultureInfo.CurrentCulture);
-
-                                    //KHACH_HANG
-                                    contract.KHACH_HANG = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
-
-                                    //MA_KHACH_HANG
-                                    if (xlRange.Cells[i, 5].Value2 !=null)
-                                    {
-                                        contract.MA_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Mã Khách hàng không được để trống.\nXem lại hợp đồng: "+ contract.SO_HOP_DONG);
-                                        return;
-                                    }
-                                    //NHOM_KHACH_HANG
-                                    if (xlRange.Cells[i, 6].Value2 != null)
-                                    {
-                                        contract.NHOM_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 6].Value2.ToString(), @"\r\n?|\n", "");
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Nhóm Khách hàng không được để trống.\nXem lại hợp đồng: " + contract.SO_HOP_DONG);
-                                        return;
-                                    }
-                                   
-
-                                    //DIA_CHI
-                                    contract.DIA_CHI = Regex.Replace(xlRange.Cells[i, 7].Value2.ToString(), @"\r\n?|\n", "");
-
-                                    //TINH
-                                    if (xlRange.Cells[i, 8].Value2 != null)
-                                    {
-                                        contract.TINH = Regex.Replace(xlRange.Cells[i, 8].Value2.ToString(), @"\r\n?|\n", "");
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Thông tin tỉnh thành công tác không được để trống.\nXem lại hợp đồng: " + contract.SO_HOP_DONG);
-                                        return;
-                                    }                                    
-
-                                    //GIA_TRI_HOP_DONG
-                                    if (xlRange.Cells[i, 9].Value2 != null)
-                                    {
-                                        contract.GIA_TRI_HOP_DONG = xlRange.Cells[i, 9].Value2;
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Giá trị hợp đồng của hợp đồng số: "+contract.SO_HOP_DONG + " không được để trống.");
-                                        return;
-                                    } 
-                                    //TONG_CHI_PHI_MUC_TOI_DA
-                                    if (xlRange.Cells[i, 10].Value2 != null)
-                                    {
-                                        contract.TONG_CHI_PHI_MUC_TOI_DA = xlRange.Cells[i, 10].Value2;
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Tổng chi phí mức tối đa của hợp đồng số: " + contract.SO_HOP_DONG + " không được để trống.");
-                                        return;
-                                    }
-
-                                    //CHI_PHI_THUC_DA_CHI
-                                    if (xlRange.Cells[i, 11].Value2 !=null)
-                                    {
-                                        contract.CHI_PHI_THUC_DA_CHI = xlRange.Cells[i, 11].Value2;
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Chi phí thực đã chi của hợp đồng số: " + contract.SO_HOP_DONG + " không được để trống.");
-                                        return;
-                                    }                                    
-
-                                    //GHI_CHU
-                                    contract.GHI_CHU = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
-                                    #endregion
-                                    
-                                    //  add vào danh sách để kiểm tra và chèn vào DB
-                                    listContract.Add(contract);
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
-                                }   
+                                MessageBox.Show("Chương trình đang bận, xin vui lòng chờ", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                return;
                             }
-                            try
+
+                            // Initialize the thread that will handle the background process
+                            Thread backgroundThread = new Thread(
+                            new ThreadStart(() =>
                             {
-                                // Kiểm tra xem có bị trùng không
-                                List<MT_HOP_DONG> ListDuplicate = busContract.checkListContractDuplicate(listContract);
-                                if (ListDuplicate.Count < 1)
+                                // Set the flag that indicates if a process is currently running
+                                isProcessRunning = true;
+
+                                // Set the dialog to operate in indeterminate mode
+                                progressDialog.SetIndeterminate(true);
+
+                                for (int i = 3 ; i <= rowCount ; i++)
                                 {
                                     try
                                     {
-                                        // Insert vào DB
-                                        int result = busContract.SaveListContract(listContract);
-                                        messeger = "Ghi thành công "+ result+" hợp đồng";
-                                        MessageBox.Show(messeger, "Ghi Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        #region Tạo đối tượng Hợp đồng để tạo danh sách hợp đồng
+                                        MT_HOP_DONG contract = new MT_HOP_DONG();
+                                        //write the value to the console 
+                                        //SO_HOP_DONG
+                                        if (string.IsNullOrEmpty(Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "")))
+                                        {
+                                            continue;
+                                        }
+                                        if (xlRange.Cells[i, 1].Value2 != null)
+                                        {
+                                            contract.SO_HOP_DONG = Regex.Replace(xlRange.Cells[i, 1].Text.ToString(), @"\r\n?|\n", "");
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Số hợp đồng không được để trống.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                            return;
+                                        }
+
+                                        //NGAY_HOP_DONG    
+                                        DateTimeFormatInfo DateInfo = CultureInfo.CurrentCulture.DateTimeFormat;
+
+                                        contract.NGAY_HOP_DONG = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 2].Text.ToString().Trim()), CultureInfo.CurrentCulture);
+
+                                        //NGAY_THANH_LY
+                                        contract.NGAY_THANH_LY = Convert.ToDateTime(String.Format("{0:dd/MM/yyyy}", xlRange.Cells[i, 3].Text.ToString().Trim()), CultureInfo.CurrentCulture);
+
+                                        //KHACH_HANG
+                                        contract.KHACH_HANG = Regex.Replace(xlRange.Cells[i, 4].Value2.ToString(), @"\r\n?|\n", "");
+
+                                        //MA_KHACH_HANG
+                                        if (xlRange.Cells[i, 5].Value2 != null)
+                                        {
+                                            contract.MA_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Mã Khách hàng không được để trống.\nXem lại hợp đồng: " + contract.SO_HOP_DONG, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                            return;
+                                        }
+                                        //NHOM_KHACH_HANG
+                                        if (xlRange.Cells[i, 6].Value2 != null)
+                                        {
+                                            contract.NHOM_KHACH_HANG = Regex.Replace(xlRange.Cells[i, 6].Value2.ToString(), @"\r\n?|\n", "");
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Nhóm Khách hàng không được để trống.\nXem lại hợp đồng: " + contract.SO_HOP_DONG, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                            return;
+                                        }
+
+
+                                        //DIA_CHI
+                                        contract.DIA_CHI = Regex.Replace(xlRange.Cells[i, 7].Value2.ToString(), @"\r\n?|\n", "");
+
+                                        //TINH
+                                        if (xlRange.Cells[i, 8].Value2 != null)
+                                        {
+                                            contract.TINH = Regex.Replace(xlRange.Cells[i, 8].Value2.ToString(), @"\r\n?|\n", "");
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Thông tin tỉnh thành công tác không được để trống.\nXem lại hợp đồng: " + contract.SO_HOP_DONG, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                            return;
+                                        }
+
+                                        //GIA_TRI_HOP_DONG
+                                        if (xlRange.Cells[i, 9].Value2 != null)
+                                        {
+                                            contract.GIA_TRI_HOP_DONG = xlRange.Cells[i, 9].Value2;
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Giá trị hợp đồng của hợp đồng số: " + contract.SO_HOP_DONG + " không được để trống.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                            return;
+                                        }
+                                        //TONG_CHI_PHI_MUC_TOI_DA
+                                        if (xlRange.Cells[i, 10].Value2 != null)
+                                        {
+                                            contract.TONG_CHI_PHI_MUC_TOI_DA = xlRange.Cells[i, 10].Value2;
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Tổng chi phí mức tối đa của hợp đồng số: " + contract.SO_HOP_DONG + " không được để trống.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                            return;
+                                        }
+
+                                        //CHI_PHI_THUC_DA_CHI
+                                        if (xlRange.Cells[i, 11].Value2 != null)
+                                        {
+                                            contract.CHI_PHI_THUC_DA_CHI = xlRange.Cells[i, 11].Value2;
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Chi phí thực đã chi của hợp đồng số: " + contract.SO_HOP_DONG + " không được để trống.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                            return;
+                                        }
+
+                                        //GHI_CHU
+                                        contract.GHI_CHU = Regex.Replace(xlRange.Cells[i, 12].Text.ToString(), @"\r\n?|\n", "");
+                                        #endregion
+
+                                        //  add vào danh sách để kiểm tra và chèn vào DB
+                                        listContract.Add(contract);
                                     }
                                     catch (Exception ex)
                                     {
-                                        messeger += "Đã xảy ra lỗi vì: " + ex.Message;
-                                        MessageBox.Show(messeger, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     }
                                 }
-                                else
+                                try
                                 {
-                                    // In ra danh sách HD bị trùng
-                                    messeger += "Hợp đồng đã bị trùng: \nKiểm tra lại thông tin của các hợp đồng sau:\n";
-                                    foreach (var item in ListDuplicate)
+                                    // Kiểm tra xem có bị trùng không
+                                    List<MT_HOP_DONG> ListDuplicate = busContract.checkListContractDuplicate(listContract);
+                                    if (ListDuplicate.Count < 1)
                                     {
-                                        messeger += item.SO_HOP_DONG +" | ";
+                                        try
+                                        {
+                                            // Insert vào DB
+                                            int result = busContract.SaveListContract(listContract);
+                                            messeger = "Ghi thành công " + result + " hợp đồng";
+                                            MessageBox.Show(messeger, "Ghi Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            messeger += "Đã xảy ra lỗi vì: " + ex.Message;
+                                            MessageBox.Show(messeger, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        }
                                     }
-                                    MessageBox.Show(messeger, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                } 
+                                    else
+                                    {
+                                        // In ra danh sách HD bị trùng
+                                        messeger += "Hợp đồng đã bị trùng: \nKiểm tra lại thông tin của các hợp đồng sau:\n";
+                                        foreach (var item in ListDuplicate)
+                                        {
+                                            messeger += item.SO_HOP_DONG + " | ";
+                                        }
+                                        MessageBox.Show(messeger, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    messeger += "Đã xảy ra lỗi tại: " + ex.Message;
+                                    MessageBox.Show(messeger, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                                // Close the dialog if it hasn't been already
+                                if (progressDialog.InvokeRequired)
+                                    progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+
+                                // Reset the flag that indicates if a process is currently running
+                                isProcessRunning = false;
                             }
-                            catch (Exception ex)
-                            {
-                                messeger += "Đã xảy ra lỗi tại: " + ex.Message;
-                                MessageBox.Show(messeger, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }                            
+                        ));
+
+
+                            // Start the background process thread
+                            backgroundThread.Start();
+
+                            // Open the dialog
+                            progressDialog.ShowDialog();
+
 
                             //cleanup
                             GC.Collect();
@@ -469,13 +500,13 @@ namespace ManageWorkExpenses
 
                             //quit and release
                             xlApp.Quit();
-                            Marshal.ReleaseComObject(xlApp);                                                  
+                            Marshal.ReleaseComObject(xlApp);
                             LoadContract();
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message , "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -492,16 +523,16 @@ namespace ManageWorkExpenses
             try
             {
                 listContract = busContract.GetListContract();
-                ListContract.DataSource = listContract ;
+                ListContract.DataSource = listContract;
                 ListContract.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
                 List<string> listMaKH = listContract.Select(s => (string)s.MA_KHACH_HANG).ToList();
                 listMaKH.Add(" ");
-                txtMaKH.DataSource = listMaKH;            
+                txtMaKH.DataSource = listMaKH;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi lấy danh sách HĐ tại : " + ex.Message);   
+                MessageBox.Show("Có lỗi khi lấy danh sách HĐ tại : " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -578,21 +609,21 @@ namespace ManageWorkExpenses
         /// <param name="e"></param>
         private void ListSchedual_CellFormatting( object sender, DataGridViewCellFormattingEventArgs e )
         {
-            string value = e.Value.ToString();           
-            
+            string value = e.Value.ToString();
+
             // bôi màu cột là ngày chủ nhật
             if (e.RowIndex == 0 && e.ColumnIndex > 2)
             {
                 DateTime isCN = DateTime.ParseExact(value, "dd/MM/yyyy", null);
                 if (isCN.DayOfWeek == DayOfWeek.Sunday)
                 {
-                   ListSchedual.Columns[e.ColumnIndex].DefaultCellStyle.BackColor = Color.Beige;    
+                    ListSchedual.Columns[e.ColumnIndex].DefaultCellStyle.BackColor = Color.Beige;
                 }
             }
             if (e.RowIndex > 1 && e.ColumnIndex > 2)
             {
                 string[] arrayValue = Regex.Split(value, "\n");
-                
+
                 if (value.Contains("FAKE"))
                 {
                     e.CellStyle.BackColor = Color.Red;
@@ -600,14 +631,14 @@ namespace ManageWorkExpenses
                 else
                 {
                     int index = Int32.Parse(arrayValue[2]);
-                    if (index== 99999999)
+                    if (index == 99999999)
                     {
                         e.CellStyle.BackColor = Color.FromName("White");
                     }
                     else
                     {
                         e.CellStyle.BackColor = Color.FromName(ConfigurationManager.AppSettings["COLOR" + index + ""]);
-                    }   
+                    }
                 }
             }
             //if (e.RowIndex == 0)
@@ -647,7 +678,7 @@ namespace ManageWorkExpenses
                         var fileStream = openFileDialog.OpenFile();
 
                         using (StreamReader reader = new StreamReader(fileStream))
-                        {  
+                        {
                             fileContent = reader.ReadToEnd();
 
                             //Create COM Objects. Create a COM object for everything that is referenced
@@ -658,17 +689,26 @@ namespace ManageWorkExpenses
 
                             int rowCount = xlRange.Rows.Count;
                             int colCount = xlRange.Columns.Count;
-                                                                      
-                            // Set value.   
-                            fromDate = COMMON_BUS.ConverToDateTime(xlRange.Cells[4, 5].Value2);
-                            toDate = COMMON_BUS.ConverToDateTime(xlRange.Cells[4, colCount].Value2);
-                            
+
+                            // Set value.  
+                            if (xlRange.Cells[4, 5].Value2 == null || xlRange.Cells[4, colCount].Value2 == null)
+                            {
+                                MessageBox.Show("Kiểm tra lại thông tin ngày tháng, File đang bị sai định dạng", "File bị lỗi định dạng", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                isProcessRunning = false;
+                                return;
+                            }
+                            else
+                            {
+                                fromDate = COMMON_BUS.ConverToDateTime(xlRange.Cells[4, 5].Value2);
+                                toDate = COMMON_BUS.ConverToDateTime(xlRange.Cells[4, colCount].Value2);
+                            }
+
 
                             //iterate over the rows and columns and print to the console as it appears in the file excel is not zero based!!
                             // If a process is already running, warn the user and cancel the operation
                             if (isProcessRunning)
                             {
-                                MessageBox.Show("Chương trình đang bận, xin vui lòng chờ");
+                                MessageBox.Show("Chương trình đang bận, xin vui lòng chờ", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 return;
                             }
 
@@ -677,18 +717,22 @@ namespace ManageWorkExpenses
                             new ThreadStart(() =>
                             {
                                 // Set the flag that indicates if a process is currently running
-                                isProcessRunning = true;   
+                                isProcessRunning = true;
+
+                                // Set the dialog to operate in indeterminate mode
+                                progressDialog.SetIndeterminate(true);
 
                                 // cài đặt số chạy % của progress bar bắt đầu từ  0
                                 int n = 0;
                                 // Tổng số phần trăm của progress bar
                                 int totalPercent = rowCount;
 
+                                List<MT_WORKING> listWorking = new List<MT_WORKING>();
 
-                                // Add to schedual
+                                #region Tạo đối tượng Working
                                 for (int i = 6 ; i <= rowCount ; i++)
                                 {
-                                    MT_WORKING working = new MT_WORKING();
+
 
                                     //write the value to the console 
                                     //SO_HOP_DONG
@@ -702,12 +746,13 @@ namespace ManageWorkExpenses
                                     }
                                     for (int j = 5 ; j <= colCount ; j++)
                                     {
-                                        working.HO_VA_TEN       = Regex.Replace(xlRange.Cells[i, 2].Text.ToString(), @"\r\n?|\n", "");
-                                        working.MA_NHAN_VIEN    = Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
-                                        working.PHONG_BAN       = Regex.Replace(xlRange.Cells[i, 4].Text.ToString(), @"\r\n?|\n", "");
+                                        MT_WORKING working = new MT_WORKING();
+                                        working.HO_VA_TEN = Regex.Replace(xlRange.Cells[i, 2].Text.ToString(), @"\r\n?|\n", "");
+                                        working.MA_NHAN_VIEN = Regex.Replace(xlRange.Cells[i, 3].Text.ToString(), @"\r\n?|\n", "");
+                                        working.PHONG_BAN = Regex.Replace(xlRange.Cells[i, 4].Text.ToString(), @"\r\n?|\n", "");
 
-                                        string maKhachHang      = Regex.Replace(xlRange.Cells[i, j].Text.ToString(), @"\r\n?|\n", "");                                         
-                                        working.MA_KHACH_HANG = maKhachHang; 
+                                        string maKhachHang = Regex.Replace(xlRange.Cells[i, j].Text.ToString(), @"\r\n?|\n", "");
+                                        working.MA_KHACH_HANG = maKhachHang;
 
                                         working.WORKING_DAY = COMMON_BUS.ConverToDateTime(xlRange.Cells[4, j].Value2);
                                         working.IMPORT_DATE = DateTime.Now;
@@ -718,50 +763,39 @@ namespace ManageWorkExpenses
                                                 MT_HOP_DONG contract = listHD.Where(s => s.MA_KHACH_HANG == maKhachHang).ToList().First();
                                                 working.MARK = contract.ID.ToString();
                                             }
-                                            catch 
+                                            catch
                                             {
                                                 working.MARK = "99999999";
                                             }
-                                            
+
                                         }
                                         else
                                         {
                                             working.MARK = "99999999";
                                         }
-                                       
-                                        try
+                                        // Kiểm tra trùng
+                                        string isDuplicate = busWorking.CheckWorkingDuplicate(working);
+                                        if (string.IsNullOrEmpty(isDuplicate))
                                         {
-                                            // save transaction (sẽ làm sau)
-
-                                            // Insert lịch làm việc
-                                            string result = busWorking.SaveWorking(working);
-                                            if (result.Equals("NOT_OK"))
-                                            {
-                                                messeger += "Không ghi được Nhân viên: " + working.MA_NHAN_VIEN + " Lý do: Nhóm(Loại) nhân viên chưa đúng" + "\n";
-                                            }
-                                            else if (result.Equals( "DUPLICATE"))
-                                            {
-                                                messeger = "Dữ liệu đã tồn tại. Hiện tại dữ liệu đã sai. Xin kiểm tra lại";
-                                                j = colCount;
-                                                i = rowCount;
-                                            }
-                                            else if (result.Equals("DONE"))
-                                            {
-                                               // messeger += "Thành Công!";
-                                            }
+                                            listWorking.Add(working);
                                         }
-                                        catch (Exception ex)
+                                        else if (isDuplicate.Equals("DUPLICATE"))
                                         {
-                                            messeger += "Lỗi ghi Nhân viên: " + working.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
+                                            MessageBox.Show("Lịch làm việc đã bị trùng. Kiểm tra lại thông tin của nhân viên: " + working.MA_NHAN_VIEN + "Ngày làm việc: " + working.WORKING_DAY, "Lịch làm việc bị trùng", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            //  isProcessRunning = false;
+                                            return;
                                         }
                                     }
                                     // Cập nhật số % cho progress bar
                                     progressDialog.UpdateProgress(n * 100 / totalPercent);
                                     n++;
                                 }
+                                #endregion
 
-                                // Show a dialog box that confirms the process has completed
-                                // MessageBox.Show("Hoàn Thành");  
+                                // Ghi vào CSDL
+                                int result = busWorking.SaveListWorking(listWorking);
+                                MessageBox.Show("Đã thêm thành công " + result + " lịch công tác!", "Hoàn thành việc nhập lịch công tác!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                                 // Close the dialog if it hasn't been already
                                 if (progressDialog.InvokeRequired)
                                     progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
@@ -796,33 +830,28 @@ namespace ManageWorkExpenses
                             //quit and release
                             xlApp.Quit();
                             Marshal.ReleaseComObject(xlApp);
-                            if (string.IsNullOrEmpty(messeger))
-                            {
-                                messeger = "Thành Công";
-                            }
-                            MessageBox.Show(messeger);
-                            LoadRealSchedual(fromDate, toDate);  
+                            LoadRealSchedual(fromDate, toDate);
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message);
+                        MessageBox.Show("File không đúng định dạng, File đang được mở bởi Chương trình khác hoặc lỗi tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
                 }
 
             }
-        } 
+        }
         private void btnUpdate_Click( object sender, EventArgs e )
         {
             if (String.IsNullOrEmpty(lblIDUser.Text) || lblIDUser.Text.Equals("ID_Hidden"))
             {
-                MessageBox.Show("Bạn chưa chọn record nào!");
+                MessageBox.Show("Bạn chưa chọn record nào!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             if (String.IsNullOrEmpty(tbUserCode.Text.Trim()) || string.IsNullOrEmpty(tbName.Text.Trim()))
             {
-                MessageBox.Show("Các trường không được trống");
+                MessageBox.Show("Các trường không được trống", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             try
@@ -835,7 +864,7 @@ namespace ManageWorkExpenses
                 user.VAI_TRO = tbRole.Text;
                 if (string.IsNullOrEmpty(cbPhongBan.SelectedItem.ToString()))
                 {
-                    MessageBox.Show("Bạn phải chọn phòng ban");
+                    MessageBox.Show("Bạn phải chọn phòng ban", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -845,13 +874,13 @@ namespace ManageWorkExpenses
                 bool isUpdate = busUser.UpdateUser(user);
                 string msg = "";
                 msg = ( isUpdate == true ) ? "Cập nhật Thành Công!" : "Không Cập nhật được! ";
-                MessageBox.Show(msg);
+                MessageBox.Show(msg, "Kết quả", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 loadAllUser();
                 btnResetUser_Click(sender, e);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi Cập nhật nhân viên tại: " + ex.Message);
+                MessageBox.Show("Có lỗi khi Cập nhật nhân viên tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 // logger.log("Có lỗi khi Lưu nhân viên : " + ex.Message);
             }
         }
@@ -860,7 +889,7 @@ namespace ManageWorkExpenses
         {
             if (String.IsNullOrEmpty(lblIDUser.Text) || lblIDUser.Text.Equals("ID_Hidden"))
             {
-                MessageBox.Show("Bạn chưa chọn record nào!");
+                MessageBox.Show("Bạn chưa chọn record nào!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             try
@@ -873,13 +902,13 @@ namespace ManageWorkExpenses
                 user.VAI_TRO = tbRole.Text;
                 // user.PHONG_BAN = cbPhongBan.SelectedItem.ToString();
 
-                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa nhân viên " + user.HO_TEN + " có Mã nhân viên là: " + user.MA_NHAN_VIEN, "Xóa Nhân Viên", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa nhân viên " + user.HO_TEN + " có Mã nhân viên là: " + user.MA_NHAN_VIEN, "Xóa Nhân Viên", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
                     bool isUpdate = busUser.DelUser(user);
                     string msg = "";
                     msg = ( isUpdate == true ) ? "Xóa Thành Công!" : "Không xóa được! ";
-                    MessageBox.Show(msg);
+                    MessageBox.Show(msg, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     loadAllUser();
                     btnResetUser_Click(sender, e);
                 }
@@ -887,7 +916,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi Xóa nhân viên tại: " + ex.Message);
+                MessageBox.Show("Có lỗi khi Xóa nhân viên tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 // logger.log("Có lỗi khi Lưu nhân viên : " + ex.Message);
             }
         }
@@ -896,7 +925,7 @@ namespace ManageWorkExpenses
         {
             if (String.IsNullOrEmpty(idHopDong.Text) || idHopDong.Text.Equals("ID_Hidden"))
             {
-                MessageBox.Show("Bạn chưa chọn record nào!");
+                MessageBox.Show("Bạn chưa chọn record nào!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             try
@@ -917,7 +946,7 @@ namespace ManageWorkExpenses
                 contract.GHI_CHU = tbNote.Text;
 
 
-                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa Hợp đồng " + contract.SO_HOP_DONG + " của Khách hàng: " + contract.KHACH_HANG + "\n Việc xóa Hợp đồng có thể làm sai kết quả tính toán", "Xóa Hợp Đồng", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Bạn có chắc muốn xóa Hợp đồng " + contract.SO_HOP_DONG + " của Khách hàng: " + contract.KHACH_HANG + "\n Việc xóa Hợp đồng có thể làm sai kết quả tính toán", "Xóa Hợp Đồng", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
                     bool isUpdate = busContract.DelContract(contract);
@@ -931,19 +960,19 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi Xóa Hợp đồng tại: " + ex.Message);
+                MessageBox.Show("Có lỗi khi Xóa Hợp đồng tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
 
         private void btnUpdateContract_Click( object sender, EventArgs e )
         {
-            DialogResult dialogResult = MessageBox.Show("Việc cập nhật Hợp đồng, đặc biệt những phần liên quan đến Chi phí có thể sẽ làm sai lệch kết quả tính toán, dẫn tới chương trình chạy sai. \n. Bạn có chắc chắn muốn tiếp tục", "Việc chỉnh sửa có thể làm sai lệch dữ liệu", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show("Việc cập nhật Hợp đồng, đặc biệt những phần liên quan đến Chi phí có thể sẽ làm sai lệch kết quả tính toán, dẫn tới chương trình chạy sai. \n. Bạn có chắc chắn muốn tiếp tục", "Việc chỉnh sửa có thể làm sai lệch dữ liệu", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
                 if (string.IsNullOrEmpty(idHopDong.Text) || idHopDong.Text.Equals("ID_Hidden"))
                 {
-                    MessageBox.Show("Bạn chưa chọn record nào!");
+                    MessageBox.Show("Bạn chưa chọn record nào!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 if (string.IsNullOrEmpty(tbSoHopDong.Text.Trim()) ||
@@ -955,7 +984,7 @@ namespace ManageWorkExpenses
                     string.IsNullOrEmpty(tbTongChiPhiToiDa.Text.Trim())
                     )
                 {
-                    MessageBox.Show("Các trường không được trống");
+                    MessageBox.Show("Các trường không được trống", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 try
@@ -984,7 +1013,7 @@ namespace ManageWorkExpenses
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Có lỗi khi Cập nhật Hợp đồng tại: " + ex.Message);
+                    MessageBox.Show("Có lỗi khi Cập nhật Hợp đồng tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -1004,7 +1033,7 @@ namespace ManageWorkExpenses
                 string.IsNullOrEmpty(tbTongChiPhiToiDa.Text.Trim())
                 )
             {
-                MessageBox.Show("Các trường không được trống");
+                MessageBox.Show("Các trường không được trống", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             try
@@ -1025,13 +1054,13 @@ namespace ManageWorkExpenses
                 contract.GHI_CHU = tbNote.Text;
 
                 busContract.SaveContract(contract);
-                MessageBox.Show("Thành Công");
+                MessageBox.Show("Thành Công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadContract();
                 btnResetHopDong_Click(sender, e);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi Lưu Hợp Đồng tại : " + ex.Message);
+                MessageBox.Show("Có lỗi khi Lưu Hợp Đồng tại : " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1045,7 +1074,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi lấy danh sách khách hàng : " + ex.Message);
+                MessageBox.Show("Có lỗi khi lấy danh sách khách hàng : " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -1065,10 +1094,10 @@ namespace ManageWorkExpenses
                 // danh sách các nhân viên đi làm trong khoảng thời gian theo mã công ty
                 List<MT_WORKING> rowCalenda = busWorking.getCalenda(strDateFrom, strDateTo, strMaCongTy);
                 List<STAFF> listStaff = new List<STAFF>();
-                
+
 
                 if (listNhanVien == null)
-                {                                               
+                {
                     MessageBox.Show("Trong khoảng thời gian này không có Cán bộ nào đi công tác !", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -1083,7 +1112,7 @@ namespace ManageWorkExpenses
                 Excel.Application xlApp = new Excel.Application();
                 if (xlApp == null)
                 {
-                    MessageBox.Show("Excel is not properly installed!!");
+                    MessageBox.Show("Excel is not properly installed!!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 Excel.Workbooks oBooks;
@@ -1170,14 +1199,14 @@ namespace ManageWorkExpenses
                 dieu1_2.Value = "'Quyết định cử các nhân viên sau đi công tác:";
                 #endregion
 
-                string DATE_START = busWorking.getStartDateExport(strDateFrom, strDateTo, strMaCongTy) ;
-                string DATE_END   = busWorking.getToDateExport(strDateFrom, strDateTo, strMaCongTy);      
+                string DATE_START = busWorking.getStartDateExport(strDateFrom, strDateTo, strMaCongTy);
+                string DATE_END = busWorking.getToDateExport(strDateFrom, strDateTo, strMaCongTy);
 
                 int countList = listNhanVien.Count;
                 for (int i = 0 ; i < countList ; i++)
                 {
-                    Excel.Range hoTen = oSheet.Cells[i + 14, 2];                      
-                    hoTen.Value = listNhanVien[i].HO_TEN;               
+                    Excel.Range hoTen = oSheet.Cells[i + 14, 2];
+                    hoTen.Value = listNhanVien[i].HO_TEN;
                 }
 
                 oSheet.Columns[1].ColumnWidth = 02.00;
@@ -1206,7 +1235,7 @@ namespace ManageWorkExpenses
                 thoigianCT.Value = "- Thời gian công tác:";
                 Excel.Range thoigianCT_1 = oSheet.Cells[countList + 19, 7];  // khoảng thời gian công tác.
                 string soNgayCongTac = busWorking.getMaxWorkDay(strDateFrom, strDateTo, strMaCongTy);
-                thoigianCT_1.Value = soNgayCongTac+ " ngày (từ ngày " + DATE_START + " đến ngày " + DATE_END + ")";
+                thoigianCT_1.Value = soNgayCongTac + " ngày (từ ngày " + DATE_START + " đến ngày " + DATE_END + ")";
 
                 // điều 3
                 Excel.Range dieu3_1 = oSheet.Cells[countList + 21, 1];
@@ -1248,7 +1277,7 @@ namespace ManageWorkExpenses
                 giamdocky.Value = "GIÁM ĐỐC";
                 giamdocky.Font.Bold = true;
                 giamdocky.Font.Size = FONT_SIZE_BODY;
-#endregion
+                #endregion
 
                 oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[1, 1] ), (Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[countList + 30, 15] )).Font.Name = "Times New Roman";
                 oSheet.get_Range((Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[10, 1] ), (Microsoft.Office.Interop.Excel.Range)( oSheet.Cells[countList + 25, 15] )).Font.Size = FONT_SIZE_BODY;
@@ -1257,7 +1286,7 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
+                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1503,15 +1532,15 @@ namespace ManageWorkExpenses
         private void btnLoadSchedual_Click( object sender, EventArgs e )
         {
             try
-            {                         
+            {
                 DateTime fromDate = txtFromDateSearch.Value.Date;
-                DateTime toDate   = txtToDateSearch.Value.Date;                                               
+                DateTime toDate = txtToDateSearch.Value.Date;
 
-                LoadRealSchedual(fromDate, toDate);  
-            }             
+                LoadRealSchedual(fromDate, toDate);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
+                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             panelEditFakeData.Visible = false;
 
@@ -1524,11 +1553,11 @@ namespace ManageWorkExpenses
                 DateTime fromDate = txtFromDateSearch.Value.Date;
                 DateTime toDate = txtToDateSearch.Value.Date;
 
-                LoadFakeSchedual(fromDate, toDate);  
+                LoadFakeSchedual(fromDate, toDate);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu");
+                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " \n Vui lòng kiểm tra lại dữ liệu", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             panelEditFakeData.Visible = false;
 
@@ -1539,21 +1568,21 @@ namespace ManageWorkExpenses
             panelEditFakeData.Visible = false;
             try
             {
-                DateTime expirationDate = new DateTime(2019, 10, 30);
+                DateTime expirationDate = new DateTime(2019, 09, 30);
                 if (DateTime.Compare(DateTime.Now, expirationDate) > 0)
                 {
-                    MessageBox.Show("Đã xảy ra lỗi trong việc lấy dữ liệu tính toán. liên hệ với người phát triển để gỡ lỗi");
+                    MessageBox.Show("Đã xảy ra lỗi trong việc lấy dữ liệu tính toán. liên hệ với người phát triển để gỡ lỗi", "Lỗi chương trình", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
-                }                                              
+                }
 
                 bool isCN = cbCheckCN.Checked;
                 DateTime fromCalcDate = cbFromDate.Value;
-                DateTime toCalcDate   = cbToDate.Value;    
+                DateTime toCalcDate = cbToDate.Value;
 
                 // If a process is already running, warn the user and cancel the operation
                 if (isProcessRunning)
                 {
-                    MessageBox.Show("Thuật toán đang chạy, xin vui lòng chờ");
+                    MessageBox.Show("Thuật toán đang chạy, xin vui lòng chờ", "Waiting", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -1562,19 +1591,16 @@ namespace ManageWorkExpenses
 
                 // Copy lịch làm việc sang bảng tạm để tính toán
                 busTMP.CopySchedual(fromCalcDate, toCalcDate);
-                busTMP.BackupHD();                 
-
-                // Lấy danh sách lịch làm việc đã được copy để tính toán 
-               // string[,] fakeWorking = busWorking.GetSchedualArray("FAKE", fromCalcDate, toCalcDate);
+                busTMP.BackupHD();
 
                 // Lấy danh sách những ngày làm việc còn trống có thể tính toán
                 List<OBJ_CALC> ListTmpWorkingIsNull = busWorking.GetWorkingEmpty(fromCalcDate, toCalcDate, isCN);
                 if (ListTmpWorkingIsNull == null)
                 {
-                    MessageBox.Show("Không tồn tại dữ liệu còn trống trong khoảng thời gian cần tính toán");
+                    MessageBox.Show("Không tồn tại dữ liệu còn trống trong khoảng thời gian cần tính toán", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     isProcessRunning = false;
                     return;
-                }                      
+                }
 
                 // Initialize the thread that will handle the background process
                 Thread backgroundThread = new Thread(
@@ -1584,22 +1610,22 @@ namespace ManageWorkExpenses
                         isProcessRunning = true;
 
                         // Set the dialog to operate in indeterminate mode
-                        progressDialog.SetIndeterminate(true);                      
+                        progressDialog.SetIndeterminate(true);
 
                         // Lấy danh sách cá ngày đã được tính toán trùng và khả dụng                                                                               
                         List<List<string>> fakeSchedualArray = busCaculation.CALC(ListTmpWorkingIsNull);
 
                         if (fakeSchedualArray.Count <= 0)
                         {
-                            MessageBox.Show("Không có dữ liệu khả dụng để tính toán");   
+                            MessageBox.Show("Không có dữ liệu khả dụng để tính toán", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                         else
-                        {     
+                        {
                             // Set các Mã công ty vao danh sách đã lấy được và lấy ra để in ra màn hình                            
-                            busCaculation.SetCompany(fakeSchedualArray);                            
+                            busCaculation.SetCompany(fakeSchedualArray);
                         }
                         // Show a dialog box that confirms the process has completed
-                        // MessageBox.Show("Hoàn Thành");
+                        MessageBox.Show("Hoàn Thành", "Tính toán thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         // Close the dialog if it hasn't been already
                         if (progressDialog.InvokeRequired)
@@ -1618,18 +1644,18 @@ namespace ManageWorkExpenses
                 progressDialog.ShowDialog();
 
                 // Tải ra màn hình
-                string[,] tmpSchedualArray = busWorking.GetSchedualArray("TMP", DateTime.Now, DateTime.Now);                 
+                string[,] tmpSchedualArray = busWorking.GetSchedualArray("TMP", DateTime.Now, DateTime.Now);
                 ViewToDatagrid(tmpSchedualArray);
                 // Hiển thị nút  Save
                 if (tmpSchedualArray != null)
                 {
                     btnSave.Enabled = true;
                 }
-                    
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " /n Hãy kiểm tra lại thông tin nhập vào hoặc chuẩn hóa dữ liệu đầu vào");
+                MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " /n Hãy kiểm tra lại thông tin nhập vào hoặc chuẩn hóa dữ liệu đầu vào", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
 
@@ -1724,7 +1750,7 @@ namespace ManageWorkExpenses
                 bool isExits = busTMP.CheckRunedCalc();
                 if (!isExits)
                 {
-                    MessageBox.Show("Chưa có dữ liệu tính toán");                    
+                    MessageBox.Show("Chưa có dữ liệu tính toán", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -1732,7 +1758,7 @@ namespace ManageWorkExpenses
                     if (isCheckReRunCALC)
                     {
                         // Phát thông báo ghi đè
-                        DialogResult result = MessageBox.Show("Các ngày làm việc đã tồn tại dữ liệu đã tính toán. Bạn muốn ghi đè không? \n Nếu ghi đè thì dữ liệu có thể sẽ không chính xác nữa!", "Đã tồn tại dữ liệu", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        DialogResult result = MessageBox.Show("Các ngày làm việc đã tồn tại dữ liệu đã tính toán. Bạn muốn ghi đè không? \n Nếu ghi đè thì dữ liệu có thể sẽ không chính xác nữa!", "Đã tồn tại dữ liệu", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         // Ghi đè các ngày đã được làm (Không lưu lại giá trị tiền đã tính toán)
                         if (result == DialogResult.Yes)
                         {
@@ -1751,12 +1777,12 @@ namespace ManageWorkExpenses
                         bool isSave = busTMP.saveCalc();
                         MessageBox.Show(( isSave == true ) ? "Lưu thành công!" : "Có lỗi khi lưu!");
                     }
-                   
+
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: " + ex.Message);
+                MessageBox.Show("Đã xảy ra lỗi trong quá trình lưu dữ liệu tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             btnSave.Enabled = false;
         }
@@ -1786,12 +1812,12 @@ namespace ManageWorkExpenses
                 // config.AppSettings.Settings["CONNECTION"].Value = sqlConnection;
                 config.Save(ConfigurationSaveMode.Full);
                 ConfigurationManager.RefreshSection("appSettings");
-                MessageBox.Show("Lưu cấu hình thành công, Chương trình sẽ khởi động lại");
+                MessageBox.Show("Lưu cấu hình thành công, Chương trình sẽ khởi động lại", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Application.Restart();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
+                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private bool loadConfig()
@@ -1832,7 +1858,7 @@ namespace ManageWorkExpenses
                         }
                         catch (SqlException exSQL)
                         {
-                            MessageBox.Show("Không thể kết nối cơ sở dữ liệu, lỗi tại: " + exSQL.Message);
+                            MessageBox.Show("Không thể kết nối cơ sở dữ liệu, lỗi tại: " + exSQL.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return false;
                         }
                     }
@@ -1841,14 +1867,14 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu");
+                MessageBox.Show("Có lỗi xử lý tại: " + ex.Message + "\n Vui lòng kiểm tra lại dữ liệu", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
 
         private void btnResetDefaut_Click( object sender, EventArgs e )
         {
-            DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn đặt lại CSDL về trạng thái ban đầu? \n Chú ý: Việc đặt lại sẽ xóa toàn bộ Nhân viên, Hợp đồng và toàn bộ lịch công tác!", "Đặt lại trạng thái ban đầu", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn đặt lại CSDL về trạng thái ban đầu? \n Chú ý: Việc đặt lại sẽ xóa toàn bộ Nhân viên, Hợp đồng và toàn bộ lịch công tác!", "Đặt lại trạng thái ban đầu", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
                 bool IsReset = common.ResetDB();
@@ -1948,15 +1974,15 @@ namespace ManageWorkExpenses
             }
         }
 
-        private void  LoadRealSchedual( DateTime fromDate, DateTime toDate )
-        {   
+        private void LoadRealSchedual( DateTime fromDate, DateTime toDate )
+        {
             string[,] realSchedualArray = busWorking.GetSchedualArray("REAL", fromDate, toDate);
             ViewToDatagrid(realSchedualArray);
         }
 
         private void LoadFakeSchedual( DateTime fromDate, DateTime toDate )
         {
-            
+
             string[,] fakeSchedualArray = busWorking.GetSchedualArray("FAKE", fromDate, toDate);
             ViewToDatagrid(fakeSchedualArray);
         }
@@ -1968,7 +1994,7 @@ namespace ManageWorkExpenses
 
             if (SchedualArray == null)
             {
-                MessageBox.Show("Không tồn tại dữ liệu");
+                MessageBox.Show("Không tồn tại dữ liệu", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             // Khai báo số cột cho Grid
@@ -1987,15 +2013,15 @@ namespace ManageWorkExpenses
                 // thêm row vào datagrid
                 ListSchedual.Rows.Add(row);
             }
-        }      
+        }
 
         private void ListSchedual_CellClick( object sender, DataGridViewCellEventArgs e )
         {
-            panelEditFakeData.Visible = true;   
+            panelEditFakeData.Visible = true;
             btnUpdateWorking.Enabled = true;
             int numrow = e.RowIndex;
             int numCol = e.ColumnIndex;
-            if (numCol < 3 || numrow <2)
+            if (numCol < 3 || numrow < 2)
             {
                 txtIDWorking.Text = "";
                 txtHoVaTen.Text = "";
@@ -2005,7 +2031,7 @@ namespace ManageWorkExpenses
             }
 
             string data = ListSchedual.Rows[numrow].Cells[numCol].Value.ToString();
-            string[] arrayData = Regex.Split(data,"\n");
+            string[] arrayData = Regex.Split(data, "\n");
             string id = arrayData[1];
             //string id = data.Substring(data.IndexOf('\n') + 1);
 
@@ -2017,7 +2043,7 @@ namespace ManageWorkExpenses
                 try
                 {
                     if (!string.IsNullOrWhiteSpace(oneDay.MA_KHACH_HANG))
-                    {                           
+                    {
                         txtMaKH.SelectedIndex = txtMaKH.Items.IndexOf(oneDay.MA_KHACH_HANG.ToString().Trim());
                         OldMaKH = oneDay.MA_KHACH_HANG.ToString().Trim();
                     }
@@ -2028,7 +2054,7 @@ namespace ManageWorkExpenses
                 }
                 catch
                 {
-                    MessageBox.Show("Có lỗi xảy ra với Mã Khách Hàng.");
+                    MessageBox.Show("Có lỗi xảy ra với Mã Khách Hàng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
                 txtDateWorking.Value = oneDay.WORKING_DAY;
@@ -2037,11 +2063,11 @@ namespace ManageWorkExpenses
             {
                 if (ex.Message.Contains("KHONG_CO_DATA"))
                 {
-                    MessageBox.Show("Sai dữ liệu hoặc dữ liệu không tồn tại.");
+                    MessageBox.Show("Sai dữ liệu hoặc dữ liệu không tồn tại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    MessageBox.Show("Đã có lỗi xảy ra tại: " + ex.Message);
+                    MessageBox.Show("Đã có lỗi xảy ra tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
                 txtIDWorking.Text = "";
@@ -2054,8 +2080,8 @@ namespace ManageWorkExpenses
 
         private void btnUpdateWorking_Click( object sender, EventArgs e )
         {
-            panelEditFakeData.Visible = false;   
-            btnUpdateWorking.Enabled = false;   
+            panelEditFakeData.Visible = false;
+            btnUpdateWorking.Enabled = false;
             MT_WORKING newWorking = busWorking.GetByID(txtIDWorking.Text);
             if (txtMaKH.SelectedItem.ToString().Equals(" ") || txtMaKH.SelectedItem.ToString().Equals(""))
             {
@@ -2065,7 +2091,7 @@ namespace ManageWorkExpenses
             {
                 newWorking.MA_KHACH_HANG = txtMaKH.SelectedItem.ToString().Trim();
             }
-            
+
             bool isUpdate = false;
             try
             {
@@ -2073,16 +2099,16 @@ namespace ManageWorkExpenses
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xảy ra  khi cập nhật tại: "+ ex.Message);
+                MessageBox.Show("Có lỗi xảy ra  khi cập nhật tại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+
             if (!isUpdate)
             {
-                MessageBox.Show("Không thể cập nhật!");
+                MessageBox.Show("Không thể cập nhật!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                MessageBox.Show("Thành Công!");
+                MessageBox.Show("Thành Công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             OldMaKH = string.Empty;
             string[,] fakeSchedualArray = busWorking.GetSchedualArray("TMP", DateTime.Now, DateTime.Now);
@@ -2097,21 +2123,21 @@ namespace ManageWorkExpenses
         private void groupBox6_Enter( object sender, EventArgs e )
         {
             panelEditFakeData.Visible = false;
-        }        
+        }
 
         private void btn_SearchAgain_Click( object sender, EventArgs e )
         {
-            string[,] fakeSchedualArray = busWorking.GetSchedualArray("TMP",DateTime.Now, DateTime.Now);
+            string[,] fakeSchedualArray = busWorking.GetSchedualArray("TMP", DateTime.Now, DateTime.Now);
             ViewToDatagrid(fakeSchedualArray);
         }
 
-    
+
         private void loadCompanyToExportData( DateTime fromDate, DateTime toDate )
         {
             try
             {
-                List<MT_HOP_DONG>   listCompany = busWorking.GetListCompany(fromDate.Date, toDate.Date);
-                if (listCompany.Count >0)
+                List<MT_HOP_DONG> listCompany = busWorking.GetListCompany(fromDate.Date, toDate.Date);
+                if (listCompany.Count > 0)
                 {
                     cbCompany.DataSource = listCompany;
                     cbCompany.DisplayMember = "KHACH_HANG";
@@ -2125,14 +2151,14 @@ namespace ManageWorkExpenses
                     cbCompany.DataSource = null;
                     cbCompany.Items.Clear();
                     btnExportexcelBangKe.Enabled = false;
-                    btnExportexcelKQ2.Enabled = false;   
+                    btnExportexcelKQ2.Enabled = false;
                     cbCompany.Enabled = false;
                 }
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi khi lấy danh sách khách hàng : " + ex.Message);
+                MessageBox.Show("Có lỗi khi lấy danh sách khách hàng : " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -2145,6 +2171,6 @@ namespace ManageWorkExpenses
         {
             loadCompanyToExportData(cbFromDateExport.Value, cbToDateExport.Value);
         }
-                                  
+
     }
 }
