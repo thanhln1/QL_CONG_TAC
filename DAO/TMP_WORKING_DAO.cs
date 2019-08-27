@@ -116,13 +116,27 @@ namespace DAO
             }
         }
 
-        public DateTime getDayByID( int id1 )
+        public MT_WORKING getDayByID( int id1 )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
             {
                 var output = cnn.Query<MT_WORKING>("select * from TMP_WORKING a  where a.ID = @ID ", new { ID = id1 }).ToList();
                 
-                return output.First().WORKING_DAY;  
+                return output.First();  
+            }
+        }
+
+        public bool CheckWorkingAvailable( int id1, int id2 )
+        {
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var parameters = new DynamicParameters();            
+                parameters.Add("@id1", id1);
+                parameters.Add("@id2", id2);
+                parameters.Add("@RS", dbType: DbType.Boolean, direction: ParameterDirection.ReturnValue);
+                var RS = cnn.Execute("ComparesWorkDay", parameters, null, null, commandType: CommandType.StoredProcedure);
+                Boolean result = parameters.Get<Boolean>("@RS"); 
+                return result;
             }
         }
 

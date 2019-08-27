@@ -18,6 +18,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace ManageWorkExpenses
 {
@@ -30,6 +31,7 @@ namespace ManageWorkExpenses
         MT_DON_GIA_BUS busDongia = new MT_DON_GIA_BUS();
         TMP_WORKING_BUS busTMP = new TMP_WORKING_BUS();
         MT_WORKING_BUS busWorking = new MT_WORKING_BUS();
+        COMMON_BUS busCommon = new BUS.COMMON_BUS();
         COMMON_BUS common = new COMMON_BUS();
         const string FONT_SIZE_BODY = "12";
         const string FONT_SIZE_09 = "9";
@@ -60,8 +62,14 @@ namespace ManageWorkExpenses
                 LoadListCustomer();
                 GetAllDonGia();
             }
+            else
+            {
+                System.Environment.Exit(1);
+            }
 
         }
+
+
         private void btnAddUser_Click( object sender, EventArgs e )
         {
             if (String.IsNullOrEmpty(tbUserCode.Text.Trim()) || string.IsNullOrEmpty(tbName.Text.Trim()))
@@ -153,7 +161,6 @@ namespace ManageWorkExpenses
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                string messeger = "";
                 // openFileDialog.InitialDirectory = "c:\\";
                 openFileDialog.Filter = "Excell files (*.xlsx)| Ole Excel File (*.xls)|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 2;
@@ -175,7 +182,7 @@ namespace ManageWorkExpenses
 
                             //Create COM Objects. Create a COM object for everything that is referenced
                             Excel.Application xlApp = new Excel.Application();
-                            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
+                            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath, ReadOnly: true, Notify: false);
                             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                             Excel.Range xlRange = xlWorksheet.UsedRange;
 
@@ -184,6 +191,7 @@ namespace ManageWorkExpenses
 
                             //iterate over the rows and columns and print to the console as it appears in the file
                             //excel is not zero based!!
+                            List<MT_NHAN_VIEN> listNhanVien = new List<MT_NHAN_VIEN>();
                             for (int i = 3 ; i <= rowCount ; i++)
                             {
                                 MT_NHAN_VIEN staff = new MT_NHAN_VIEN();
@@ -209,23 +217,33 @@ namespace ManageWorkExpenses
                                 // PHONG_BAN
                                 staff.PHONG_BAN = Regex.Replace(xlRange.Cells[i, 5].Value2.ToString(), @"\r\n?|\n", "");
 
-                                try
+                                if (!busUser.CheckDuplicate(staff))
                                 {
-                                    bool result = busUser.SaveUser(staff);
-                                    if (result)
-                                    {
-                                        messeger += "Ghi Thành công Nhân viên có mã  : " + staff.MA_NHAN_VIEN + "\n";
-                                    }
-                                    else
-                                    {
-                                        messeger += "Không ghi được Nhân viên có mã : " + staff.MA_NHAN_VIEN + " Lý do: Bản ghi bị trùng số HĐ. \n";
-                                    }
+                                    MessageBox.Show("Đã tồn tại nhân viên: " + staff.HO_TEN + " với Mã nhân viên là: " + staff.MA_NHAN_VIEN + "\n Chương trình sẽ không thực hiện thêm danh sách nhân viên.", "Lỗi trùng nhân viên! Hãy kiểm tra lại dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+                                else
+                                {
+                                    listNhanVien.Add(staff);
+                                }
+                            }
+                            try
+                            {
+                                // bool result = busUser.SaveUser(staff);
+                                int rs = busUser.SaveListUser(listNhanVien);
+                                if (rs > 0)
+                                {
+                                    MessageBox.Show("Ghi Thành công " + rs + " nhân viên", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Không thêm được danh sách nhân viên, vui lòng liên hệ nhà phát triển để gỡ lỗi.", "Thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
 
-                                }
-                                catch (Exception ex)
-                                {
-                                    messeger += "Lỗi ghi nhân viên có mã: " + staff.MA_NHAN_VIEN + " Lý do: " + ex.Message + "\n";
-                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Đã có lỗi xảy ra tại: " + ex.Message + "\nvui lòng liên hệ nhà phát triển để gỡ lỗi.", "Thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
 
                             //cleanup
@@ -248,7 +266,6 @@ namespace ManageWorkExpenses
                             xlApp.Quit();
                             Marshal.ReleaseComObject(xlApp);
 
-                            MessageBox.Show(messeger);
                             loadAllUser();
                         }
                     }
@@ -292,7 +309,7 @@ namespace ManageWorkExpenses
 
                             //Create COM Objects. Create a COM object for everything that is referenced
                             Excel.Application xlApp = new Excel.Application();
-                            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
+                            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath, ReadOnly: true, Notify: false);
                             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                             Excel.Range xlRange = xlWorksheet.UsedRange;
 
@@ -683,7 +700,7 @@ namespace ManageWorkExpenses
 
                             //Create COM Objects. Create a COM object for everything that is referenced
                             Excel.Application xlApp = new Excel.Application();
-                            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
+                            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath, ReadOnly: true, Notify: false);
                             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                             Excel.Range xlRange = xlWorksheet.UsedRange;
 
@@ -730,6 +747,7 @@ namespace ManageWorkExpenses
                                 List<MT_WORKING> listWorking = new List<MT_WORKING>();
 
                                 #region Tạo đối tượng Working
+                                bool isNomal = true;
                                 for (int i = 6 ; i <= rowCount ; i++)
                                 {
 
@@ -774,21 +792,40 @@ namespace ManageWorkExpenses
                                             working.MARK = "99999999";
                                         }
                                         // Kiểm tra trùng
-                                        string isDuplicate = busWorking.CheckWorkingDuplicate(working);
-                                        if (string.IsNullOrEmpty(isDuplicate))
+                                        string isRsCheck = busWorking.CheckWorking(working);
+                                        if (string.IsNullOrEmpty(isRsCheck))
                                         {
                                             listWorking.Add(working);
                                         }
-                                        else if (isDuplicate.Equals("DUPLICATE"))
+                                        else if (isRsCheck.Equals("DUPLICATE"))
                                         {
                                             MessageBox.Show("Lịch làm việc đã bị trùng. Kiểm tra lại thông tin của nhân viên: " + working.MA_NHAN_VIEN + "Ngày làm việc: " + working.WORKING_DAY, "Lịch làm việc bị trùng", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                            //  isProcessRunning = false;
-                                            return;
+                                            isNomal = false;
+                                            break;
                                         }
+                                        else if (isRsCheck.Equals("CODE_INCORRECT"))
+                                        {
+                                            MessageBox.Show("Mã công ty trong lịch công tác không đúng. Kiểm tra lại thông tin của nhân viên: " + working.MA_NHAN_VIEN + " Mã công ty: " + working.MA_KHACH_HANG, "Mã Công ty không đúng", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            isNomal = false;
+                                            break;
+                                        }
+                                    }
+                                    if (!isNomal)
+                                    {
+                                        isProcessRunning = false;
+                                        break;
                                     }
                                     // Cập nhật số % cho progress bar
                                     progressDialog.UpdateProgress(n * 100 / totalPercent);
                                     n++;
+                                }
+                                if (!isNomal)
+                                {
+                                    isProcessRunning = false;
+                                    // Close the dialog if it hasn't been already
+                                    if (progressDialog.InvokeRequired)
+                                        progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+                                    return;
                                 }
                                 #endregion
 
@@ -796,6 +833,8 @@ namespace ManageWorkExpenses
                                 int result = busWorking.SaveListWorking(listWorking);
                                 MessageBox.Show("Đã thêm thành công " + result + " lịch công tác!", "Hoàn thành việc nhập lịch công tác!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                                // Tải ra màn hình
+                                LoadRealSchedual(fromDate, toDate);
                                 // Close the dialog if it hasn't been already
                                 if (progressDialog.InvokeRequired)
                                     progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
@@ -830,7 +869,6 @@ namespace ManageWorkExpenses
                             //quit and release
                             xlApp.Quit();
                             Marshal.ReleaseComObject(xlApp);
-                            LoadRealSchedual(fromDate, toDate);
                         }
                     }
                     catch (Exception ex)
@@ -1093,7 +1131,7 @@ namespace ManageWorkExpenses
 
                 // danh sách các nhân viên đi làm trong khoảng thời gian theo mã công ty
                 List<MT_WORKING> rowCalenda = busWorking.getCalenda(strDateFrom, strDateTo, strMaCongTy);
-                List<STAFF> listStaff = new List<STAFF>();
+                List<MT_STAFF> listStaff = new List<MT_STAFF>();
 
 
                 if (listNhanVien == null)
@@ -1588,19 +1626,9 @@ namespace ManageWorkExpenses
 
                 // Xóa bảng TMP trước khi thực hiện
                 busTMP.DelAllTMP();
-
-                // Copy lịch làm việc sang bảng tạm để tính toán
+                // Copy lịch làm việc sang bảng tạm để tính toán  
                 busTMP.CopySchedual(fromCalcDate, toCalcDate);
-                busTMP.BackupHD();
-
-                // Lấy danh sách những ngày làm việc còn trống có thể tính toán
-                List<OBJ_CALC> ListTmpWorkingIsNull = busWorking.GetWorkingEmpty(fromCalcDate, toCalcDate, isCN);
-                if (ListTmpWorkingIsNull == null)
-                {
-                    MessageBox.Show("Không tồn tại dữ liệu còn trống trong khoảng thời gian cần tính toán", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    isProcessRunning = false;
-                    return;
-                }
+                busTMP.BackupHD();    
 
                 // Initialize the thread that will handle the background process
                 Thread backgroundThread = new Thread(
@@ -1612,7 +1640,20 @@ namespace ManageWorkExpenses
                         // Set the dialog to operate in indeterminate mode
                         progressDialog.SetIndeterminate(true);
 
-                        // Lấy danh sách cá ngày đã được tính toán trùng và khả dụng                                                                               
+                        // Lấy danh sách những ngày làm việc còn trống có thể tính toán  
+                        List<OBJ_CALC> ListTmpWorkingIsNull = busWorking.GetWorkingEmpty(fromCalcDate, toCalcDate, isCN);
+
+                        if (ListTmpWorkingIsNull == null)
+                        {
+                            MessageBox.Show("Không tồn tại dữ liệu còn trống trong khoảng thời gian cần tính toán", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            isProcessRunning = false;
+                            // Close the dialog if it hasn't been already
+                            if (progressDialog.InvokeRequired)
+                                progressDialog.BeginInvoke(new Action(() => progressDialog.Close()));
+                            return;
+                        }
+
+                        // Lấy danh sách cá ngày đã được tính toán trùng và khả dụng                                  
                         List<List<string>> fakeSchedualArray = busCaculation.CALC(ListTmpWorkingIsNull);
 
                         if (fakeSchedualArray.Count <= 0)
@@ -1621,8 +1662,9 @@ namespace ManageWorkExpenses
                         }
                         else
                         {
-                            // Set các Mã công ty vao danh sách đã lấy được và lấy ra để in ra màn hình                            
+                            // Set các Mã công ty vao danh sách đã lấy được và lấy ra để in ra màn hình   
                             busCaculation.SetCompany(fakeSchedualArray);
+
                         }
                         // Show a dialog box that confirms the process has completed
                         MessageBox.Show("Hoàn Thành", "Tính toán thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1637,10 +1679,10 @@ namespace ManageWorkExpenses
                     }
                 ));
 
-                // Start the background process thread
+                //Start the background process thread
                 backgroundThread.Start();
 
-                // Open the dialog
+                //Open the dialog
                 progressDialog.ShowDialog();
 
                 // Tải ra màn hình
@@ -1651,14 +1693,11 @@ namespace ManageWorkExpenses
                 {
                     btnSave.Enabled = true;
                 }
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Đã xảy ra lỗi tại: " + ex.Message + " /n Hãy kiểm tra lại thông tin nhập vào hoặc chuẩn hóa dữ liệu đầu vào", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
         }
 
         private void btnResetUser_Click( object sender, EventArgs e )

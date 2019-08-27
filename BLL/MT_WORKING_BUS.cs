@@ -32,13 +32,17 @@ namespace BUS
                 throw ex;
             }
         }
-        public string CheckWorkingDuplicate( MT_WORKING working )
+        public string CheckWorking( MT_WORKING working )
         {
             try
             {
                 if (dao.checkWorkingDuplicate(working))
                 {
                     return "DUPLICATE";
+                }
+                if (!dao.checkCodeCompany(working))
+                {
+                    return "CODE_INCORRECT";
                 }
                 else
                 {
@@ -270,8 +274,7 @@ namespace BUS
                             OBJ_CALC newObject = new OBJ_CALC();
                             newObject.MA_NHAN_VIEN = MA_NHAN_VIEN;
                             newObject.LIST_DAY_NOT_WORKING = LIST_DAY_NOT_WORKING.ToList();
-                            ListAvailabe.Add(newObject);
-
+                            ListAvailabe.Add(newObject); 
                         }
                     }
                 }

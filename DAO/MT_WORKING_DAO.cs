@@ -47,6 +47,21 @@ namespace DAO
             }
         }
 
+        public bool checkCodeCompany( MT_WORKING working )
+        {
+            bool isRS = false;
+
+            using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                var output = cnn.Query<MT_WORKING>("select * from MT_HOP_DONG where MA_KHACH_HANG = @MA_KHACH_HANG ", new { MA_KHACH_HANG = working.MA_KHACH_HANG }).ToList();
+                if (output.Count > 0)
+                {
+                    isRS = true;
+                }
+            }
+            return isRS;
+        }
+
         public bool updateWorkingAndContract( MT_WORKING newWorking , string OldMaKH )
         {
             try

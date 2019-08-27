@@ -78,5 +78,17 @@ namespace BUS
             }
            return dt;
         }
+
+        public bool CheckConnection()
+        {
+            try
+            {
+                return daoCommon.IsAvailableConnection();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

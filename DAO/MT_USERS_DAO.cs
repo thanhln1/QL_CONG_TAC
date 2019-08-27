@@ -71,6 +71,22 @@ namespace DAO
             }
         }
 
+        public int SaveListUser( List<MT_NHAN_VIEN> listNhanVien )
+        {
+            int affectedRows = 0;
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))
+            {
+                connection.Open();
+
+                using (var transaction = connection.BeginTransaction())
+                {   
+                    affectedRows = connection.Execute("insert into MT_NHAN_VIEN (MA_NHAN_VIEN, HO_TEN, CHUC_VU, VAI_TRO, PHONG_BAN) values (@MA_NHAN_VIEN, @HO_TEN, @CHUC_VU, @VAI_TRO, @PHONG_BAN)", listNhanVien, transaction: transaction);
+                    transaction.Commit();
+                }
+            }
+            return affectedRows;
+        }
+
         public string getGroupCode( string maNhanVien )
         {
             using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(dao.ConnectionString("Default")))

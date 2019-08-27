@@ -77,13 +77,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MT_STAFF.cs" />
     <Compile Include="OBJ_CALC.cs" />
     <Compile Include="MT_DON_GIA.cs" />
     <Compile Include="MT_HOP_DONG.cs" />
     <Compile Include="MT_WORKING.cs" />
     <Compile Include="MT_NHAN_VIEN.cs" />
     <Compile Include="TMP_SCHEDUAL.cs" />
-    <Compile Include="VW_SCHEDUAL.cs" />
+    <Compile Include="VW_WORKING.cs" />
     <Compile Include="MT_SCHEDUAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

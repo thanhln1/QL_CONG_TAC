@@ -55,6 +55,24 @@ namespace DAO
         }
 
         private static byte[] _salt = Encoding.ASCII.GetBytes("QLCTP_NguyenDangThe");
+
+        public bool IsAvailableConnection()
+        {
+            try
+            {
+                using (IDbConnection cnn = new System.Data.SqlClient.SqlConnection(ConnectionString("Default")))
+                {
+                    cnn.Open();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {                                                                                               
+                return false; // any error is considered as db connection error for now
+            }
+           
+        }
+
         public static string EncryptString( string plainText, string sharedSecret )
         {
             if (string.IsNullOrEmpty(plainText))

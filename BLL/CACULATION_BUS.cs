@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DTO;
 using DAO;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace BUS
 {
@@ -35,12 +36,13 @@ namespace BUS
         {
             List<List<string>> ListDayMatch = new List<List<string>>();
             try
-            {
+            {           
                 List<OBJ_CALC> ListCalc = new List<OBJ_CALC>(DanhSachNgayLamViecConTrong);
 
                 // Chạy lần lượt danh sách
                 foreach (var item in DanhSachNgayLamViecConTrong)
-                {   // Xóa phần tử đầu tiên
+                {                       
+                    // Xóa phần tử đầu tiên
                     ListCalc.Remove(item);
                     // Chạy lần lượt từng danh sách ngày trống trong danh sách
                     foreach (var Compare1 in item.LIST_DAY_NOT_WORKING)
@@ -51,27 +53,30 @@ namespace BUS
                             // Chạy lần lượt từng danh sách ngày trống trong danh sách đã xóa phần tử đầu tiên
                             foreach (var Compare2 in item2.LIST_DAY_NOT_WORKING)
                             {
+                                Stopwatch stopWatch = new Stopwatch();
+                                stopWatch.Start();
                                 // Kiểm tra hai danh sách làm việc có trùng nhau không. Nếu trùng thì thêm vào danh sách hai ngày làm việc giống nhau 
                                 List<string> DayMatch = ComparesWorkDay(Compare1, Compare2);
                                 if (DayMatch.Count >= COMMON_BUS.DAY_OF_WORKING)
                                 {
                                     ListDayMatch.Add(DayMatch);
+                                    break;                                    
                                 }
-
-                            }
-
-                        }
-
-                    }
+                                stopWatch.Stop();
+                                TimeSpan ts = stopWatch.Elapsed;
+                                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                                    ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                                Console.WriteLine("1 vong lap het: " + elapsedTime + " Thoi gian");
+                            } 
+                        }  
+                    }                       
                 }
-
             }
             catch (Exception ex)
             {
                 throw ex;     
             }
             return ListDayMatch;
-
         }
 
         public List<string> ComparesWorkDay( List<int> listInput1, List<int> listInput2 )
@@ -81,15 +86,13 @@ namespace BUS
                 List<string> dayMatch = new List<string>();
                 foreach (var Id1 in listInput1)
                 {
-                    string day = Id1.ToString();
-                    DateTime day1 = daoTMP.getDayByID(Id1);
+                    string day = Id1.ToString();                  
                     foreach (var Id2 in listInput2)
-                    {
-                        DateTime day2 = daoTMP.getDayByID(Id2);
-                        if (DateTime.Compare(day1, day2) == 0 && checkUserSameGroup(Id1, Id2) == true)
+                    {                                                
+                        if (CheckWorkingAvailable(Id1, Id2))
                         {
                             day += ";" + Id2;
-                        }
+                        }                           
                     }
                     if (day.Contains(";"))
                     {
@@ -98,18 +101,28 @@ namespace BUS
                     else
                     {
                         day = string.Empty;
-                    }
-
+                    }  
                 }
                 return dayMatch;
             }
             catch (Exception ex)
-            {
-
+            {   
                 throw ex;
             }    
         }
-
+        public bool CheckWorkingAvailable( int id1, int id2 )
+        {
+            try
+            {                     
+                bool isRS =  daoTMP.CheckWorkingAvailable(id1, id2);           
+                return isRS;
+            }
+            catch (Exception ex)
+            {
+                // return false;
+                throw ex;
+            }
+        }
         private bool checkUserSameGroup( int id1, int id2 )
         {                                              
             MT_NHAN_VIEN user1 = daoTMP.GetUserByIdOfTMP(id1.ToString());

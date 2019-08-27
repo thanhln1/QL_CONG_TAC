@@ -100,5 +100,36 @@ namespace BUS
             }
             return groupCode;
         }
+
+        public int SaveListUser( List<MT_NHAN_VIEN> listNhanVien )
+        {
+            try
+            {
+                return dao.SaveListUser(listNhanVien);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool CheckDuplicate( MT_NHAN_VIEN staff )
+        {
+            try
+            {
+                if (dao.checkUserDuplicate(staff))
+                {
+                    return false;
+                }
+                else
+                {      
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
